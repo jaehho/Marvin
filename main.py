@@ -6,10 +6,10 @@ from mpl_toolkits.mplot3d import Axes3D
 # Initialize MediaPipe Pose with a context manager to ensure resources are released.
 with mp.solutions.pose.Pose(
     static_image_mode=False,
-    model_complexity=1,
+    model_complexity=2,
     smooth_landmarks=True,
     enable_segmentation=False,
-    smooth_segmentation=True,
+    smooth_segmentation=False,
     min_detection_confidence=0.5,
     min_tracking_confidence=0.5) as pose:
 
