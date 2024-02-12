@@ -28,9 +28,9 @@ with mp.solutions.pose.Pose(
         ax.clear()
         if landmarks:
             # Use World Landmark coordinates directly
-            xs = [landmark.x for landmark in landmarks.landmark]
-            ys = [landmark.y for landmark in landmarks.landmark]
-            zs = [landmark.z for landmark in landmarks.landmark]
+            ys = [landmark.x for landmark in landmarks.landmark] # Switch axes to rotate view
+            zs = [-landmark.y for landmark in landmarks.landmark] 
+            xs = [landmark.z for landmark in landmarks.landmark]
 
             ax.scatter(xs, ys, zs, c='blue', marker='o')
             if connections:
@@ -45,6 +45,12 @@ with mp.solutions.pose.Pose(
             ax.set_xlabel('X')
             ax.set_ylabel('Y')
             ax.set_zlabel('Z')
+
+        # Rotate the view
+        elevation = 10  # change this value to adjust the up/down rotation
+        azimuth = 10    # change this value to adjust the left/right rotation
+        ax.view_init(elev=elevation, azim=azimuth)
+
         plt.pause(0.001)
 
     while cap.isOpened():
@@ -60,14 +66,14 @@ with mp.solutions.pose.Pose(
         image.flags.writeable = True
         image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
-        if results.pose_world_landmarks:
-            # Draw the world landmarks on the image (optional, for visualization)
+        if results.pose_landmarks:
+            # Draw the normalized landmarks on the image(NOT world landmarks for webcam overlay)
             mp_drawing.draw_landmarks(
-                image, results.pose_world_landmarks, mp.solutions.pose.POSE_CONNECTIONS,
+                image, results.pose_landmarks, mp.solutions.pose.POSE_CONNECTIONS,
                 landmark_drawing_spec=mp_drawing.DrawingSpec(color=(245,117,66), thickness=2, circle_radius=2),
                 connection_drawing_spec=mp_drawing.DrawingSpec(color=(245,66,230), thickness=2, circle_radius=2))
 
-            plot_landmarks(results.pose_world_landmarks, mp.solutions.pose.POSE_CONNECTIONS)
+            plot_landmarks(results.pose_world_landmarks, mp.solutions.pose.POSE_CONNECTIONS) # Use world landmarks for 3D graph view
 
         cv2.imshow('MediaPipe Pose', image)
         if cv2.waitKey(5) & 0xFF == 27:  # Press 'ESC' to exit.
