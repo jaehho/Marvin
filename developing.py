@@ -1,59 +1,115 @@
-import cv2 as cv # opencv
-import mediapipe as mp  # mediapipe
-import time
-# from mediapipe.tasks import python
-# from mediapipe.tasks.python import vision
+import cv2
+import mediapipe as mp
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+import json
+from tkinter import *
+import threading
 
-# Configuration Options for mediapipe task
-BaseOptions = mp.tasks.BaseOptions
-PoseLandmarker = mp.tasks.vision.PoseLandmarker
-PoseLandmarkerOptions = mp.tasks.vision.PoseLandmarkerOptions
-PoseLandmarkerResult = mp.tasks.vision.PoseLandmarkerResult
-VisionRunningMode = mp.tasks.vision.RunningMode
+# Initialize MediaPipe Pose with a context manager to ensure resources are released.
+with mp.solutions.pose.Pose(
+    static_image_mode=False,
+    model_complexity=2,
+    smooth_landmarks=True,
+    enable_segmentation=False,
+    smooth_segmentation=False,
+    min_detection_confidence=0.5,
+    min_tracking_confidence=0.5) as pose:
 
-# Create a pose landmarker instance with the live stream mode:
-def print_result(result: PoseLandmarkerResult, output_image: mp.Image, timestamp_ms: int):
-    print('pose landmarker result: {}'.format(result))
+    mp_drawing = mp.solutions.drawing_utils
 
-options = PoseLandmarkerOptions(
-    base_options=BaseOptions(model_asset_path='./pose_landmarker_heavy.task'),
-    running_mode=VisionRunningMode.LIVE_STREAM,
-    result_callback=print_result)
-
-# With statement releases resources used by PoseLandmarker after usage
-with PoseLandmarker.create_from_options(options) as landmarker:
-    
-    # Use OpenCV’s VideoCapture to start capturing from the webcam.
-    cap = cv.VideoCapture(0)
+    # Attempt to capture video from webcam.
+    cap = cv2.VideoCapture(0)
     if not cap.isOpened():
         raise IOError("Cannot open webcam")
 
-    while True: #loop until break
-        # Capture frame-by-frame
-        ret, frame = cap.read()
-        # if frame is read correctly ret is True
-        if not ret:
-            print("Can't receive frame (stream end?). Exiting ...")
+    plt.ion()  # Interactive mode on for Matplotlib.
+    fig = plt.figure(figsize=(10, 7))
+    ax = fig.add_subplot(111, projection='3d')
+
+    # Tkinter GUI for displaying JSON data
+    def json_window():
+        root = Tk()
+        root.title("World Landmarks JSON Data")
+        text = Text(root, wrap=WORD)
+        text.pack(expand=True, fill=BOTH)
+
+        def update_json_display(json_data):
+            text.delete('1.0', END)
+            text.insert('1.0', json_data)
+
+        while True:
+            if 'json_data' in globals():
+                update_json_display(json_data)
+            root.update_idletasks()
+            root.update()
+
+    # Start JSON window in a separate thread
+    threading.Thread(target=json_window, daemon=True).start()
+
+    def plot_landmarks(landmarks, connections):
+        ax.clear()
+        if landmarks:
+            # Use World Landmark coordinates directly
+            ys = [landmark.x for landmark in landmarks.landmark] # Switch axes to rotate view
+            zs = [-landmark.y for landmark in landmarks.landmark] 
+            xs = [landmark.z for landmark in landmarks.landmark]
+
+            ax.scatter(xs, ys, zs, c='blue', marker='o')
+            if connections:
+                for connection in connections:
+                    start_idx, end_idx = connection
+                    ax.plot([xs[start_idx], xs[end_idx]], [ys[start_idx], ys[end_idx]], [zs[start_idx], zs[end_idx]], 'ro-')
+
+            # Adjust the limits and labels for a better 3D visualization
+            ax.set_xlim3d(-0.5, 0.5)
+            ax.set_ylim3d(-0.5, 0.5)
+            ax.set_zlim3d(-0.5, 0.5)
+            ax.set_xlabel('X')
+            ax.set_ylabel('Y')
+            ax.set_zlabel('Z')
+
+        # Rotate the view
+        elevation = 10  # change this value to adjust the up/down rotation
+        azimuth = 10    # change this value to adjust the left/right rotation
+        ax.view_init(elev=elevation, azim=azimuth)
+
+        plt.pause(0.001)
+
+    while cap.isOpened():
+        success, image = cap.read()
+        if not success:
+            print("Ignoring empty camera frame.")
+            continue
+
+        image = cv2.cvtColor(cv2.flip(image, 1), cv2.COLOR_BGR2RGB)
+        image.flags.writeable = False # Prevent image processing from writing to the image, also saves time/memory
+        results = pose.process(image)
+
+        if results.pose_world_landmarks:
+            # Convert world landmarks to JSON-like structure
+            landmarks_data = [{'x': landmark.x, 'y': landmark.y, 'z': landmark.z} 
+                              for landmark in results.pose_world_landmarks.landmark]
+            global json_data
+            json_data = json.dumps(landmarks_data, indent=2)
+
+        image.flags.writeable = True
+        image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+
+        if results.pose_landmarks:
+            # Draw the NORMALIZED landmarks on the image(NOT world landmarks for webcam overlay)
+            mp_drawing.draw_landmarks(
+                image, results.pose_landmarks, mp.solutions.pose.POSE_CONNECTIONS,
+                landmark_drawing_spec=mp_drawing.DrawingSpec(color=(245,117,66), thickness=2, circle_radius=2),
+                connection_drawing_spec=mp_drawing.DrawingSpec(color=(245,66,230), thickness=2, circle_radius=2))
+
+            plot_landmarks(results.pose_world_landmarks, mp.solutions.pose.POSE_CONNECTIONS) # Use world landmarks for 3D graph view
+
+        cv2.imshow('MediaPipe Pose', image)
+        if cv2.waitKey(5) & 0xFF == 27:  # Press 'ESC' to exit.
             break
 
-        # Convert BGR to RGB
-        # frame_rgb = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
-
-        # Display the resulting frame
-        cv.imshow('Webcam', frame)
-        if cv.waitKey(1) == ord('q'):
-            break
-
-        # Convert the frame received from OpenCV to a MediaPipe’s Image object.
-        mp_image = mp.Image(image_format=mp.ImageFormat.SRGB,
-                            data=frame)
-
-        # Declare frame timestamp for landmarker
-        frame_timestamp_ms = int(time.time() * 1000)
-
-        # Send live image data to perform pose landmarking.
-        landmarker.detect_async(mp_image, frame_timestamp_ms)
-
-    # When everything done, release the capture
-cap.release()
-cv.destroyAllWindows()
+    cap.release()
+    cv2.destroyAllWindows()
+    plt.ioff()
+    plt.close(fig)
