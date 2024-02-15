@@ -87,11 +87,38 @@ with mp.solutions.pose.Pose(
         results = pose.process(image)
 
         if results.pose_world_landmarks:
-            # Convert world landmarks to JSON-like structure
-            landmarks_data = [{'x': landmark.x, 'y': landmark.y, 'z': landmark.z} 
-                              for landmark in results.pose_world_landmarks.landmark]
+            # Define a dictionary mapping landmark indices to their labels for landmarks 11 through 24
+            landmarks_labels = {
+                11: "left_shoulder",
+                12: "right_shoulder",
+                13: "left_elbow",
+                14: "right_elbow",
+                15: "left_wrist",
+                16: "right_wrist",
+                17: "left_pinky",
+                18: "right_pinky",
+                19: "left_index",
+                20: "right_index",
+                21: "left_thumb",
+                22: "right_thumb",
+                23: "left_hip",
+                24: "right_hip",
+            }
+
+            # Filter the landmarks_data to only include selected landmarks with labels
+            landmarks_data = [
+                {
+                    'label': landmarks_labels.get(index),
+                    'x': landmark.x, 
+                    'y': landmark.y, 
+                    'z': landmark.z
+                } 
+                for index, landmark in enumerate(results.pose_world_landmarks.landmark) 
+                if index in landmarks_labels
+            ]
             global json_data
             json_data = json.dumps(landmarks_data, indent=2)
+
 
         image.flags.writeable = True
         image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
