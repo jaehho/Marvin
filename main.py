@@ -2,6 +2,9 @@ import cv2
 import mediapipe as mp
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
+import json
+from tkinter import *
+import threading
 
 # Initialize MediaPipe Pose with a context manager to ensure resources are released.
 with mp.solutions.pose.Pose(
@@ -23,6 +26,26 @@ with mp.solutions.pose.Pose(
     plt.ion()  # Interactive mode on for Matplotlib.
     fig = plt.figure(figsize=(10, 7))
     ax = fig.add_subplot(111, projection='3d')
+
+    # Tkinter GUI for displaying JSON data
+    def json_window():
+        root = Tk()
+        root.title("World Landmarks JSON Data")
+        text = Text(root, wrap=WORD)
+        text.pack(expand=True, fill=BOTH)
+
+        def update_json_display(json_data):
+            text.delete('1.0', END)
+            text.insert('1.0', json_data)
+
+        while True:
+            if 'json_data' in globals():
+                update_json_display(json_data)
+            root.update_idletasks()
+            root.update()
+
+    # Start JSON window in a separate thread
+    threading.Thread(target=json_window, daemon=True).start()
 
     def plot_landmarks(landmarks, connections):
         ax.clear()
@@ -60,14 +83,48 @@ with mp.solutions.pose.Pose(
             continue
 
         image = cv2.cvtColor(cv2.flip(image, 1), cv2.COLOR_BGR2RGB)
-        image.flags.writeable = False
+        image.flags.writeable = False # Prevent image processing from writing to the image, also saves time/memory
         results = pose.process(image)
+
+        if results.pose_world_landmarks:
+            # Define a dictionary mapping landmark indices to their labels for landmarks 11 through 24
+            landmarks_labels = {
+                11: "left_shoulder",
+                12: "right_shoulder",
+                13: "left_elbow",
+                14: "right_elbow",
+                15: "left_wrist",
+                16: "right_wrist",
+                17: "left_pinky",
+                18: "right_pinky",
+                19: "left_index",
+                20: "right_index",
+                21: "left_thumb",
+                22: "right_thumb",
+                23: "left_hip",
+                24: "right_hip",
+            }
+
+            # Filter the landmarks_data to only include selected landmarks with labels
+            landmarks_data = [
+                {
+                    'label': landmarks_labels.get(index),
+                    'x': landmark.x, 
+                    'y': landmark.y, 
+                    'z': landmark.z
+                } 
+                for index, landmark in enumerate(results.pose_world_landmarks.landmark) 
+                if index in landmarks_labels
+            ]
+            global json_data
+            json_data = json.dumps(landmarks_data, indent=2)
+
 
         image.flags.writeable = True
         image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
         if results.pose_landmarks:
-            # Draw the normalized landmarks on the image(NOT world landmarks for webcam overlay)
+            # Draw the NORMALIZED landmarks on the image(NOT world landmarks for webcam overlay)
             mp_drawing.draw_landmarks(
                 image, results.pose_landmarks, mp.solutions.pose.POSE_CONNECTIONS,
                 landmark_drawing_spec=mp_drawing.DrawingSpec(color=(245,117,66), thickness=2, circle_radius=2),
