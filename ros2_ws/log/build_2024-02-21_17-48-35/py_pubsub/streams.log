@@ -1,0 +1,43 @@
+[0.665s] Invoking command in '/home/mili/Marvin/ros2_ws/src/py_pubsub': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/mili/Marvin/ros2_ws/build/py_pubsub/prefix_override:/home/mili/Marvin/ros2_ws/install/py_pubsub/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/py_pubsub build --build-base /home/mili/Marvin/ros2_ws/build/py_pubsub/build install --record /home/mili/Marvin/ros2_ws/build/py_pubsub/install.log --single-version-externally-managed
+[0.825s] running egg_info
+[0.839s] writing ../../build/py_pubsub/py_pubsub.egg-info/PKG-INFO
+[0.839s] writing dependency_links to ../../build/py_pubsub/py_pubsub.egg-info/dependency_links.txt
+[0.839s] writing entry points to ../../build/py_pubsub/py_pubsub.egg-info/entry_points.txt
+[0.839s] writing requirements to ../../build/py_pubsub/py_pubsub.egg-info/requires.txt
+[0.839s] writing top-level names to ../../build/py_pubsub/py_pubsub.egg-info/top_level.txt
+[0.865s] reading manifest file '../../build/py_pubsub/py_pubsub.egg-info/SOURCES.txt'
+[0.866s] adding license file 'LICENSE'
+[0.866s] writing manifest file '../../build/py_pubsub/py_pubsub.egg-info/SOURCES.txt'
+[0.866s] running build
+[0.866s] running build_py
+[0.866s] copying py_pubsub/__init__.py -> /home/mili/Marvin/ros2_ws/build/py_pubsub/build/lib/py_pubsub
+[0.866s] copying py_pubsub/subscriber_member_function.py -> /home/mili/Marvin/ros2_ws/build/py_pubsub/build/lib/py_pubsub
+[0.867s] copying py_pubsub/publisher_member_function.py -> /home/mili/Marvin/ros2_ws/build/py_pubsub/build/lib/py_pubsub
+[0.867s] running install
+[0.867s] /home/mili/.local/lib/python3.10/site-packages/setuptools/_distutils/cmd.py:66: SetuptoolsDeprecationWarning: setup.py install is deprecated.
+[0.867s] !!
+[0.867s] 
+[0.867s]         ********************************************************************************
+[0.867s]         Please avoid running ``setup.py`` directly.
+[0.867s]         Instead, use pypa/build, pypa/installer or other
+[0.867s]         standards-based tools.
+[0.868s] 
+[0.868s]         See https://blog.ganssle.io/articles/2021/10/setup-py-deprecated.html for details.
+[0.868s]         ********************************************************************************
+[0.868s] 
+[0.868s] !!
+[0.868s]   self.initialize_options()
+[0.870s] running install_lib
+[0.884s] copying /home/mili/Marvin/ros2_ws/build/py_pubsub/build/lib/py_pubsub/publisher_member_function.py -> /home/mili/Marvin/ros2_ws/install/py_pubsub/lib/python3.10/site-packages/py_pubsub
+[0.884s] byte-compiling /home/mili/Marvin/ros2_ws/install/py_pubsub/lib/python3.10/site-packages/py_pubsub/publisher_member_function.py to publisher_member_function.cpython-310.pyc
+[0.885s] running install_data
+[0.898s] copying resource/py_pubsub -> /home/mili/Marvin/ros2_ws/install/py_pubsub/share/ament_index/resource_index/packages
+[0.898s] copying package.xml -> /home/mili/Marvin/ros2_ws/install/py_pubsub/share/py_pubsub
+[0.898s] running install_egg_info
+[0.912s] removing '/home/mili/Marvin/ros2_ws/install/py_pubsub/lib/python3.10/site-packages/py_pubsub-0.0.0-py3.10.egg-info' (and everything under it)
+[0.912s] Copying ../../build/py_pubsub/py_pubsub.egg-info to /home/mili/Marvin/ros2_ws/install/py_pubsub/lib/python3.10/site-packages/py_pubsub-0.0.0-py3.10.egg-info
+[0.913s] running install_scripts
+[1.033s] Installing listener script to /home/mili/Marvin/ros2_ws/install/py_pubsub/lib/py_pubsub
+[1.033s] Installing talker script to /home/mili/Marvin/ros2_ws/install/py_pubsub/lib/py_pubsub
+[1.033s] writing list of installed files to '/home/mili/Marvin/ros2_ws/build/py_pubsub/install.log'
+[1.048s] Invoked command in '/home/mili/Marvin/ros2_ws/src/py_pubsub' returned '0': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/mili/Marvin/ros2_ws/build/py_pubsub/prefix_override:/home/mili/Marvin/ros2_ws/install/py_pubsub/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/py_pubsub build --build-base /home/mili/Marvin/ros2_ws/build/py_pubsub/build install --record /home/mili/Marvin/ros2_ws/build/py_pubsub/install.log --single-version-externally-managed
