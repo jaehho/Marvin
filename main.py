@@ -3,8 +3,6 @@ import mediapipe as mp
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import json
-from tkinter import *
-import threading
 
 # Initialize MediaPipe Pose with a context manager to ensure resources are released.
 with mp.solutions.pose.Pose(
@@ -26,26 +24,6 @@ with mp.solutions.pose.Pose(
     plt.ion()  # Interactive mode on for Matplotlib.
     fig = plt.figure(figsize=(10, 7))
     ax = fig.add_subplot(111, projection='3d')
-
-    # Tkinter GUI for displaying JSON data
-    def json_window():
-        root = Tk()
-        root.title("World Landmarks JSON Data")
-        text = Text(root, wrap=WORD)
-        text.pack(expand=True, fill=BOTH)
-
-        def update_json_display(json_data):
-            text.delete('1.0', END)
-            text.insert('1.0', json_data)
-
-        while True:
-            if 'json_data' in globals():
-                update_json_display(json_data)
-            root.update_idletasks()
-            root.update()
-
-    # Start JSON window in a separate thread
-    threading.Thread(target=json_window, daemon=True).start()
 
     def plot_landmarks(landmarks, connections):
         ax.clear()
