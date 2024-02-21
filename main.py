@@ -102,7 +102,7 @@ with mp.solutions.pose.Pose(
         image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
         if results.pose_landmarks:
-            # Draw the NORMALIZED landmarks on the image(NOT world landmarks for webcam overlay)
+            # Draw the NORMALIZED landmarks on the webcam(NOT world landmarks for webcam overlay)
             mp_drawing.draw_landmarks(
                 image, results.pose_landmarks, mp.solutions.pose.POSE_CONNECTIONS,
                 landmark_drawing_spec=mp_drawing.DrawingSpec(color=(245,117,66), thickness=2, circle_radius=2),
