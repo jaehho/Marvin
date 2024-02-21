@@ -1,0 +1,9 @@
+Metadata-Version: 2.1
+Name: py_pubsub
+Version: 0.0.0
+Summary: Pose Landmarker Coordinates
+Maintainer: jaeho
+Maintainer-email: jaeho.cho@cooper.edu
+License: MIT
+License-File: LICENSE
+Requires-Dist: setuptools
