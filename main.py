@@ -4,6 +4,35 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import json
 
+def plot_landmarks(landmarks, connections):
+    ax.clear()
+    if landmarks:
+        # Use World Landmark coordinates directly
+        ys = [landmark.x for landmark in landmarks.landmark] # Switch axes to rotate view
+        zs = [-landmark.y for landmark in landmarks.landmark] 
+        xs = [landmark.z for landmark in landmarks.landmark]
+
+        ax.scatter(xs, ys, zs, c='blue', marker='o')
+        if connections:
+            for connection in connections:
+                start_idx, end_idx = connection
+                ax.plot([xs[start_idx], xs[end_idx]], [ys[start_idx], ys[end_idx]], [zs[start_idx], zs[end_idx]], 'ro-')
+
+        # Adjust the limits and labels for a better 3D visualization
+        ax.set_xlim3d(-0.5, 0.5)
+        ax.set_ylim3d(-0.5, 0.5)
+        ax.set_zlim3d(-0.5, 0.5)
+        ax.set_xlabel('X')
+        ax.set_ylabel('Y')
+        ax.set_zlabel('Z')
+
+    # Rotate the view
+    elevation = 10  # change this value to adjust the up/down rotation
+    azimuth = 10    # change this value to adjust the left/right rotation
+    ax.view_init(elev=elevation, azim=azimuth)
+
+    plt.pause(0.001)
+
 # Initialize MediaPipe Pose with a context manager to ensure resources are released.
 with mp.solutions.pose.Pose(
     static_image_mode=False,
@@ -24,35 +53,6 @@ with mp.solutions.pose.Pose(
     plt.ion()  # Interactive mode on for Matplotlib.
     fig = plt.figure(figsize=(10, 7))
     ax = fig.add_subplot(111, projection='3d')
-
-    def plot_landmarks(landmarks, connections):
-        ax.clear()
-        if landmarks:
-            # Use World Landmark coordinates directly
-            ys = [landmark.x for landmark in landmarks.landmark] # Switch axes to rotate view
-            zs = [-landmark.y for landmark in landmarks.landmark] 
-            xs = [landmark.z for landmark in landmarks.landmark]
-
-            ax.scatter(xs, ys, zs, c='blue', marker='o')
-            if connections:
-                for connection in connections:
-                    start_idx, end_idx = connection
-                    ax.plot([xs[start_idx], xs[end_idx]], [ys[start_idx], ys[end_idx]], [zs[start_idx], zs[end_idx]], 'ro-')
-
-            # Adjust the limits and labels for a better 3D visualization
-            ax.set_xlim3d(-0.5, 0.5)
-            ax.set_ylim3d(-0.5, 0.5)
-            ax.set_zlim3d(-0.5, 0.5)
-            ax.set_xlabel('X')
-            ax.set_ylabel('Y')
-            ax.set_zlabel('Z')
-
-        # Rotate the view
-        elevation = 10  # change this value to adjust the up/down rotation
-        azimuth = 10    # change this value to adjust the left/right rotation
-        ax.view_init(elev=elevation, azim=azimuth)
-
-        plt.pause(0.001)
 
     while cap.isOpened():
         success, image = cap.read()
@@ -102,7 +102,7 @@ with mp.solutions.pose.Pose(
         image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
         if results.pose_landmarks:
-            # Draw the NORMALIZED landmarks on the image(NOT world landmarks for webcam overlay)
+            # Draw the NORMALIZED landmarks on the webcam(NOT world landmarks for webcam overlay)
             mp_drawing.draw_landmarks(
                 image, results.pose_landmarks, mp.solutions.pose.POSE_CONNECTIONS,
                 landmark_drawing_spec=mp_drawing.DrawingSpec(color=(245,117,66), thickness=2, circle_radius=2),
