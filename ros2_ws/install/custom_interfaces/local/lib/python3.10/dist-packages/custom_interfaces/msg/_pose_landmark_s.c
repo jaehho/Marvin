@@ -16,9 +16,14 @@
 #include "custom_interfaces/msg/detail/pose_landmark__struct.h"
 #include "custom_interfaces/msg/detail/pose_landmark__functions.h"
 
+#include "rosidl_runtime_c/primitives_sequence.h"
+#include "rosidl_runtime_c/primitives_sequence_functions.h"
 #include "rosidl_runtime_c/string.h"
 #include "rosidl_runtime_c/string_functions.h"
 
+// Nested array functions includes
+#include "geometry_msgs/msg/detail/point__functions.h"
+// end nested array functions include
 ROSIDL_GENERATOR_C_IMPORT
 bool geometry_msgs__msg__point__convert_from_py(PyObject * _pymsg, void * _ros_message);
 ROSIDL_GENERATOR_C_IMPORT
@@ -62,14 +67,44 @@ bool custom_interfaces__msg__pose_landmark__convert_from_py(PyObject * _pymsg, v
     if (!field) {
       return false;
     }
-    assert(PyUnicode_Check(field));
-    PyObject * encoded_field = PyUnicode_AsUTF8String(field);
-    if (!encoded_field) {
-      Py_DECREF(field);
-      return false;
+    {
+      PyObject * seq_field = PySequence_Fast(field, "expected a sequence in 'label'");
+      if (!seq_field) {
+        Py_DECREF(field);
+        return false;
+      }
+      Py_ssize_t size = PySequence_Size(field);
+      if (-1 == size) {
+        Py_DECREF(seq_field);
+        Py_DECREF(field);
+        return false;
+      }
+      if (!rosidl_runtime_c__String__Sequence__init(&(ros_message->label), size)) {
+        PyErr_SetString(PyExc_RuntimeError, "unable to create String__Sequence ros_message");
+        Py_DECREF(seq_field);
+        Py_DECREF(field);
+        return false;
+      }
+      rosidl_runtime_c__String * dest = ros_message->label.data;
+      for (Py_ssize_t i = 0; i < size; ++i) {
+        PyObject * item = PySequence_Fast_GET_ITEM(seq_field, i);
+        if (!item) {
+          Py_DECREF(seq_field);
+          Py_DECREF(field);
+          return false;
+        }
+        assert(PyUnicode_Check(item));
+        PyObject * encoded_item = PyUnicode_AsUTF8String(item);
+        if (!encoded_item) {
+          Py_DECREF(seq_field);
+          Py_DECREF(field);
+          return false;
+        }
+        rosidl_runtime_c__String__assign(&dest[i], PyBytes_AS_STRING(encoded_item));
+        Py_DECREF(encoded_item);
+      }
+      Py_DECREF(seq_field);
     }
-    rosidl_runtime_c__String__assign(&ros_message->label, PyBytes_AS_STRING(encoded_field));
-    Py_DECREF(encoded_field);
     Py_DECREF(field);
   }
   {  // point
@@ -77,10 +112,32 @@ bool custom_interfaces__msg__pose_landmark__convert_from_py(PyObject * _pymsg, v
     if (!field) {
       return false;
     }
-    if (!geometry_msgs__msg__point__convert_from_py(field, &ros_message->point)) {
+    PyObject * seq_field = PySequence_Fast(field, "expected a sequence in 'point'");
+    if (!seq_field) {
       Py_DECREF(field);
       return false;
     }
+    Py_ssize_t size = PySequence_Size(field);
+    if (-1 == size) {
+      Py_DECREF(seq_field);
+      Py_DECREF(field);
+      return false;
+    }
+    if (!geometry_msgs__msg__Point__Sequence__init(&(ros_message->point), size)) {
+      PyErr_SetString(PyExc_RuntimeError, "unable to create geometry_msgs__msg__Point__Sequence ros_message");
+      Py_DECREF(seq_field);
+      Py_DECREF(field);
+      return false;
+    }
+    geometry_msgs__msg__Point * dest = ros_message->point.data;
+    for (Py_ssize_t i = 0; i < size; ++i) {
+      if (!geometry_msgs__msg__point__convert_from_py(PySequence_Fast_GET_ITEM(seq_field, i), &dest[i])) {
+        Py_DECREF(seq_field);
+        Py_DECREF(field);
+        return false;
+      }
+    }
+    Py_DECREF(seq_field);
     Py_DECREF(field);
   }
 
@@ -107,13 +164,22 @@ PyObject * custom_interfaces__msg__pose_landmark__convert_to_py(void * raw_ros_m
   custom_interfaces__msg__PoseLandmark * ros_message = (custom_interfaces__msg__PoseLandmark *)raw_ros_message;
   {  // label
     PyObject * field = NULL;
-    field = PyUnicode_DecodeUTF8(
-      ros_message->label.data,
-      strlen(ros_message->label.data),
-      "replace");
+    size_t size = ros_message->label.size;
+    rosidl_runtime_c__String * src = ros_message->label.data;
+    field = PyList_New(size);
     if (!field) {
       return NULL;
     }
+    for (size_t i = 0; i < size; ++i) {
+      PyObject * decoded_item = PyUnicode_DecodeUTF8(src[i].data, strlen(src[i].data), "replace");
+      if (!decoded_item) {
+        return NULL;
+      }
+      int rc = PyList_SetItem(field, i, decoded_item);
+      (void)rc;
+      assert(rc == 0);
+    }
+    assert(PySequence_Check(field));
     {
       int rc = PyObject_SetAttrString(_pymessage, "label", field);
       Py_DECREF(field);
@@ -124,10 +190,24 @@ PyObject * custom_interfaces__msg__pose_landmark__convert_to_py(void * raw_ros_m
   }
   {  // point
     PyObject * field = NULL;
-    field = geometry_msgs__msg__point__convert_to_py(&ros_message->point);
+    size_t size = ros_message->point.size;
+    field = PyList_New(size);
     if (!field) {
       return NULL;
     }
+    geometry_msgs__msg__Point * item;
+    for (size_t i = 0; i < size; ++i) {
+      item = &(ros_message->point.data[i]);
+      PyObject * pyitem = geometry_msgs__msg__point__convert_to_py(item);
+      if (!pyitem) {
+        Py_DECREF(field);
+        return NULL;
+      }
+      int rc = PyList_SetItem(field, i, pyitem);
+      (void)rc;
+      assert(rc == 0);
+    }
+    assert(PySequence_Check(field));
     {
       int rc = PyObject_SetAttrString(_pymessage, "point", field);
       Py_DECREF(field);

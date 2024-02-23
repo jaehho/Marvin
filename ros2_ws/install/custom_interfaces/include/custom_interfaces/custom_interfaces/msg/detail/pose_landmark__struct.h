@@ -26,8 +26,8 @@ extern "C"
 /// Struct defined in msg/PoseLandmark in the package custom_interfaces.
 typedef struct custom_interfaces__msg__PoseLandmark
 {
-  rosidl_runtime_c__String label;
-  geometry_msgs__msg__Point point;
+  rosidl_runtime_c__String__Sequence label;
+  geometry_msgs__msg__Point__Sequence point;
 } custom_interfaces__msg__PoseLandmark;
 
 // Struct for a sequence of custom_interfaces__msg__PoseLandmark.

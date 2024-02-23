@@ -57,11 +57,19 @@ cdr_serialize(
   eprosima::fastcdr::Cdr & cdr)
 {
   // Member: label
-  cdr << ros_message.label;
+  {
+    cdr << ros_message.label;
+  }
   // Member: point
-  geometry_msgs::msg::typesupport_fastrtps_cpp::cdr_serialize(
-    ros_message.point,
-    cdr);
+  {
+    size_t size = ros_message.point.size();
+    cdr << static_cast<uint32_t>(size);
+    for (size_t i = 0; i < size; i++) {
+      geometry_msgs::msg::typesupport_fastrtps_cpp::cdr_serialize(
+        ros_message.point[i],
+        cdr);
+    }
+  }
   return true;
 }
 
@@ -72,11 +80,21 @@ cdr_deserialize(
   custom_interfaces::msg::PoseLandmark & ros_message)
 {
   // Member: label
-  cdr >> ros_message.label;
+  {
+    cdr >> ros_message.label;
+  }
 
   // Member: point
-  geometry_msgs::msg::typesupport_fastrtps_cpp::cdr_deserialize(
-    cdr, ros_message.point);
+  {
+    uint32_t cdrSize;
+    cdr >> cdrSize;
+    size_t size = static_cast<size_t>(cdrSize);
+    ros_message.point.resize(size);
+    for (size_t i = 0; i < size; i++) {
+      geometry_msgs::msg::typesupport_fastrtps_cpp::cdr_deserialize(
+        cdr, ros_message.point[i]);
+    }
+  }
 
   return true;
 }
@@ -95,14 +113,30 @@ get_serialized_size(
   (void)wchar_size;
 
   // Member: label
-  current_alignment += padding +
-    eprosima::fastcdr::Cdr::alignment(current_alignment, padding) +
-    (ros_message.label.size() + 1);
-  // Member: point
+  {
+    size_t array_size = ros_message.label.size();
 
-  current_alignment +=
-    geometry_msgs::msg::typesupport_fastrtps_cpp::get_serialized_size(
-    ros_message.point, current_alignment);
+    current_alignment += padding +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, padding);
+    for (size_t index = 0; index < array_size; ++index) {
+      current_alignment += padding +
+        eprosima::fastcdr::Cdr::alignment(current_alignment, padding) +
+        (ros_message.label[index].size() + 1);
+    }
+  }
+  // Member: point
+  {
+    size_t array_size = ros_message.point.size();
+
+    current_alignment += padding +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, padding);
+
+    for (size_t index = 0; index < array_size; ++index) {
+      current_alignment +=
+        geometry_msgs::msg::typesupport_fastrtps_cpp::get_serialized_size(
+        ros_message.point[index], current_alignment);
+    }
+  }
 
   return current_alignment - initial_alignment;
 }
@@ -129,7 +163,11 @@ max_serialized_size_PoseLandmark(
 
   // Member: label
   {
-    size_t array_size = 1;
+    size_t array_size = 0;
+    full_bounded = false;
+    is_plain = false;
+    current_alignment += padding +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, padding);
 
     full_bounded = false;
     is_plain = false;
@@ -142,7 +180,11 @@ max_serialized_size_PoseLandmark(
 
   // Member: point
   {
-    size_t array_size = 1;
+    size_t array_size = 0;
+    full_bounded = false;
+    is_plain = false;
+    current_alignment += padding +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, padding);
 
 
     last_member_size = 0;

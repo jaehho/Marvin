@@ -68,16 +68,21 @@ static bool _PoseLandmark__cdr_serialize(
   const _PoseLandmark__ros_msg_type * ros_message = static_cast<const _PoseLandmark__ros_msg_type *>(untyped_ros_message);
   // Field name: label
   {
-    const rosidl_runtime_c__String * str = &ros_message->label;
-    if (str->capacity == 0 || str->capacity <= str->size) {
-      fprintf(stderr, "string capacity not greater than size\n");
-      return false;
+    size_t size = ros_message->label.size;
+    auto array_ptr = ros_message->label.data;
+    cdr << static_cast<uint32_t>(size);
+    for (size_t i = 0; i < size; ++i) {
+      const rosidl_runtime_c__String * str = &array_ptr[i];
+      if (str->capacity == 0 || str->capacity <= str->size) {
+        fprintf(stderr, "string capacity not greater than size\n");
+        return false;
+      }
+      if (str->data[str->size] != '\0') {
+        fprintf(stderr, "string not null-terminated\n");
+        return false;
+      }
+      cdr << str->data;
     }
-    if (str->data[str->size] != '\0') {
-      fprintf(stderr, "string not null-terminated\n");
-      return false;
-    }
-    cdr << str->data;
   }
 
   // Field name: point
@@ -87,10 +92,15 @@ static bool _PoseLandmark__cdr_serialize(
       ROSIDL_TYPESUPPORT_INTERFACE__MESSAGE_SYMBOL_NAME(
         rosidl_typesupport_fastrtps_c, geometry_msgs, msg, Point
       )()->data);
-    if (!callbacks->cdr_serialize(
-        &ros_message->point, cdr))
-    {
-      return false;
+    size_t size = ros_message->point.size;
+    auto array_ptr = ros_message->point.data;
+    cdr << static_cast<uint32_t>(size);
+    for (size_t i = 0; i < size; ++i) {
+      if (!callbacks->cdr_serialize(
+          &array_ptr[i], cdr))
+      {
+        return false;
+      }
     }
   }
 
@@ -108,17 +118,31 @@ static bool _PoseLandmark__cdr_deserialize(
   _PoseLandmark__ros_msg_type * ros_message = static_cast<_PoseLandmark__ros_msg_type *>(untyped_ros_message);
   // Field name: label
   {
-    std::string tmp;
-    cdr >> tmp;
-    if (!ros_message->label.data) {
-      rosidl_runtime_c__String__init(&ros_message->label);
+    uint32_t cdrSize;
+    cdr >> cdrSize;
+    size_t size = static_cast<size_t>(cdrSize);
+    if (ros_message->label.data) {
+      rosidl_runtime_c__String__Sequence__fini(&ros_message->label);
     }
-    bool succeeded = rosidl_runtime_c__String__assign(
-      &ros_message->label,
-      tmp.c_str());
-    if (!succeeded) {
-      fprintf(stderr, "failed to assign string into field 'label'\n");
+    if (!rosidl_runtime_c__String__Sequence__init(&ros_message->label, size)) {
+      fprintf(stderr, "failed to create array for field 'label'");
       return false;
+    }
+    auto array_ptr = ros_message->label.data;
+    for (size_t i = 0; i < size; ++i) {
+      std::string tmp;
+      cdr >> tmp;
+      auto & ros_i = array_ptr[i];
+      if (!ros_i.data) {
+        rosidl_runtime_c__String__init(&ros_i);
+      }
+      bool succeeded = rosidl_runtime_c__String__assign(
+        &ros_i,
+        tmp.c_str());
+      if (!succeeded) {
+        fprintf(stderr, "failed to assign string into field 'label'\n");
+        return false;
+      }
     }
   }
 
@@ -129,10 +153,23 @@ static bool _PoseLandmark__cdr_deserialize(
       ROSIDL_TYPESUPPORT_INTERFACE__MESSAGE_SYMBOL_NAME(
         rosidl_typesupport_fastrtps_c, geometry_msgs, msg, Point
       )()->data);
-    if (!callbacks->cdr_deserialize(
-        cdr, &ros_message->point))
-    {
+    uint32_t cdrSize;
+    cdr >> cdrSize;
+    size_t size = static_cast<size_t>(cdrSize);
+    if (ros_message->point.data) {
+      geometry_msgs__msg__Point__Sequence__fini(&ros_message->point);
+    }
+    if (!geometry_msgs__msg__Point__Sequence__init(&ros_message->point, size)) {
+      fprintf(stderr, "failed to create array for field 'point'");
       return false;
+    }
+    auto array_ptr = ros_message->point.data;
+    for (size_t i = 0; i < size; ++i) {
+      if (!callbacks->cdr_deserialize(
+          cdr, &array_ptr[i]))
+      {
+        return false;
+      }
     }
   }
 
@@ -154,13 +191,29 @@ size_t get_serialized_size_custom_interfaces__msg__PoseLandmark(
   (void)wchar_size;
 
   // field.name label
-  current_alignment += padding +
-    eprosima::fastcdr::Cdr::alignment(current_alignment, padding) +
-    (ros_message->label.size + 1);
+  {
+    size_t array_size = ros_message->label.size;
+    auto array_ptr = ros_message->label.data;
+    current_alignment += padding +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, padding);
+    for (size_t index = 0; index < array_size; ++index) {
+      current_alignment += padding +
+        eprosima::fastcdr::Cdr::alignment(current_alignment, padding) +
+        (array_ptr[index].size + 1);
+    }
+  }
   // field.name point
+  {
+    size_t array_size = ros_message->point.size;
+    auto array_ptr = ros_message->point.data;
+    current_alignment += padding +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, padding);
 
-  current_alignment += get_serialized_size_geometry_msgs__msg__Point(
-    &(ros_message->point), current_alignment);
+    for (size_t index = 0; index < array_size; ++index) {
+      current_alignment += get_serialized_size_geometry_msgs__msg__Point(
+        &array_ptr[index], current_alignment);
+    }
+  }
 
   return current_alignment - initial_alignment;
 }
@@ -192,7 +245,11 @@ size_t max_serialized_size_custom_interfaces__msg__PoseLandmark(
 
   // member: label
   {
-    size_t array_size = 1;
+    size_t array_size = 0;
+    full_bounded = false;
+    is_plain = false;
+    current_alignment += padding +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, padding);
 
     full_bounded = false;
     is_plain = false;
@@ -204,7 +261,11 @@ size_t max_serialized_size_custom_interfaces__msg__PoseLandmark(
   }
   // member: point
   {
-    size_t array_size = 1;
+    size_t array_size = 0;
+    full_bounded = false;
+    is_plain = false;
+    current_alignment += padding +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, padding);
 
 
     last_member_size = 0;

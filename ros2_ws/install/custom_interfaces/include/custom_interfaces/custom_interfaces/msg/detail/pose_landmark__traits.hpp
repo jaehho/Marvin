@@ -31,15 +31,37 @@ inline void to_flow_style_yaml(
   out << "{";
   // member: label
   {
-    out << "label: ";
-    rosidl_generator_traits::value_to_yaml(msg.label, out);
+    if (msg.label.size() == 0) {
+      out << "label: []";
+    } else {
+      out << "label: [";
+      size_t pending_items = msg.label.size();
+      for (auto item : msg.label) {
+        rosidl_generator_traits::value_to_yaml(item, out);
+        if (--pending_items > 0) {
+          out << ", ";
+        }
+      }
+      out << "]";
+    }
     out << ", ";
   }
 
   // member: point
   {
-    out << "point: ";
-    to_flow_style_yaml(msg.point, out);
+    if (msg.point.size() == 0) {
+      out << "point: []";
+    } else {
+      out << "point: [";
+      size_t pending_items = msg.point.size();
+      for (auto item : msg.point) {
+        to_flow_style_yaml(item, out);
+        if (--pending_items > 0) {
+          out << ", ";
+        }
+      }
+      out << "]";
+    }
   }
   out << "}";
 }  // NOLINT(readability/fn_size)
@@ -53,9 +75,19 @@ inline void to_block_style_yaml(
     if (indentation > 0) {
       out << std::string(indentation, ' ');
     }
-    out << "label: ";
-    rosidl_generator_traits::value_to_yaml(msg.label, out);
-    out << "\n";
+    if (msg.label.size() == 0) {
+      out << "label: []\n";
+    } else {
+      out << "label:\n";
+      for (auto item : msg.label) {
+        if (indentation > 0) {
+          out << std::string(indentation, ' ');
+        }
+        out << "- ";
+        rosidl_generator_traits::value_to_yaml(item, out);
+        out << "\n";
+      }
+    }
   }
 
   // member: point
@@ -63,8 +95,18 @@ inline void to_block_style_yaml(
     if (indentation > 0) {
       out << std::string(indentation, ' ');
     }
-    out << "point:\n";
-    to_block_style_yaml(msg.point, out, indentation + 2);
+    if (msg.point.size() == 0) {
+      out << "point: []\n";
+    } else {
+      out << "point:\n";
+      for (auto item : msg.point) {
+        if (indentation > 0) {
+          out << std::string(indentation, ' ');
+        }
+        out << "-\n";
+        to_block_style_yaml(item, out, indentation + 2);
+      }
+    }
   }
 }  // NOLINT(readability/fn_size)
 

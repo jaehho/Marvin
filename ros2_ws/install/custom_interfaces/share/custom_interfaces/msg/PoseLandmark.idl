@@ -7,9 +7,9 @@
 module custom_interfaces {
   module msg {
     struct PoseLandmark {
-      string label;
+      sequence<string> label;
 
-      geometry_msgs::msg::Point point;
+      sequence<geometry_msgs::msg::Point> point;
     };
   };
 };

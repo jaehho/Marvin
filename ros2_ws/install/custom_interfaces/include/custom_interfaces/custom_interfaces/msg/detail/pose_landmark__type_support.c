@@ -39,40 +39,150 @@ void custom_interfaces__msg__PoseLandmark__rosidl_typesupport_introspection_c__P
   custom_interfaces__msg__PoseLandmark__fini(message_memory);
 }
 
+size_t custom_interfaces__msg__PoseLandmark__rosidl_typesupport_introspection_c__size_function__PoseLandmark__label(
+  const void * untyped_member)
+{
+  const rosidl_runtime_c__String__Sequence * member =
+    (const rosidl_runtime_c__String__Sequence *)(untyped_member);
+  return member->size;
+}
+
+const void * custom_interfaces__msg__PoseLandmark__rosidl_typesupport_introspection_c__get_const_function__PoseLandmark__label(
+  const void * untyped_member, size_t index)
+{
+  const rosidl_runtime_c__String__Sequence * member =
+    (const rosidl_runtime_c__String__Sequence *)(untyped_member);
+  return &member->data[index];
+}
+
+void * custom_interfaces__msg__PoseLandmark__rosidl_typesupport_introspection_c__get_function__PoseLandmark__label(
+  void * untyped_member, size_t index)
+{
+  rosidl_runtime_c__String__Sequence * member =
+    (rosidl_runtime_c__String__Sequence *)(untyped_member);
+  return &member->data[index];
+}
+
+void custom_interfaces__msg__PoseLandmark__rosidl_typesupport_introspection_c__fetch_function__PoseLandmark__label(
+  const void * untyped_member, size_t index, void * untyped_value)
+{
+  const rosidl_runtime_c__String * item =
+    ((const rosidl_runtime_c__String *)
+    custom_interfaces__msg__PoseLandmark__rosidl_typesupport_introspection_c__get_const_function__PoseLandmark__label(untyped_member, index));
+  rosidl_runtime_c__String * value =
+    (rosidl_runtime_c__String *)(untyped_value);
+  *value = *item;
+}
+
+void custom_interfaces__msg__PoseLandmark__rosidl_typesupport_introspection_c__assign_function__PoseLandmark__label(
+  void * untyped_member, size_t index, const void * untyped_value)
+{
+  rosidl_runtime_c__String * item =
+    ((rosidl_runtime_c__String *)
+    custom_interfaces__msg__PoseLandmark__rosidl_typesupport_introspection_c__get_function__PoseLandmark__label(untyped_member, index));
+  const rosidl_runtime_c__String * value =
+    (const rosidl_runtime_c__String *)(untyped_value);
+  *item = *value;
+}
+
+bool custom_interfaces__msg__PoseLandmark__rosidl_typesupport_introspection_c__resize_function__PoseLandmark__label(
+  void * untyped_member, size_t size)
+{
+  rosidl_runtime_c__String__Sequence * member =
+    (rosidl_runtime_c__String__Sequence *)(untyped_member);
+  rosidl_runtime_c__String__Sequence__fini(member);
+  return rosidl_runtime_c__String__Sequence__init(member, size);
+}
+
+size_t custom_interfaces__msg__PoseLandmark__rosidl_typesupport_introspection_c__size_function__PoseLandmark__point(
+  const void * untyped_member)
+{
+  const geometry_msgs__msg__Point__Sequence * member =
+    (const geometry_msgs__msg__Point__Sequence *)(untyped_member);
+  return member->size;
+}
+
+const void * custom_interfaces__msg__PoseLandmark__rosidl_typesupport_introspection_c__get_const_function__PoseLandmark__point(
+  const void * untyped_member, size_t index)
+{
+  const geometry_msgs__msg__Point__Sequence * member =
+    (const geometry_msgs__msg__Point__Sequence *)(untyped_member);
+  return &member->data[index];
+}
+
+void * custom_interfaces__msg__PoseLandmark__rosidl_typesupport_introspection_c__get_function__PoseLandmark__point(
+  void * untyped_member, size_t index)
+{
+  geometry_msgs__msg__Point__Sequence * member =
+    (geometry_msgs__msg__Point__Sequence *)(untyped_member);
+  return &member->data[index];
+}
+
+void custom_interfaces__msg__PoseLandmark__rosidl_typesupport_introspection_c__fetch_function__PoseLandmark__point(
+  const void * untyped_member, size_t index, void * untyped_value)
+{
+  const geometry_msgs__msg__Point * item =
+    ((const geometry_msgs__msg__Point *)
+    custom_interfaces__msg__PoseLandmark__rosidl_typesupport_introspection_c__get_const_function__PoseLandmark__point(untyped_member, index));
+  geometry_msgs__msg__Point * value =
+    (geometry_msgs__msg__Point *)(untyped_value);
+  *value = *item;
+}
+
+void custom_interfaces__msg__PoseLandmark__rosidl_typesupport_introspection_c__assign_function__PoseLandmark__point(
+  void * untyped_member, size_t index, const void * untyped_value)
+{
+  geometry_msgs__msg__Point * item =
+    ((geometry_msgs__msg__Point *)
+    custom_interfaces__msg__PoseLandmark__rosidl_typesupport_introspection_c__get_function__PoseLandmark__point(untyped_member, index));
+  const geometry_msgs__msg__Point * value =
+    (const geometry_msgs__msg__Point *)(untyped_value);
+  *item = *value;
+}
+
+bool custom_interfaces__msg__PoseLandmark__rosidl_typesupport_introspection_c__resize_function__PoseLandmark__point(
+  void * untyped_member, size_t size)
+{
+  geometry_msgs__msg__Point__Sequence * member =
+    (geometry_msgs__msg__Point__Sequence *)(untyped_member);
+  geometry_msgs__msg__Point__Sequence__fini(member);
+  return geometry_msgs__msg__Point__Sequence__init(member, size);
+}
+
 static rosidl_typesupport_introspection_c__MessageMember custom_interfaces__msg__PoseLandmark__rosidl_typesupport_introspection_c__PoseLandmark_message_member_array[2] = {
   {
     "label",  // name
     rosidl_typesupport_introspection_c__ROS_TYPE_STRING,  // type
     0,  // upper bound of string
     NULL,  // members of sub message
-    false,  // is array
+    true,  // is array
     0,  // array size
     false,  // is upper bound
     offsetof(custom_interfaces__msg__PoseLandmark, label),  // bytes offset in struct
     NULL,  // default value
-    NULL,  // size() function pointer
-    NULL,  // get_const(index) function pointer
-    NULL,  // get(index) function pointer
-    NULL,  // fetch(index, &value) function pointer
-    NULL,  // assign(index, value) function pointer
-    NULL  // resize(index) function pointer
+    custom_interfaces__msg__PoseLandmark__rosidl_typesupport_introspection_c__size_function__PoseLandmark__label,  // size() function pointer
+    custom_interfaces__msg__PoseLandmark__rosidl_typesupport_introspection_c__get_const_function__PoseLandmark__label,  // get_const(index) function pointer
+    custom_interfaces__msg__PoseLandmark__rosidl_typesupport_introspection_c__get_function__PoseLandmark__label,  // get(index) function pointer
+    custom_interfaces__msg__PoseLandmark__rosidl_typesupport_introspection_c__fetch_function__PoseLandmark__label,  // fetch(index, &value) function pointer
+    custom_interfaces__msg__PoseLandmark__rosidl_typesupport_introspection_c__assign_function__PoseLandmark__label,  // assign(index, value) function pointer
+    custom_interfaces__msg__PoseLandmark__rosidl_typesupport_introspection_c__resize_function__PoseLandmark__label  // resize(index) function pointer
   },
   {
     "point",  // name
     rosidl_typesupport_introspection_c__ROS_TYPE_MESSAGE,  // type
     0,  // upper bound of string
     NULL,  // members of sub message (initialized later)
-    false,  // is array
+    true,  // is array
     0,  // array size
     false,  // is upper bound
     offsetof(custom_interfaces__msg__PoseLandmark, point),  // bytes offset in struct
     NULL,  // default value
-    NULL,  // size() function pointer
-    NULL,  // get_const(index) function pointer
-    NULL,  // get(index) function pointer
-    NULL,  // fetch(index, &value) function pointer
-    NULL,  // assign(index, value) function pointer
-    NULL  // resize(index) function pointer
+    custom_interfaces__msg__PoseLandmark__rosidl_typesupport_introspection_c__size_function__PoseLandmark__point,  // size() function pointer
+    custom_interfaces__msg__PoseLandmark__rosidl_typesupport_introspection_c__get_const_function__PoseLandmark__point,  // get_const(index) function pointer
+    custom_interfaces__msg__PoseLandmark__rosidl_typesupport_introspection_c__get_function__PoseLandmark__point,  // get(index) function pointer
+    custom_interfaces__msg__PoseLandmark__rosidl_typesupport_introspection_c__fetch_function__PoseLandmark__point,  // fetch(index, &value) function pointer
+    custom_interfaces__msg__PoseLandmark__rosidl_typesupport_introspection_c__assign_function__PoseLandmark__point,  // assign(index, value) function pointer
+    custom_interfaces__msg__PoseLandmark__rosidl_typesupport_introspection_c__resize_function__PoseLandmark__point  // resize(index) function pointer
   }
 };
 

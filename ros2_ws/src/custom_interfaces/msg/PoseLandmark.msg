@@ -1,2 +1,2 @@
-string label
-geometry_msgs/Point point
+string[] label
+geometry_msgs/Point[] point

@@ -64,22 +64,21 @@ class PoseLandmark(metaclass=Metaclass_PoseLandmark):
     ]
 
     _fields_and_field_types = {
-        'label': 'string',
-        'point': 'geometry_msgs/Point',
+        'label': 'sequence<string>',
+        'point': 'sequence<geometry_msgs/Point>',
     }
 
     SLOT_TYPES = (
-        rosidl_parser.definition.UnboundedString(),  # noqa: E501
-        rosidl_parser.definition.NamespacedType(['geometry_msgs', 'msg'], 'Point'),  # noqa: E501
+        rosidl_parser.definition.UnboundedSequence(rosidl_parser.definition.UnboundedString()),  # noqa: E501
+        rosidl_parser.definition.UnboundedSequence(rosidl_parser.definition.NamespacedType(['geometry_msgs', 'msg'], 'Point')),  # noqa: E501
     )
 
     def __init__(self, **kwargs):
         assert all('_' + key in self.__slots__ for key in kwargs.keys()), \
             'Invalid arguments passed to constructor: %s' % \
             ', '.join(sorted(k for k in kwargs.keys() if '_' + k not in self.__slots__))
-        self.label = kwargs.get('label', str())
-        from geometry_msgs.msg import Point
-        self.point = kwargs.get('point', Point())
+        self.label = kwargs.get('label', [])
+        self.point = kwargs.get('point', [])
 
     def __repr__(self):
         typename = self.__class__.__module__.split('.')
@@ -129,9 +128,19 @@ class PoseLandmark(metaclass=Metaclass_PoseLandmark):
     @label.setter
     def label(self, value):
         if __debug__:
+            from collections.abc import Sequence
+            from collections.abc import Set
+            from collections import UserList
+            from collections import UserString
             assert \
-                isinstance(value, str), \
-                "The 'label' field must be of type 'str'"
+                ((isinstance(value, Sequence) or
+                  isinstance(value, Set) or
+                  isinstance(value, UserList)) and
+                 not isinstance(value, str) and
+                 not isinstance(value, UserString) and
+                 all(isinstance(v, str) for v in value) and
+                 True), \
+                "The 'label' field must be a set or sequence and each value of type 'str'"
         self._label = value
 
     @builtins.property
@@ -143,7 +152,17 @@ class PoseLandmark(metaclass=Metaclass_PoseLandmark):
     def point(self, value):
         if __debug__:
             from geometry_msgs.msg import Point
+            from collections.abc import Sequence
+            from collections.abc import Set
+            from collections import UserList
+            from collections import UserString
             assert \
-                isinstance(value, Point), \
-                "The 'point' field must be a sub message of type 'Point'"
+                ((isinstance(value, Sequence) or
+                  isinstance(value, Set) or
+                  isinstance(value, UserList)) and
+                 not isinstance(value, str) and
+                 not isinstance(value, UserString) and
+                 all(isinstance(v, Point) for v in value) and
+                 True), \
+                "The 'point' field must be a set or sequence and each value of type 'Point'"
         self._point = value

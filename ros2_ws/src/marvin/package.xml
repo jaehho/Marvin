@@ -1,15 +1,11 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>py_pubsub</name>
+  <name>marvin</name>
   <version>0.0.0</version>
-  <description>Pose Landmarker Coordinates</description>
+  <description>Marvin</description>
   <maintainer email="jaeho.cho@cooper.edu">jaeho</maintainer>
   <license>MIT</license>
-
-  <exec_depend>rclpy</exec_depend>
-  <exec_depend>std_msgs</exec_depend>
-  <exec_depend>custom_interfaces</exec_depend>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>

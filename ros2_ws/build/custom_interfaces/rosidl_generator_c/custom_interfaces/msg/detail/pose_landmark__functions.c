@@ -24,12 +24,12 @@ custom_interfaces__msg__PoseLandmark__init(custom_interfaces__msg__PoseLandmark 
     return false;
   }
   // label
-  if (!rosidl_runtime_c__String__init(&msg->label)) {
+  if (!rosidl_runtime_c__String__Sequence__init(&msg->label, 0)) {
     custom_interfaces__msg__PoseLandmark__fini(msg);
     return false;
   }
   // point
-  if (!geometry_msgs__msg__Point__init(&msg->point)) {
+  if (!geometry_msgs__msg__Point__Sequence__init(&msg->point, 0)) {
     custom_interfaces__msg__PoseLandmark__fini(msg);
     return false;
   }
@@ -43,9 +43,9 @@ custom_interfaces__msg__PoseLandmark__fini(custom_interfaces__msg__PoseLandmark 
     return;
   }
   // label
-  rosidl_runtime_c__String__fini(&msg->label);
+  rosidl_runtime_c__String__Sequence__fini(&msg->label);
   // point
-  geometry_msgs__msg__Point__fini(&msg->point);
+  geometry_msgs__msg__Point__Sequence__fini(&msg->point);
 }
 
 bool
@@ -55,13 +55,13 @@ custom_interfaces__msg__PoseLandmark__are_equal(const custom_interfaces__msg__Po
     return false;
   }
   // label
-  if (!rosidl_runtime_c__String__are_equal(
+  if (!rosidl_runtime_c__String__Sequence__are_equal(
       &(lhs->label), &(rhs->label)))
   {
     return false;
   }
   // point
-  if (!geometry_msgs__msg__Point__are_equal(
+  if (!geometry_msgs__msg__Point__Sequence__are_equal(
       &(lhs->point), &(rhs->point)))
   {
     return false;
@@ -78,13 +78,13 @@ custom_interfaces__msg__PoseLandmark__copy(
     return false;
   }
   // label
-  if (!rosidl_runtime_c__String__copy(
+  if (!rosidl_runtime_c__String__Sequence__copy(
       &(input->label), &(output->label)))
   {
     return false;
   }
   // point
-  if (!geometry_msgs__msg__Point__copy(
+  if (!geometry_msgs__msg__Point__Sequence__copy(
       &(input->point), &(output->point)))
   {
     return false;

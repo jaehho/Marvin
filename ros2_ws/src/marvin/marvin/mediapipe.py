@@ -75,25 +75,25 @@ class MinimalPublisher(Node):
                 image.flags.writeable = False # Prevent image processing from writing to the image, also saves time/memory
                 results = pose.process(image)
 
-                if results.pose_world_landmarks:
-                    # Define a dictionary mapping landmark indices to their labels for landmarks 11 through 24
-                    landmarks_labels = {
-                        11: "left_shoulder",
-                        12: "right_shoulder",
-                        13: "left_elbow",
-                        14: "right_elbow",
-                        15: "left_wrist",
-                        16: "right_wrist",
-                        17: "left_pinky",
-                        18: "right_pinky",
-                        19: "left_index",
-                        20: "right_index",
-                        21: "left_thumb",
-                        22: "right_thumb",
-                        23: "left_hip",
-                        24: "right_hip",
-                    }
+                # Define a dictionary mapping landmark indices to their labels for landmarks 11 through 24
+                landmarks_labels = {
+                    11: "left_shoulder",
+                    12: "right_shoulder",
+                    13: "left_elbow",
+                    14: "right_elbow",
+                    15: "left_wrist",
+                    16: "right_wrist",
+                    17: "left_pinky",
+                    18: "right_pinky",
+                    19: "left_index",
+                    20: "right_index",
+                    21: "left_thumb",
+                    22: "right_thumb",
+                    23: "left_hip",
+                    24: "right_hip",
+                }
 
+                if results.pose_world_landmarks:
                     # Filter the landmarks_data to only include selected landmarks with labels
                     landmarks_data = [
                         {
@@ -107,9 +107,12 @@ class MinimalPublisher(Node):
                     ]
                     global json_data
                     json_data = json.dumps(landmarks_data, indent=2)
-                    
+                
                 msg = PoseLandmark()
-                # msg.label = 
+                for index in range (11, 24):
+                    msg.label[index] = landmarks_labels.get(index)
+                    msg.point[index] = [landmark.x, landmark.y, landmark.z]
+
 
                 self.publisher_.publish(msg)
                 self.get_logger().info('Publishing: "%s"' % msg.data)
@@ -148,7 +151,6 @@ def main(args=None):
     # when the garbage collector destroys the node object)
     minimal_publisher.destroy_node()
     rclpy.shutdown()
-
 
 if __name__ == '__main__':
     main()
