@@ -1,0 +1,42 @@
+[0.670s] Invoking command in '/home/mili/Marvin/ros2_ws/src/py_pubsub': AMENT_PREFIX_PATH=/home/mili/Marvin/ros2_ws/install/custom_interfaces:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/mili/Marvin/ros2_ws/install/custom_interfaces DEBUGINFOD_URLS=https://debuginfod.ubuntu.com LD_LIBRARY_PATH=/home/mili/Marvin/ros2_ws/install/custom_interfaces/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/mili/Marvin/ros2_ws/build/py_pubsub/prefix_override:/home/mili/Marvin/ros2_ws/install/py_pubsub/lib/python3.10/site-packages:/home/mili/Marvin/ros2_ws/install/custom_interfaces/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/py_pubsub build --build-base /home/mili/Marvin/ros2_ws/build/py_pubsub/build install --record /home/mili/Marvin/ros2_ws/build/py_pubsub/install.log --single-version-externally-managed
+[0.834s] running egg_info
+[0.848s] writing ../../build/py_pubsub/py_pubsub.egg-info/PKG-INFO
+[0.848s] writing dependency_links to ../../build/py_pubsub/py_pubsub.egg-info/dependency_links.txt
+[0.848s] writing entry points to ../../build/py_pubsub/py_pubsub.egg-info/entry_points.txt
+[0.849s] writing requirements to ../../build/py_pubsub/py_pubsub.egg-info/requires.txt
+[0.849s] writing top-level names to ../../build/py_pubsub/py_pubsub.egg-info/top_level.txt
+[0.877s] reading manifest file '../../build/py_pubsub/py_pubsub.egg-info/SOURCES.txt'
+[0.877s] adding license file 'LICENSE'
+[0.877s] writing manifest file '../../build/py_pubsub/py_pubsub.egg-info/SOURCES.txt'
+[0.877s] running build
+[0.877s] running build_py
+[0.877s] copying py_pubsub/__init__.py -> /home/mili/Marvin/ros2_ws/build/py_pubsub/build/lib/py_pubsub
+[0.877s] copying py_pubsub/subscriber_member_function.py -> /home/mili/Marvin/ros2_ws/build/py_pubsub/build/lib/py_pubsub
+[0.878s] copying py_pubsub/publisher_member_function.py -> /home/mili/Marvin/ros2_ws/build/py_pubsub/build/lib/py_pubsub
+[0.878s] running install
+[0.878s] /home/mili/.local/lib/python3.10/site-packages/setuptools/_distutils/cmd.py:66: SetuptoolsDeprecationWarning: setup.py install is deprecated.
+[0.878s] !!
+[0.878s] 
+[0.878s]         ********************************************************************************
+[0.878s]         Please avoid running ``setup.py`` directly.
+[0.878s]         Instead, use pypa/build, pypa/installer or other
+[0.878s]         standards-based tools.
+[0.878s] 
+[0.878s]         See https://blog.ganssle.io/articles/2021/10/setup-py-deprecated.html for details.
+[0.878s]         ********************************************************************************
+[0.878s] 
+[0.879s] !!
+[0.879s]   self.initialize_options()
+[0.883s] running install_lib
+[0.898s] copying /home/mili/Marvin/ros2_ws/build/py_pubsub/build/lib/py_pubsub/publisher_member_function.py -> /home/mili/Marvin/ros2_ws/install/py_pubsub/lib/python3.10/site-packages/py_pubsub
+[0.898s] byte-compiling /home/mili/Marvin/ros2_ws/install/py_pubsub/lib/python3.10/site-packages/py_pubsub/publisher_member_function.py to publisher_member_function.cpython-310.pyc
+[0.899s] running install_data
+[0.913s] copying resource/py_pubsub -> /home/mili/Marvin/ros2_ws/install/py_pubsub/share/ament_index/resource_index/packages
+[0.913s] running install_egg_info
+[0.926s] removing '/home/mili/Marvin/ros2_ws/install/py_pubsub/lib/python3.10/site-packages/py_pubsub-0.0.0-py3.10.egg-info' (and everything under it)
+[0.926s] Copying ../../build/py_pubsub/py_pubsub.egg-info to /home/mili/Marvin/ros2_ws/install/py_pubsub/lib/python3.10/site-packages/py_pubsub-0.0.0-py3.10.egg-info
+[0.927s] running install_scripts
+[1.048s] Installing listener script to /home/mili/Marvin/ros2_ws/install/py_pubsub/lib/py_pubsub
+[1.049s] Installing talker script to /home/mili/Marvin/ros2_ws/install/py_pubsub/lib/py_pubsub
+[1.049s] writing list of installed files to '/home/mili/Marvin/ros2_ws/build/py_pubsub/install.log'
+[1.063s] Invoked command in '/home/mili/Marvin/ros2_ws/src/py_pubsub' returned '0': AMENT_PREFIX_PATH=/home/mili/Marvin/ros2_ws/install/custom_interfaces:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/mili/Marvin/ros2_ws/install/custom_interfaces DEBUGINFOD_URLS=https://debuginfod.ubuntu.com LD_LIBRARY_PATH=/home/mili/Marvin/ros2_ws/install/custom_interfaces/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/mili/Marvin/ros2_ws/build/py_pubsub/prefix_override:/home/mili/Marvin/ros2_ws/install/py_pubsub/lib/python3.10/site-packages:/home/mili/Marvin/ros2_ws/install/custom_interfaces/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/py_pubsub build --build-base /home/mili/Marvin/ros2_ws/build/py_pubsub/build install --record /home/mili/Marvin/ros2_ws/build/py_pubsub/install.log --single-version-externally-managed

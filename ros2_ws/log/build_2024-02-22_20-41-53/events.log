@@ -1,0 +1,345 @@
+[0.000000] (-) TimerEvent: {}
+[0.000431] (custom_interfaces) JobQueued: {'identifier': 'custom_interfaces', 'dependencies': OrderedDict()}
+[0.000538] (marvin) JobQueued: {'identifier': 'marvin', 'dependencies': OrderedDict()}
+[0.000635] (py_pubsub) JobQueued: {'identifier': 'py_pubsub', 'dependencies': OrderedDict([('custom_interfaces', '/home/mili/Marvin/ros2_ws/install/custom_interfaces')])}
+[0.000685] (custom_interfaces) JobStarted: {'identifier': 'custom_interfaces'}
+[0.043326] (marvin) JobStarted: {'identifier': 'marvin'}
+[0.099491] (custom_interfaces) JobProgress: {'identifier': 'custom_interfaces', 'progress': 'cmake'}
+[0.099737] (-) TimerEvent: {}
+[0.100015] (custom_interfaces) JobProgress: {'identifier': 'custom_interfaces', 'progress': 'build'}
+[0.100427] (custom_interfaces) Command: {'cmd': ['/usr/bin/cmake', '--build', '/home/mili/Marvin/ros2_ws/build/custom_interfaces', '--', '-j32', '-l32'], 'cwd': '/home/mili/Marvin/ros2_ws/build/custom_interfaces', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('USER', 'mili'), ('XDG_SESSION_TYPE', 'x11'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/mili'), ('OLDPWD', '/home/mili/Marvin'), ('DESKTOP_SESSION', 'ubuntu'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('SYSTEMD_EXEC_PID', '295736'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('_colcon_cd_root', '/opt/ros/humble/'), ('DEBUGINFOD_URLS', 'https://debuginfod.ubuntu.com'), ('ROS_DISTRO', 'humble'), ('GTK_IM_MODULE', 'ibus'), ('LOGNAME', 'mili'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'mili'), ('TERM', 'xterm-256color'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '1'), ('WINDOWPATH', '2'), ('PATH', '/opt/ros/humble/bin:/home/mili/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/mili:@/tmp/.ICE-unix/295511,unix/mili:/tmp/.ICE-unix/295511'), ('XDG_MENU_PREFIX', 'gnome-'), ('GNOME_TERMINAL_SCREEN', '/org/gnome/Terminal/screen/9db4534e_b85a_4863_8df0_be67e2eabd99'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':1'), ('LANG', 'en_US.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('XMODIFIERS', '@im=ibus'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/gdm/Xauthority'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('GNOME_TERMINAL_SERVICE', ':1.101'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/opt/ros/humble'), ('SHELL', '/bin/bash'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('GPG_AGENT_INFO', '/run/user/1000/gnupg/S.gpg-agent:0:1'), ('QT_IM_MODULE', 'ibus'), ('PWD', '/home/mili/Marvin/ros2_ws/build/custom_interfaces'), ('LC_ALL', 'en_US.UTF-8'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/share/gnome:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('VTE_VERSION', '6800'), ('CMAKE_PREFIX_PATH', '/opt/ros/humble')]), 'shell': False}
+[0.119546] (custom_interfaces) StdoutLine: {'line': b'-- Found ament_cmake: 1.3.7 (/opt/ros/humble/share/ament_cmake/cmake)\n'}
+[0.199821] (-) TimerEvent: {}
+[0.217068] (custom_interfaces) StdoutLine: {'line': b'-- Found ament_lint_auto: 0.12.10 (/opt/ros/humble/share/ament_lint_auto/cmake)\n'}
+[0.269834] (custom_interfaces) StdoutLine: {'line': b'-- Found geometry_msgs: 4.2.3 (/opt/ros/humble/share/geometry_msgs/cmake)\n'}
+[0.288500] (custom_interfaces) StdoutLine: {'line': b'-- Found rosidl_generator_c: 3.1.5 (/opt/ros/humble/share/rosidl_generator_c/cmake)\n'}
+[0.290112] (custom_interfaces) StdoutLine: {'line': b'-- Found rosidl_adapter: 3.1.5 (/opt/ros/humble/share/rosidl_adapter/cmake)\n'}
+[0.293958] (custom_interfaces) StdoutLine: {'line': b'-- Found rosidl_generator_cpp: 3.1.5 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)\n'}
+[0.299886] (-) TimerEvent: {}
+[0.301029] (custom_interfaces) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[0.311134] (custom_interfaces) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[0.385467] (custom_interfaces) StdoutLine: {'line': b'-- Found rosidl_default_generators: 1.2.0 (/opt/ros/humble/share/rosidl_default_generators/cmake)\n'}
+[0.399974] (-) TimerEvent: {}
+[0.500145] (-) TimerEvent: {}
+[0.531635] (custom_interfaces) StdoutLine: {'line': b'-- Found ament_cmake_ros: 0.10.0 (/opt/ros/humble/share/ament_cmake_ros/cmake)\n'}
+[0.600217] (-) TimerEvent: {}
+[0.700403] (-) TimerEvent: {}
+[0.731017] (marvin) Command: {'cmd': ['/usr/bin/python3', 'setup.py', 'egg_info', '--egg-base', '../../build/marvin', 'build', '--build-base', '/home/mili/Marvin/ros2_ws/build/marvin/build', 'install', '--record', '/home/mili/Marvin/ros2_ws/build/marvin/install.log', '--single-version-externally-managed'], 'cwd': '/home/mili/Marvin/ros2_ws/src/marvin', 'env': {'LESSOPEN': '| /usr/bin/lesspipe %s', 'USER': 'mili', 'XDG_SESSION_TYPE': 'x11', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib', 'HOME': '/home/mili', 'OLDPWD': '/home/mili/Marvin', 'DESKTOP_SESSION': 'ubuntu', 'ROS_PYTHON_VERSION': '3', 'GNOME_SHELL_SESSION_MODE': 'ubuntu', 'GTK_MODULES': 'gail:atk-bridge', 'SYSTEMD_EXEC_PID': '295736', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'COLORTERM': 'truecolor', '_colcon_cd_root': '/opt/ros/humble/', 'DEBUGINFOD_URLS': 'https://debuginfod.ubuntu.com', 'ROS_DISTRO': 'humble', 'GTK_IM_MODULE': 'ibus', 'LOGNAME': 'mili', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'XDG_SESSION_CLASS': 'user', 'USERNAME': 'mili', 'TERM': 'xterm-256color', 'GNOME_DESKTOP_SESSION_ID': 'this-is-deprecated', 'ROS_LOCALHOST_ONLY': '1', 'WINDOWPATH': '2', 'PATH': '/opt/ros/humble/bin:/home/mili/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin', 'SESSION_MANAGER': 'local/mili:@/tmp/.ICE-unix/295511,unix/mili:/tmp/.ICE-unix/295511', 'XDG_MENU_PREFIX': 'gnome-', 'GNOME_TERMINAL_SCREEN': '/org/gnome/Terminal/screen/9db4534e_b85a_4863_8df0_be67e2eabd99', 'XDG_RUNTIME_DIR': '/run/user/1000', 'DISPLAY': ':1', 'LANG': 'en_US.UTF-8', 'XDG_CURRENT_DESKTOP': 'ubuntu:GNOME', 'XMODIFIERS': '@im=ibus', 'XDG_SESSION_DESKTOP': 'ubuntu', 'XAUTHORITY': '/run/user/1000/gdm/Xauthority', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:', 'GNOME_TERMINAL_SERVICE': ':1.101', 'SSH_AGENT_LAUNCHER': 'gnome-keyring', 'SSH_AUTH_SOCK': '/run/user/1000/keyring/ssh', 'AMENT_PREFIX_PATH': '/opt/ros/humble', 'SHELL': '/bin/bash', 'QT_ACCESSIBILITY': '1', 'GDMSESSION': 'ubuntu', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'GPG_AGENT_INFO': '/run/user/1000/gnupg/S.gpg-agent:0:1', 'QT_IM_MODULE': 'ibus', 'PWD': '/home/mili/Marvin/ros2_ws/build/marvin', 'LC_ALL': 'en_US.UTF-8', 'XDG_CONFIG_DIRS': '/etc/xdg/xdg-ubuntu:/etc/xdg', 'XDG_DATA_DIRS': '/usr/share/ubuntu:/usr/share/gnome:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop', 'PYTHONPATH': '/home/mili/Marvin/ros2_ws/build/marvin/prefix_override:/home/mili/Marvin/ros2_ws/install/marvin/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages', 'COLCON': '1', 'VTE_VERSION': '6800'}, 'shell': False}
+[0.800473] (-) TimerEvent: {}
+[0.811905] (custom_interfaces) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[0.899865] (marvin) StdoutLine: {'line': b'running egg_info\n'}
+[0.900042] (marvin) StdoutLine: {'line': b'creating ../../build/marvin/marvin.egg-info\n'}
+[0.900536] (-) TimerEvent: {}
+[0.913200] (marvin) StdoutLine: {'line': b'writing ../../build/marvin/marvin.egg-info/PKG-INFO\n'}
+[0.913476] (marvin) StdoutLine: {'line': b'writing dependency_links to ../../build/marvin/marvin.egg-info/dependency_links.txt\n'}
+[0.913646] (marvin) StdoutLine: {'line': b'writing requirements to ../../build/marvin/marvin.egg-info/requires.txt\n'}
+[0.913778] (marvin) StdoutLine: {'line': b'writing top-level names to ../../build/marvin/marvin.egg-info/top_level.txt\n'}
+[0.913894] (marvin) StdoutLine: {'line': b"writing manifest file '../../build/marvin/marvin.egg-info/SOURCES.txt'\n"}
+[0.921947] (custom_interfaces) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[0.937772] (custom_interfaces) StdoutLine: {'line': b'-- Found python_cmake_module: 0.10.0 (/opt/ros/humble/share/python_cmake_module/cmake)\n'}
+[0.941195] (marvin) StdoutLine: {'line': b"reading manifest file '../../build/marvin/marvin.egg-info/SOURCES.txt'\n"}
+[0.941641] (marvin) StdoutLine: {'line': b"writing manifest file '../../build/marvin/marvin.egg-info/SOURCES.txt'\n"}
+[0.941801] (marvin) StdoutLine: {'line': b'running build\n'}
+[0.941929] (marvin) StdoutLine: {'line': b'running build_py\n'}
+[0.942046] (marvin) StdoutLine: {'line': b'creating /home/mili/Marvin/ros2_ws/build/marvin/build\n'}
+[0.942171] (marvin) StdoutLine: {'line': b'creating /home/mili/Marvin/ros2_ws/build/marvin/build/lib\n'}
+[0.942264] (marvin) StdoutLine: {'line': b'creating /home/mili/Marvin/ros2_ws/build/marvin/build/lib/marvin\n'}
+[0.942372] (marvin) StdoutLine: {'line': b'copying marvin/__init__.py -> /home/mili/Marvin/ros2_ws/build/marvin/build/lib/marvin\n'}
+[0.942525] (marvin) StdoutLine: {'line': b'copying marvin/mediapipe.py -> /home/mili/Marvin/ros2_ws/build/marvin/build/lib/marvin\n'}
+[0.942618] (marvin) StdoutLine: {'line': b'running install\n'}
+[0.942709] (marvin) StderrLine: {'line': b'/home/mili/.local/lib/python3.10/site-packages/setuptools/_distutils/cmd.py:66: SetuptoolsDeprecationWarning: setup.py install is deprecated.\n'}
+[0.942834] (marvin) StderrLine: {'line': b'!!\n'}
+[0.942934] (marvin) StderrLine: {'line': b'\n'}
+[0.943021] (marvin) StderrLine: {'line': b'        ********************************************************************************\n'}
+[0.943108] (marvin) StderrLine: {'line': b'        Please avoid running ``setup.py`` directly.\n'}
+[0.943193] (marvin) StderrLine: {'line': b'        Instead, use pypa/build, pypa/installer or other\n'}
+[0.943278] (marvin) StderrLine: {'line': b'        standards-based tools.\n'}
+[0.943363] (marvin) StderrLine: {'line': b'\n'}
+[0.943448] (marvin) StderrLine: {'line': b'        See https://blog.ganssle.io/articles/2021/10/setup-py-deprecated.html for details.\n'}
+[0.943533] (marvin) StderrLine: {'line': b'        ********************************************************************************\n'}
+[0.943617] (marvin) StderrLine: {'line': b'\n'}
+[0.943702] (marvin) StderrLine: {'line': b'!!\n'}
+[0.943787] (marvin) StderrLine: {'line': b'  self.initialize_options()\n'}
+[0.945776] (marvin) StdoutLine: {'line': b'running install_lib\n'}
+[0.953667] (custom_interfaces) StdoutLine: {'line': b'-- Using PYTHON_EXECUTABLE: /usr/bin/python3\n'}
+[0.953795] (custom_interfaces) StdoutLine: {'line': b'-- Using PYTHON_INCLUDE_DIRS: /usr/include/python3.10\n'}
+[0.953894] (custom_interfaces) StdoutLine: {'line': b'-- Using PYTHON_LIBRARIES: /usr/lib/x86_64-linux-gnu/libpython3.10.so\n'}
+[0.959589] (marvin) StdoutLine: {'line': b'creating /home/mili/Marvin/ros2_ws/install/marvin/lib/python3.10/site-packages/marvin\n'}
+[0.959738] (marvin) StdoutLine: {'line': b'copying /home/mili/Marvin/ros2_ws/build/marvin/build/lib/marvin/__init__.py -> /home/mili/Marvin/ros2_ws/install/marvin/lib/python3.10/site-packages/marvin\n'}
+[0.959872] (marvin) StdoutLine: {'line': b'copying /home/mili/Marvin/ros2_ws/build/marvin/build/lib/marvin/mediapipe.py -> /home/mili/Marvin/ros2_ws/install/marvin/lib/python3.10/site-packages/marvin\n'}
+[0.960086] (marvin) StdoutLine: {'line': b'byte-compiling /home/mili/Marvin/ros2_ws/install/marvin/lib/python3.10/site-packages/marvin/__init__.py to __init__.cpython-310.pyc\n'}
+[0.960263] (marvin) StdoutLine: {'line': b'byte-compiling /home/mili/Marvin/ros2_ws/install/marvin/lib/python3.10/site-packages/marvin/mediapipe.py to mediapipe.cpython-310.pyc\n'}
+[0.961004] (marvin) StdoutLine: {'line': b'running install_data\n'}
+[0.974417] (marvin) StdoutLine: {'line': b'creating /home/mili/Marvin/ros2_ws/install/marvin/share/ament_index\n'}
+[0.974572] (marvin) StdoutLine: {'line': b'creating /home/mili/Marvin/ros2_ws/install/marvin/share/ament_index/resource_index\n'}
+[0.974689] (marvin) StdoutLine: {'line': b'creating /home/mili/Marvin/ros2_ws/install/marvin/share/ament_index/resource_index/packages\n'}
+[0.974826] (marvin) StdoutLine: {'line': b'copying resource/marvin -> /home/mili/Marvin/ros2_ws/install/marvin/share/ament_index/resource_index/packages\n'}
+[0.974928] (marvin) StdoutLine: {'line': b'copying package.xml -> /home/mili/Marvin/ros2_ws/install/marvin/share/marvin\n'}
+[0.975019] (marvin) StdoutLine: {'line': b'running install_egg_info\n'}
+[0.979646] (custom_interfaces) StdoutLine: {'line': b"-- Added test 'lint_cmake' to check CMake code style\n"}
+[0.980520] (custom_interfaces) StdoutLine: {'line': b"-- Added test 'xmllint' to check XML markup files\n"}
+[0.982904] (custom_interfaces) StdoutLine: {'line': b'-- Configuring done\n'}
+[0.988945] (marvin) StdoutLine: {'line': b'Copying ../../build/marvin/marvin.egg-info to /home/mili/Marvin/ros2_ws/install/marvin/lib/python3.10/site-packages/marvin-0.0.0-py3.10.egg-info\n'}
+[0.989559] (marvin) StdoutLine: {'line': b'running install_scripts\n'}
+[1.000601] (-) TimerEvent: {}
+[1.009305] (custom_interfaces) StdoutLine: {'line': b'-- Generating done\n'}
+[1.012382] (custom_interfaces) StdoutLine: {'line': b'-- Build files have been written to: /home/mili/Marvin/ros2_ws/build/custom_interfaces\n'}
+[1.038354] (custom_interfaces) StdoutLine: {'line': b'\x1b[35m\x1b[1mConsolidate compiler generated dependencies of target custom_interfaces__rosidl_generator_c\x1b[0m\n'}
+[1.039759] (custom_interfaces) StdoutLine: {'line': b'[  3%] Built target custom_interfaces__cpp\n'}
+[1.047593] (custom_interfaces) StdoutLine: {'line': b'[  3%] Built target ament_cmake_python_copy_custom_interfaces\n'}
+[1.047866] (custom_interfaces) StdoutLine: {'line': b'\x1b[35m\x1b[1mConsolidate compiler generated dependencies of target custom_interfaces__rosidl_typesupport_cpp\x1b[0m\n'}
+[1.048000] (custom_interfaces) StdoutLine: {'line': b'\x1b[35m\x1b[1mConsolidate compiler generated dependencies of target custom_interfaces__rosidl_typesupport_introspection_cpp\x1b[0m\n'}
+[1.048245] (custom_interfaces) StdoutLine: {'line': b'\x1b[35m\x1b[1mConsolidate compiler generated dependencies of target custom_interfaces__rosidl_typesupport_fastrtps_cpp\x1b[0m\n'}
+[1.048389] (custom_interfaces) StdoutLine: {'line': b'[  6%] \x1b[32mBuilding C object CMakeFiles/custom_interfaces__rosidl_generator_c.dir/rosidl_generator_c/custom_interfaces/msg/detail/pose_landmark__functions.c.o\x1b[0m\n'}
+[1.058949] (custom_interfaces) StdoutLine: {'line': b'[  9%] \x1b[32mBuilding CXX object CMakeFiles/custom_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/custom_interfaces/msg/pose_landmark__type_support.cpp.o\x1b[0m\n'}
+[1.059420] (custom_interfaces) StdoutLine: {'line': b'[ 12%] \x1b[32mBuilding CXX object CMakeFiles/custom_interfaces__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/custom_interfaces/msg/detail/pose_landmark__type_support.cpp.o\x1b[0m\n'}
+[1.060083] (custom_interfaces) StdoutLine: {'line': b'[ 16%] \x1b[32mBuilding CXX object CMakeFiles/custom_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/custom_interfaces/msg/detail/dds_fastrtps/pose_landmark__type_support.cpp.o\x1b[0m\n'}
+[1.083271] (custom_interfaces) StdoutLine: {'line': b'[ 19%] \x1b[32m\x1b[1mLinking C shared library libcustom_interfaces__rosidl_generator_c.so\x1b[0m\n'}
+[1.100674] (-) TimerEvent: {}
+[1.111381] (custom_interfaces) StdoutLine: {'line': b'[ 22%] Built target custom_interfaces__rosidl_generator_c\n'}
+[1.117715] (marvin) StdoutLine: {'line': b"writing list of installed files to '/home/mili/Marvin/ros2_ws/build/marvin/install.log'\n"}
+[1.119265] (custom_interfaces) StdoutLine: {'line': b'\x1b[35m\x1b[1mConsolidate compiler generated dependencies of target custom_interfaces__rosidl_typesupport_c\x1b[0m\n'}
+[1.119382] (custom_interfaces) StdoutLine: {'line': b'\x1b[35m\x1b[1mConsolidate compiler generated dependencies of target custom_interfaces__rosidl_typesupport_fastrtps_c\x1b[0m\n'}
+[1.120622] (custom_interfaces) StdoutLine: {'line': b'\x1b[35m\x1b[1mConsolidate compiler generated dependencies of target custom_interfaces__rosidl_typesupport_introspection_c\x1b[0m\n'}
+[1.128094] (custom_interfaces) StdoutLine: {'line': b'[ 25%] \x1b[32mBuilding CXX object CMakeFiles/custom_interfaces__rosidl_typesupport_c.dir/rosidl_typesupport_c/custom_interfaces/msg/pose_landmark__type_support.cpp.o\x1b[0m\n'}
+[1.131602] (custom_interfaces) StdoutLine: {'line': b'[ 29%] \x1b[32mBuilding C object CMakeFiles/custom_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/custom_interfaces/msg/detail/pose_landmark__type_support.c.o\x1b[0m\n'}
+[1.132610] (custom_interfaces) StdoutLine: {'line': b'[ 32%] \x1b[32mBuilding CXX object CMakeFiles/custom_interfaces__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/custom_interfaces/msg/detail/pose_landmark__type_support_c.cpp.o\x1b[0m\n'}
+[1.134570] (marvin) CommandEnded: {'returncode': 0}
+[1.151574] (custom_interfaces) StdoutLine: {'line': b'[ 35%] \x1b[32m\x1b[1mLinking CXX shared library libcustom_interfaces__rosidl_typesupport_c.so\x1b[0m\n'}
+[1.162496] (custom_interfaces) StdoutLine: {'line': b'[ 38%] \x1b[32m\x1b[1mLinking C shared library libcustom_interfaces__rosidl_typesupport_introspection_c.so\x1b[0m\n'}
+[1.182592] (custom_interfaces) StdoutLine: {'line': b'[ 41%] Built target custom_interfaces__rosidl_typesupport_c\n'}
+[1.187984] (custom_interfaces) StdoutLine: {'line': b'[ 45%] Built target custom_interfaces__rosidl_typesupport_introspection_c\n'}
+[1.198923] (marvin) JobEnded: {'identifier': 'marvin', 'rc': 0}
+[1.200737] (-) TimerEvent: {}
+[1.205731] (custom_interfaces) StdoutLine: {'line': b'running egg_info\n'}
+[1.221119] (custom_interfaces) StdoutLine: {'line': b'writing custom_interfaces.egg-info/PKG-INFO\n'}
+[1.221524] (custom_interfaces) StdoutLine: {'line': b'writing dependency_links to custom_interfaces.egg-info/dependency_links.txt\n'}
+[1.221773] (custom_interfaces) StdoutLine: {'line': b'writing top-level names to custom_interfaces.egg-info/top_level.txt\n'}
+[1.235418] (custom_interfaces) StdoutLine: {'line': b'[ 48%] \x1b[32m\x1b[1mLinking CXX shared library libcustom_interfaces__rosidl_typesupport_cpp.so\x1b[0m\n'}
+[1.266586] (custom_interfaces) StdoutLine: {'line': b"reading manifest file 'custom_interfaces.egg-info/SOURCES.txt'\n"}
+[1.266842] (custom_interfaces) StdoutLine: {'line': b'[ 51%] Built target custom_interfaces__rosidl_typesupport_cpp\n'}
+[1.267021] (custom_interfaces) StdoutLine: {'line': b"writing manifest file 'custom_interfaces.egg-info/SOURCES.txt'\n"}
+[1.285768] (custom_interfaces) StdoutLine: {'line': b'[ 51%] Built target ament_cmake_python_build_custom_interfaces_egg\n'}
+[1.300806] (-) TimerEvent: {}
+[1.345629] (custom_interfaces) StdoutLine: {'line': b'[ 54%] \x1b[32m\x1b[1mLinking CXX shared library libcustom_interfaces__rosidl_typesupport_introspection_cpp.so\x1b[0m\n'}
+[1.354390] (custom_interfaces) StdoutLine: {'line': b'[ 58%] \x1b[32m\x1b[1mLinking CXX shared library libcustom_interfaces__rosidl_typesupport_fastrtps_c.so\x1b[0m\n'}
+[1.371024] (custom_interfaces) StdoutLine: {'line': b'[ 61%] \x1b[32m\x1b[1mLinking CXX shared library libcustom_interfaces__rosidl_typesupport_fastrtps_cpp.so\x1b[0m\n'}
+[1.397391] (custom_interfaces) StdoutLine: {'line': b'[ 64%] Built target custom_interfaces__rosidl_typesupport_introspection_cpp\n'}
+[1.400869] (-) TimerEvent: {}
+[1.403798] (custom_interfaces) StdoutLine: {'line': b'[ 67%] Built target custom_interfaces__rosidl_typesupport_fastrtps_c\n'}
+[1.423118] (custom_interfaces) StdoutLine: {'line': b'[ 70%] Built target custom_interfaces__rosidl_typesupport_fastrtps_cpp\n'}
+[1.437534] (custom_interfaces) StdoutLine: {'line': b'[ 70%] Built target custom_interfaces\n'}
+[1.453241] (custom_interfaces) StdoutLine: {'line': b'[ 74%] Built target custom_interfaces__py\n'}
+[1.461331] (custom_interfaces) StdoutLine: {'line': b'\x1b[35m\x1b[1mConsolidate compiler generated dependencies of target custom_interfaces__rosidl_generator_py\x1b[0m\n'}
+[1.473656] (custom_interfaces) StdoutLine: {'line': b'[ 77%] \x1b[32mBuilding C object CMakeFiles/custom_interfaces__rosidl_generator_py.dir/rosidl_generator_py/custom_interfaces/msg/_pose_landmark_s.c.o\x1b[0m\n'}
+[1.500940] (-) TimerEvent: {}
+[1.545781] (custom_interfaces) StdoutLine: {'line': b'[ 80%] \x1b[32m\x1b[1mLinking C shared library rosidl_generator_py/custom_interfaces/libcustom_interfaces__rosidl_generator_py.so\x1b[0m\n'}
+[1.576054] (custom_interfaces) StdoutLine: {'line': b'[ 80%] Built target custom_interfaces__rosidl_generator_py\n'}
+[1.583532] (custom_interfaces) StdoutLine: {'line': b'\x1b[35m\x1b[1mConsolidate compiler generated dependencies of target custom_interfaces__rosidl_typesupport_introspection_c__pyext\x1b[0m\n'}
+[1.583638] (custom_interfaces) StdoutLine: {'line': b'\x1b[35m\x1b[1mConsolidate compiler generated dependencies of target custom_interfaces__rosidl_typesupport_c__pyext\x1b[0m\n'}
+[1.583880] (custom_interfaces) StdoutLine: {'line': b'\x1b[35m\x1b[1mConsolidate compiler generated dependencies of target custom_interfaces__rosidl_typesupport_fastrtps_c__pyext\x1b[0m\n'}
+[1.596610] (custom_interfaces) StdoutLine: {'line': b'[ 83%] \x1b[32mBuilding C object CMakeFiles/custom_interfaces__rosidl_typesupport_introspection_c__pyext.dir/rosidl_generator_py/custom_interfaces/_custom_interfaces_s.ep.rosidl_typesupport_introspection_c.c.o\x1b[0m\n'}
+[1.596718] (custom_interfaces) StdoutLine: {'line': b'[ 87%] \x1b[32mBuilding C object CMakeFiles/custom_interfaces__rosidl_typesupport_c__pyext.dir/rosidl_generator_py/custom_interfaces/_custom_interfaces_s.ep.rosidl_typesupport_c.c.o\x1b[0m\n'}
+[1.597033] (custom_interfaces) StdoutLine: {'line': b'[ 90%] \x1b[32mBuilding C object CMakeFiles/custom_interfaces__rosidl_typesupport_fastrtps_c__pyext.dir/rosidl_generator_py/custom_interfaces/_custom_interfaces_s.ep.rosidl_typesupport_fastrtps_c.c.o\x1b[0m\n'}
+[1.601008] (-) TimerEvent: {}
+[1.667802] (custom_interfaces) StdoutLine: {'line': b'[ 93%] \x1b[32m\x1b[1mLinking C shared library rosidl_generator_py/custom_interfaces/custom_interfaces_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so\x1b[0m\n'}
+[1.667988] (custom_interfaces) StdoutLine: {'line': b'[100%] \x1b[32m\x1b[1mLinking C shared library rosidl_generator_py/custom_interfaces/custom_interfaces_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so\x1b[0m\n'}
+[1.668111] (custom_interfaces) StdoutLine: {'line': b'[100%] \x1b[32m\x1b[1mLinking C shared library rosidl_generator_py/custom_interfaces/custom_interfaces_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so\x1b[0m\n'}
+[1.698069] (custom_interfaces) StdoutLine: {'line': b'[100%] Built target custom_interfaces__rosidl_typesupport_c__pyext\n'}
+[1.698182] (custom_interfaces) StdoutLine: {'line': b'[100%] Built target custom_interfaces__rosidl_typesupport_fastrtps_c__pyext\n'}
+[1.698295] (custom_interfaces) StdoutLine: {'line': b'[100%] Built target custom_interfaces__rosidl_typesupport_introspection_c__pyext\n'}
+[1.701074] (-) TimerEvent: {}
+[1.707015] (custom_interfaces) CommandEnded: {'returncode': 0}
+[1.754306] (custom_interfaces) JobProgress: {'identifier': 'custom_interfaces', 'progress': 'install'}
+[1.760840] (custom_interfaces) Command: {'cmd': ['/usr/bin/cmake', '--install', '/home/mili/Marvin/ros2_ws/build/custom_interfaces'], 'cwd': '/home/mili/Marvin/ros2_ws/build/custom_interfaces', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('USER', 'mili'), ('XDG_SESSION_TYPE', 'x11'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/mili'), ('OLDPWD', '/home/mili/Marvin'), ('DESKTOP_SESSION', 'ubuntu'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('SYSTEMD_EXEC_PID', '295736'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('_colcon_cd_root', '/opt/ros/humble/'), ('DEBUGINFOD_URLS', 'https://debuginfod.ubuntu.com'), ('ROS_DISTRO', 'humble'), ('GTK_IM_MODULE', 'ibus'), ('LOGNAME', 'mili'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'mili'), ('TERM', 'xterm-256color'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '1'), ('WINDOWPATH', '2'), ('PATH', '/opt/ros/humble/bin:/home/mili/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/mili:@/tmp/.ICE-unix/295511,unix/mili:/tmp/.ICE-unix/295511'), ('XDG_MENU_PREFIX', 'gnome-'), ('GNOME_TERMINAL_SCREEN', '/org/gnome/Terminal/screen/9db4534e_b85a_4863_8df0_be67e2eabd99'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':1'), ('LANG', 'en_US.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('XMODIFIERS', '@im=ibus'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/gdm/Xauthority'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('GNOME_TERMINAL_SERVICE', ':1.101'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/opt/ros/humble'), ('SHELL', '/bin/bash'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('GPG_AGENT_INFO', '/run/user/1000/gnupg/S.gpg-agent:0:1'), ('QT_IM_MODULE', 'ibus'), ('PWD', '/home/mili/Marvin/ros2_ws/build/custom_interfaces'), ('LC_ALL', 'en_US.UTF-8'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/share/gnome:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('VTE_VERSION', '6800'), ('CMAKE_PREFIX_PATH', '/opt/ros/humble')]), 'shell': False}
+[1.766753] (custom_interfaces) StdoutLine: {'line': b'-- Install configuration: ""\n'}
+[1.766891] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/ament_index/resource_index/rosidl_interfaces/custom_interfaces\n'}
+[1.767038] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/include/custom_interfaces/custom_interfaces\n'}
+[1.767137] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/include/custom_interfaces/custom_interfaces/msg\n'}
+[1.767211] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/include/custom_interfaces/custom_interfaces/msg/pose_landmark.h\n'}
+[1.767282] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/include/custom_interfaces/custom_interfaces/msg/rosidl_generator_c__visibility_control.h\n'}
+[1.767384] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/include/custom_interfaces/custom_interfaces/msg/detail\n'}
+[1.767464] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/include/custom_interfaces/custom_interfaces/msg/detail/pose_landmark__type_support.h\n'}
+[1.767567] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/include/custom_interfaces/custom_interfaces/msg/detail/pose_landmark__functions.h\n'}
+[1.767640] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/include/custom_interfaces/custom_interfaces/msg/detail/pose_landmark__struct.h\n'}
+[1.767708] (custom_interfaces) StdoutLine: {'line': b'-- Installing: /home/mili/Marvin/ros2_ws/install/custom_interfaces/include/custom_interfaces/custom_interfaces/msg/detail/pose_landmark__functions.c\n'}
+[1.767799] (custom_interfaces) StdoutLine: {'line': b'-- Installing: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/custom_interfaces/environment/library_path.sh\n'}
+[1.767870] (custom_interfaces) StdoutLine: {'line': b'-- Installing: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/custom_interfaces/environment/library_path.dsv\n'}
+[1.767938] (custom_interfaces) StdoutLine: {'line': b'-- Installing: /home/mili/Marvin/ros2_ws/install/custom_interfaces/lib/libcustom_interfaces__rosidl_generator_c.so\n'}
+[1.768394] (custom_interfaces) StdoutLine: {'line': b'-- Set runtime path of "/home/mili/Marvin/ros2_ws/install/custom_interfaces/lib/libcustom_interfaces__rosidl_generator_c.so" to ""\n'}
+[1.768501] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/include/custom_interfaces/custom_interfaces\n'}
+[1.768613] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/include/custom_interfaces/custom_interfaces/msg\n'}
+[1.768682] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/include/custom_interfaces/custom_interfaces/msg/rosidl_typesupport_fastrtps_c__visibility_control.h\n'}
+[1.768769] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/include/custom_interfaces/custom_interfaces/msg/detail\n'}
+[1.768840] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/include/custom_interfaces/custom_interfaces/msg/detail/pose_landmark__rosidl_typesupport_fastrtps_c.h\n'}
+[1.768909] (custom_interfaces) StdoutLine: {'line': b'-- Installing: /home/mili/Marvin/ros2_ws/install/custom_interfaces/lib/libcustom_interfaces__rosidl_typesupport_fastrtps_c.so\n'}
+[1.769139] (custom_interfaces) StdoutLine: {'line': b'-- Set runtime path of "/home/mili/Marvin/ros2_ws/install/custom_interfaces/lib/libcustom_interfaces__rosidl_typesupport_fastrtps_c.so" to ""\n'}
+[1.769241] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/include/custom_interfaces/custom_interfaces\n'}
+[1.769367] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/include/custom_interfaces/custom_interfaces/msg\n'}
+[1.769477] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/include/custom_interfaces/custom_interfaces/msg/pose_landmark.hpp\n'}
+[1.769591] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/include/custom_interfaces/custom_interfaces/msg/detail\n'}
+[1.769661] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/include/custom_interfaces/custom_interfaces/msg/detail/pose_landmark__builder.hpp\n'}
+[1.769748] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/include/custom_interfaces/custom_interfaces/msg/detail/pose_landmark__struct.hpp\n'}
+[1.769818] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/include/custom_interfaces/custom_interfaces/msg/detail/pose_landmark__traits.hpp\n'}
+[1.769897] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/include/custom_interfaces/custom_interfaces\n'}
+[1.769966] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/include/custom_interfaces/custom_interfaces/msg\n'}
+[1.770035] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/include/custom_interfaces/custom_interfaces/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h\n'}
+[1.770101] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/include/custom_interfaces/custom_interfaces/msg/detail\n'}
+[1.770166] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/include/custom_interfaces/custom_interfaces/msg/detail/dds_fastrtps\n'}
+[1.770231] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/include/custom_interfaces/custom_interfaces/msg/detail/pose_landmark__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[1.770348] (custom_interfaces) StdoutLine: {'line': b'-- Installing: /home/mili/Marvin/ros2_ws/install/custom_interfaces/lib/libcustom_interfaces__rosidl_typesupport_fastrtps_cpp.so\n'}
+[1.770452] (custom_interfaces) StdoutLine: {'line': b'-- Set runtime path of "/home/mili/Marvin/ros2_ws/install/custom_interfaces/lib/libcustom_interfaces__rosidl_typesupport_fastrtps_cpp.so" to ""\n'}
+[1.770538] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/include/custom_interfaces/custom_interfaces\n'}
+[1.770625] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/include/custom_interfaces/custom_interfaces/msg\n'}
+[1.770697] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/include/custom_interfaces/custom_interfaces/msg/rosidl_typesupport_introspection_c__visibility_control.h\n'}
+[1.770765] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/include/custom_interfaces/custom_interfaces/msg/detail\n'}
+[1.770840] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/include/custom_interfaces/custom_interfaces/msg/detail/pose_landmark__rosidl_typesupport_introspection_c.h\n'}
+[1.770910] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/include/custom_interfaces/custom_interfaces/msg/detail/pose_landmark__type_support.c\n'}
+[1.770976] (custom_interfaces) StdoutLine: {'line': b'-- Installing: /home/mili/Marvin/ros2_ws/install/custom_interfaces/lib/libcustom_interfaces__rosidl_typesupport_introspection_c.so\n'}
+[1.771062] (custom_interfaces) StdoutLine: {'line': b'-- Set runtime path of "/home/mili/Marvin/ros2_ws/install/custom_interfaces/lib/libcustom_interfaces__rosidl_typesupport_introspection_c.so" to ""\n'}
+[1.771150] (custom_interfaces) StdoutLine: {'line': b'-- Installing: /home/mili/Marvin/ros2_ws/install/custom_interfaces/lib/libcustom_interfaces__rosidl_typesupport_c.so\n'}
+[1.771453] (custom_interfaces) StdoutLine: {'line': b'-- Set runtime path of "/home/mili/Marvin/ros2_ws/install/custom_interfaces/lib/libcustom_interfaces__rosidl_typesupport_c.so" to ""\n'}
+[1.771555] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/include/custom_interfaces/custom_interfaces\n'}
+[1.771667] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/include/custom_interfaces/custom_interfaces/msg\n'}
+[1.771735] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/include/custom_interfaces/custom_interfaces/msg/detail\n'}
+[1.771820] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/include/custom_interfaces/custom_interfaces/msg/detail/pose_landmark__rosidl_typesupport_introspection_cpp.hpp\n'}
+[1.771901] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/include/custom_interfaces/custom_interfaces/msg/detail/pose_landmark__type_support.cpp\n'}
+[1.771974] (custom_interfaces) StdoutLine: {'line': b'-- Installing: /home/mili/Marvin/ros2_ws/install/custom_interfaces/lib/libcustom_interfaces__rosidl_typesupport_introspection_cpp.so\n'}
+[1.772289] (custom_interfaces) StdoutLine: {'line': b'-- Set runtime path of "/home/mili/Marvin/ros2_ws/install/custom_interfaces/lib/libcustom_interfaces__rosidl_typesupport_introspection_cpp.so" to ""\n'}
+[1.772413] (custom_interfaces) StdoutLine: {'line': b'-- Installing: /home/mili/Marvin/ros2_ws/install/custom_interfaces/lib/libcustom_interfaces__rosidl_typesupport_cpp.so\n'}
+[1.772770] (custom_interfaces) StdoutLine: {'line': b'-- Set runtime path of "/home/mili/Marvin/ros2_ws/install/custom_interfaces/lib/libcustom_interfaces__rosidl_typesupport_cpp.so" to ""\n'}
+[1.772885] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/custom_interfaces/environment/pythonpath.sh\n'}
+[1.772958] (custom_interfaces) StdoutLine: {'line': b'-- Installing: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/custom_interfaces/environment/pythonpath.dsv\n'}
+[1.773058] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/local/lib/python3.10/dist-packages/custom_interfaces-0.0.0-py3.10.egg-info\n'}
+[1.773134] (custom_interfaces) StdoutLine: {'line': b'-- Installing: /home/mili/Marvin/ros2_ws/install/custom_interfaces/local/lib/python3.10/dist-packages/custom_interfaces-0.0.0-py3.10.egg-info/SOURCES.txt\n'}
+[1.773222] (custom_interfaces) StdoutLine: {'line': b'-- Installing: /home/mili/Marvin/ros2_ws/install/custom_interfaces/local/lib/python3.10/dist-packages/custom_interfaces-0.0.0-py3.10.egg-info/dependency_links.txt\n'}
+[1.773304] (custom_interfaces) StdoutLine: {'line': b'-- Installing: /home/mili/Marvin/ros2_ws/install/custom_interfaces/local/lib/python3.10/dist-packages/custom_interfaces-0.0.0-py3.10.egg-info/PKG-INFO\n'}
+[1.773413] (custom_interfaces) StdoutLine: {'line': b'-- Installing: /home/mili/Marvin/ros2_ws/install/custom_interfaces/local/lib/python3.10/dist-packages/custom_interfaces-0.0.0-py3.10.egg-info/top_level.txt\n'}
+[1.773553] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/local/lib/python3.10/dist-packages/custom_interfaces\n'}
+[1.773629] (custom_interfaces) StdoutLine: {'line': b'-- Installing: /home/mili/Marvin/ros2_ws/install/custom_interfaces/local/lib/python3.10/dist-packages/custom_interfaces/libcustom_interfaces__rosidl_generator_py.so\n'}
+[1.773752] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/local/lib/python3.10/dist-packages/custom_interfaces/_custom_interfaces_s.ep.rosidl_typesupport_introspection_c.c\n'}
+[1.773842] (custom_interfaces) StdoutLine: {'line': b'-- Installing: /home/mili/Marvin/ros2_ws/install/custom_interfaces/local/lib/python3.10/dist-packages/custom_interfaces/custom_interfaces_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so\n'}
+[1.773917] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/local/lib/python3.10/dist-packages/custom_interfaces/_custom_interfaces_s.ep.rosidl_typesupport_fastrtps_c.c\n'}
+[1.774003] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/local/lib/python3.10/dist-packages/custom_interfaces/_custom_interfaces_s.ep.rosidl_typesupport_c.c\n'}
+[1.774059] (custom_interfaces) StdoutLine: {'line': b'-- Installing: /home/mili/Marvin/ros2_ws/install/custom_interfaces/local/lib/python3.10/dist-packages/custom_interfaces/custom_interfaces_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so\n'}
+[1.774143] (custom_interfaces) StdoutLine: {'line': b'-- Installing: /home/mili/Marvin/ros2_ws/install/custom_interfaces/local/lib/python3.10/dist-packages/custom_interfaces/__init__.py\n'}
+[1.774213] (custom_interfaces) StdoutLine: {'line': b'-- Installing: /home/mili/Marvin/ros2_ws/install/custom_interfaces/local/lib/python3.10/dist-packages/custom_interfaces/custom_interfaces_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so\n'}
+[1.774341] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/local/lib/python3.10/dist-packages/custom_interfaces/msg\n'}
+[1.774429] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/local/lib/python3.10/dist-packages/custom_interfaces/msg/_pose_landmark_s.c\n'}
+[1.774487] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/local/lib/python3.10/dist-packages/custom_interfaces/msg/_pose_landmark.py\n'}
+[1.774539] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/local/lib/python3.10/dist-packages/custom_interfaces/msg/__init__.py\n'}
+[1.797647] (custom_interfaces) StdoutLine: {'line': b"Listing '/home/mili/Marvin/ros2_ws/install/custom_interfaces/local/lib/python3.10/dist-packages/custom_interfaces'...\n"}
+[1.797740] (custom_interfaces) StdoutLine: {'line': b"Compiling '/home/mili/Marvin/ros2_ws/install/custom_interfaces/local/lib/python3.10/dist-packages/custom_interfaces/__init__.py'...\n"}
+[1.797819] (custom_interfaces) StdoutLine: {'line': b"Listing '/home/mili/Marvin/ros2_ws/install/custom_interfaces/local/lib/python3.10/dist-packages/custom_interfaces/msg'...\n"}
+[1.797888] (custom_interfaces) StdoutLine: {'line': b"Compiling '/home/mili/Marvin/ros2_ws/install/custom_interfaces/local/lib/python3.10/dist-packages/custom_interfaces/msg/__init__.py'...\n"}
+[1.797954] (custom_interfaces) StdoutLine: {'line': b"Compiling '/home/mili/Marvin/ros2_ws/install/custom_interfaces/local/lib/python3.10/dist-packages/custom_interfaces/msg/_pose_landmark.py'...\n"}
+[1.800432] (custom_interfaces) StdoutLine: {'line': b'-- Installing: /home/mili/Marvin/ros2_ws/install/custom_interfaces/local/lib/python3.10/dist-packages/custom_interfaces/custom_interfaces_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so\n'}
+[1.800781] (custom_interfaces) StdoutLine: {'line': b'-- Set runtime path of "/home/mili/Marvin/ros2_ws/install/custom_interfaces/local/lib/python3.10/dist-packages/custom_interfaces/custom_interfaces_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so" to ""\n'}
+[1.800963] (custom_interfaces) StdoutLine: {'line': b'-- Installing: /home/mili/Marvin/ros2_ws/install/custom_interfaces/local/lib/python3.10/dist-packages/custom_interfaces/custom_interfaces_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so\n'}
+[1.801134] (-) TimerEvent: {}
+[1.801302] (custom_interfaces) StdoutLine: {'line': b'-- Set runtime path of "/home/mili/Marvin/ros2_ws/install/custom_interfaces/local/lib/python3.10/dist-packages/custom_interfaces/custom_interfaces_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so" to ""\n'}
+[1.801447] (custom_interfaces) StdoutLine: {'line': b'-- Installing: /home/mili/Marvin/ros2_ws/install/custom_interfaces/local/lib/python3.10/dist-packages/custom_interfaces/custom_interfaces_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so\n'}
+[1.801718] (custom_interfaces) StdoutLine: {'line': b'-- Set runtime path of "/home/mili/Marvin/ros2_ws/install/custom_interfaces/local/lib/python3.10/dist-packages/custom_interfaces/custom_interfaces_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so" to ""\n'}
+[1.801843] (custom_interfaces) StdoutLine: {'line': b'-- Installing: /home/mili/Marvin/ros2_ws/install/custom_interfaces/lib/libcustom_interfaces__rosidl_generator_py.so\n'}
+[1.802226] (custom_interfaces) StdoutLine: {'line': b'-- Set runtime path of "/home/mili/Marvin/ros2_ws/install/custom_interfaces/lib/libcustom_interfaces__rosidl_generator_py.so" to ""\n'}
+[1.802335] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/custom_interfaces/msg/PoseLandmark.idl\n'}
+[1.802446] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/custom_interfaces/msg/PoseLandmark.msg\n'}
+[1.802536] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/ament_index/resource_index/package_run_dependencies/custom_interfaces\n'}
+[1.802630] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/ament_index/resource_index/parent_prefix_path/custom_interfaces\n'}
+[1.802699] (custom_interfaces) StdoutLine: {'line': b'-- Installing: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/custom_interfaces/environment/ament_prefix_path.sh\n'}
+[1.802786] (custom_interfaces) StdoutLine: {'line': b'-- Installing: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/custom_interfaces/environment/ament_prefix_path.dsv\n'}
+[1.802869] (custom_interfaces) StdoutLine: {'line': b'-- Installing: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/custom_interfaces/environment/path.sh\n'}
+[1.802963] (custom_interfaces) StdoutLine: {'line': b'-- Installing: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/custom_interfaces/environment/path.dsv\n'}
+[1.803072] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/custom_interfaces/local_setup.bash\n'}
+[1.803170] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/custom_interfaces/local_setup.sh\n'}
+[1.803261] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/custom_interfaces/local_setup.zsh\n'}
+[1.803344] (custom_interfaces) StdoutLine: {'line': b'-- Installing: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/custom_interfaces/local_setup.dsv\n'}
+[1.803416] (custom_interfaces) StdoutLine: {'line': b'-- Installing: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/custom_interfaces/package.dsv\n'}
+[1.803507] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/ament_index/resource_index/packages/custom_interfaces\n'}
+[1.803592] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/custom_interfaces/cmake/export_custom_interfaces__rosidl_generator_cExport.cmake\n'}
+[1.803679] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/custom_interfaces/cmake/export_custom_interfaces__rosidl_generator_cExport-noconfig.cmake\n'}
+[1.803772] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/custom_interfaces/cmake/export_custom_interfaces__rosidl_typesupport_fastrtps_cExport.cmake\n'}
+[1.803881] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/custom_interfaces/cmake/export_custom_interfaces__rosidl_typesupport_fastrtps_cExport-noconfig.cmake\n'}
+[1.803979] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/custom_interfaces/cmake/export_custom_interfaces__rosidl_generator_cppExport.cmake\n'}
+[1.804068] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/custom_interfaces/cmake/export_custom_interfaces__rosidl_typesupport_fastrtps_cppExport.cmake\n'}
+[1.804166] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/custom_interfaces/cmake/export_custom_interfaces__rosidl_typesupport_fastrtps_cppExport-noconfig.cmake\n'}
+[1.804251] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/custom_interfaces/cmake/custom_interfaces__rosidl_typesupport_introspection_cExport.cmake\n'}
+[1.804349] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/custom_interfaces/cmake/custom_interfaces__rosidl_typesupport_introspection_cExport-noconfig.cmake\n'}
+[1.804456] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/custom_interfaces/cmake/custom_interfaces__rosidl_typesupport_cExport.cmake\n'}
+[1.804573] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/custom_interfaces/cmake/custom_interfaces__rosidl_typesupport_cExport-noconfig.cmake\n'}
+[1.804672] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/custom_interfaces/cmake/custom_interfaces__rosidl_typesupport_introspection_cppExport.cmake\n'}
+[1.804759] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/custom_interfaces/cmake/custom_interfaces__rosidl_typesupport_introspection_cppExport-noconfig.cmake\n'}
+[1.804831] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/custom_interfaces/cmake/custom_interfaces__rosidl_typesupport_cppExport.cmake\n'}
+[1.804900] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/custom_interfaces/cmake/custom_interfaces__rosidl_typesupport_cppExport-noconfig.cmake\n'}
+[1.804965] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/custom_interfaces/cmake/export_custom_interfaces__rosidl_generator_pyExport.cmake\n'}
+[1.805030] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/custom_interfaces/cmake/export_custom_interfaces__rosidl_generator_pyExport-noconfig.cmake\n'}
+[1.805111] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/custom_interfaces/cmake/rosidl_cmake-extras.cmake\n'}
+[1.805177] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/custom_interfaces/cmake/ament_cmake_export_dependencies-extras.cmake\n'}
+[1.805243] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/custom_interfaces/cmake/ament_cmake_export_include_directories-extras.cmake\n'}
+[1.805308] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/custom_interfaces/cmake/ament_cmake_export_libraries-extras.cmake\n'}
+[1.805373] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/custom_interfaces/cmake/ament_cmake_export_targets-extras.cmake\n'}
+[1.805437] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/custom_interfaces/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake\n'}
+[1.805501] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/custom_interfaces/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake\n'}
+[1.805567] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/custom_interfaces/cmake/custom_interfacesConfig.cmake\n'}
+[1.805632] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/custom_interfaces/cmake/custom_interfacesConfig-version.cmake\n'}
+[1.805695] (custom_interfaces) StdoutLine: {'line': b'-- Up-to-date: /home/mili/Marvin/ros2_ws/install/custom_interfaces/share/custom_interfaces/package.xml\n'}
+[1.806207] (custom_interfaces) CommandEnded: {'returncode': 0}
+[1.901209] (-) TimerEvent: {}
+[1.984322] (custom_interfaces) JobEnded: {'identifier': 'custom_interfaces', 'rc': 0}
+[1.984923] (py_pubsub) JobStarted: {'identifier': 'py_pubsub'}
+[2.001345] (-) TimerEvent: {}
+[2.101572] (-) TimerEvent: {}
+[2.201759] (-) TimerEvent: {}
+[2.301957] (-) TimerEvent: {}
+[2.402144] (-) TimerEvent: {}
+[2.502327] (-) TimerEvent: {}
+[2.602508] (-) TimerEvent: {}
+[2.654140] (py_pubsub) Command: {'cmd': ['/usr/bin/python3', 'setup.py', 'egg_info', '--egg-base', '../../build/py_pubsub', 'build', '--build-base', '/home/mili/Marvin/ros2_ws/build/py_pubsub/build', 'install', '--record', '/home/mili/Marvin/ros2_ws/build/py_pubsub/install.log', '--single-version-externally-managed'], 'cwd': '/home/mili/Marvin/ros2_ws/src/py_pubsub', 'env': {'LESSOPEN': '| /usr/bin/lesspipe %s', 'USER': 'mili', 'XDG_SESSION_TYPE': 'x11', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/home/mili/Marvin/ros2_ws/install/custom_interfaces/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib', 'HOME': '/home/mili', 'OLDPWD': '/home/mili/Marvin', 'DESKTOP_SESSION': 'ubuntu', 'ROS_PYTHON_VERSION': '3', 'GNOME_SHELL_SESSION_MODE': 'ubuntu', 'GTK_MODULES': 'gail:atk-bridge', 'SYSTEMD_EXEC_PID': '295736', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'COLORTERM': 'truecolor', '_colcon_cd_root': '/opt/ros/humble/', 'DEBUGINFOD_URLS': 'https://debuginfod.ubuntu.com', 'ROS_DISTRO': 'humble', 'GTK_IM_MODULE': 'ibus', 'LOGNAME': 'mili', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'XDG_SESSION_CLASS': 'user', 'USERNAME': 'mili', 'TERM': 'xterm-256color', 'GNOME_DESKTOP_SESSION_ID': 'this-is-deprecated', 'ROS_LOCALHOST_ONLY': '1', 'WINDOWPATH': '2', 'PATH': '/opt/ros/humble/bin:/home/mili/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin', 'SESSION_MANAGER': 'local/mili:@/tmp/.ICE-unix/295511,unix/mili:/tmp/.ICE-unix/295511', 'XDG_MENU_PREFIX': 'gnome-', 'GNOME_TERMINAL_SCREEN': '/org/gnome/Terminal/screen/9db4534e_b85a_4863_8df0_be67e2eabd99', 'XDG_RUNTIME_DIR': '/run/user/1000', 'DISPLAY': ':1', 'LANG': 'en_US.UTF-8', 'XDG_CURRENT_DESKTOP': 'ubuntu:GNOME', 'XMODIFIERS': '@im=ibus', 'XDG_SESSION_DESKTOP': 'ubuntu', 'XAUTHORITY': '/run/user/1000/gdm/Xauthority', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:', 'GNOME_TERMINAL_SERVICE': ':1.101', 'SSH_AGENT_LAUNCHER': 'gnome-keyring', 'SSH_AUTH_SOCK': '/run/user/1000/keyring/ssh', 'AMENT_PREFIX_PATH': '/home/mili/Marvin/ros2_ws/install/custom_interfaces:/opt/ros/humble', 'SHELL': '/bin/bash', 'QT_ACCESSIBILITY': '1', 'GDMSESSION': 'ubuntu', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'GPG_AGENT_INFO': '/run/user/1000/gnupg/S.gpg-agent:0:1', 'QT_IM_MODULE': 'ibus', 'PWD': '/home/mili/Marvin/ros2_ws/build/py_pubsub', 'LC_ALL': 'en_US.UTF-8', 'XDG_CONFIG_DIRS': '/etc/xdg/xdg-ubuntu:/etc/xdg', 'XDG_DATA_DIRS': '/usr/share/ubuntu:/usr/share/gnome:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop', 'PYTHONPATH': '/home/mili/Marvin/ros2_ws/build/py_pubsub/prefix_override:/home/mili/Marvin/ros2_ws/install/py_pubsub/lib/python3.10/site-packages:/home/mili/Marvin/ros2_ws/install/custom_interfaces/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages', 'COLCON': '1', 'VTE_VERSION': '6800', 'CMAKE_PREFIX_PATH': '/home/mili/Marvin/ros2_ws/install/custom_interfaces'}, 'shell': False}
+[2.702594] (-) TimerEvent: {}
+[2.803118] (-) TimerEvent: {}
+[2.819218] (py_pubsub) StdoutLine: {'line': b'running egg_info\n'}
+[2.832654] (py_pubsub) StdoutLine: {'line': b'writing ../../build/py_pubsub/py_pubsub.egg-info/PKG-INFO\n'}
+[2.833038] (py_pubsub) StdoutLine: {'line': b'writing dependency_links to ../../build/py_pubsub/py_pubsub.egg-info/dependency_links.txt\n'}
+[2.833219] (py_pubsub) StdoutLine: {'line': b'writing entry points to ../../build/py_pubsub/py_pubsub.egg-info/entry_points.txt\n'}
+[2.833367] (py_pubsub) StdoutLine: {'line': b'writing requirements to ../../build/py_pubsub/py_pubsub.egg-info/requires.txt\n'}
+[2.833513] (py_pubsub) StdoutLine: {'line': b'writing top-level names to ../../build/py_pubsub/py_pubsub.egg-info/top_level.txt\n'}
+[2.861433] (py_pubsub) StdoutLine: {'line': b"reading manifest file '../../build/py_pubsub/py_pubsub.egg-info/SOURCES.txt'\n"}
+[2.861546] (py_pubsub) StdoutLine: {'line': b"adding license file 'LICENSE'\n"}
+[2.861704] (py_pubsub) StdoutLine: {'line': b"writing manifest file '../../build/py_pubsub/py_pubsub.egg-info/SOURCES.txt'\n"}
+[2.861803] (py_pubsub) StdoutLine: {'line': b'running build\n'}
+[2.861898] (py_pubsub) StdoutLine: {'line': b'running build_py\n'}
+[2.862012] (py_pubsub) StdoutLine: {'line': b'copying py_pubsub/__init__.py -> /home/mili/Marvin/ros2_ws/build/py_pubsub/build/lib/py_pubsub\n'}
+[2.862183] (py_pubsub) StdoutLine: {'line': b'copying py_pubsub/subscriber_member_function.py -> /home/mili/Marvin/ros2_ws/build/py_pubsub/build/lib/py_pubsub\n'}
+[2.862389] (py_pubsub) StdoutLine: {'line': b'copying py_pubsub/publisher_member_function.py -> /home/mili/Marvin/ros2_ws/build/py_pubsub/build/lib/py_pubsub\n'}
+[2.862698] (py_pubsub) StdoutLine: {'line': b'running install\n'}
+[2.862844] (py_pubsub) StderrLine: {'line': b'/home/mili/.local/lib/python3.10/site-packages/setuptools/_distutils/cmd.py:66: SetuptoolsDeprecationWarning: setup.py install is deprecated.\n'}
+[2.862933] (py_pubsub) StderrLine: {'line': b'!!\n'}
+[2.862988] (py_pubsub) StderrLine: {'line': b'\n'}
+[2.863041] (py_pubsub) StderrLine: {'line': b'        ********************************************************************************\n'}
+[2.863090] (py_pubsub) StderrLine: {'line': b'        Please avoid running ``setup.py`` directly.\n'}
+[2.863137] (py_pubsub) StderrLine: {'line': b'        Instead, use pypa/build, pypa/installer or other\n'}
+[2.863186] (py_pubsub) StderrLine: {'line': b'        standards-based tools.\n'}
+[2.863233] (py_pubsub) StderrLine: {'line': b'\n'}
+[2.863280] (py_pubsub) StderrLine: {'line': b'        See https://blog.ganssle.io/articles/2021/10/setup-py-deprecated.html for details.\n'}
+[2.863328] (py_pubsub) StderrLine: {'line': b'        ********************************************************************************\n'}
+[2.863375] (py_pubsub) StderrLine: {'line': b'\n'}
+[2.863422] (py_pubsub) StderrLine: {'line': b'!!\n'}
+[2.863469] (py_pubsub) StderrLine: {'line': b'  self.initialize_options()\n'}
+[2.868065] (py_pubsub) StdoutLine: {'line': b'running install_lib\n'}
+[2.882788] (py_pubsub) StdoutLine: {'line': b'copying /home/mili/Marvin/ros2_ws/build/py_pubsub/build/lib/py_pubsub/publisher_member_function.py -> /home/mili/Marvin/ros2_ws/install/py_pubsub/lib/python3.10/site-packages/py_pubsub\n'}
+[2.882940] (py_pubsub) StdoutLine: {'line': b'byte-compiling /home/mili/Marvin/ros2_ws/install/py_pubsub/lib/python3.10/site-packages/py_pubsub/publisher_member_function.py to publisher_member_function.cpython-310.pyc\n'}
+[2.883957] (py_pubsub) StdoutLine: {'line': b'running install_data\n'}
+[2.897859] (py_pubsub) StdoutLine: {'line': b'copying resource/py_pubsub -> /home/mili/Marvin/ros2_ws/install/py_pubsub/share/ament_index/resource_index/packages\n'}
+[2.897971] (py_pubsub) StdoutLine: {'line': b'running install_egg_info\n'}
+[2.903201] (-) TimerEvent: {}
+[2.911139] (py_pubsub) StdoutLine: {'line': b"removing '/home/mili/Marvin/ros2_ws/install/py_pubsub/lib/python3.10/site-packages/py_pubsub-0.0.0-py3.10.egg-info' (and everything under it)\n"}
+[2.911289] (py_pubsub) StdoutLine: {'line': b'Copying ../../build/py_pubsub/py_pubsub.egg-info to /home/mili/Marvin/ros2_ws/install/py_pubsub/lib/python3.10/site-packages/py_pubsub-0.0.0-py3.10.egg-info\n'}
+[2.912160] (py_pubsub) StdoutLine: {'line': b'running install_scripts\n'}
+[3.003284] (-) TimerEvent: {}
+[3.033302] (py_pubsub) StdoutLine: {'line': b'Installing listener script to /home/mili/Marvin/ros2_ws/install/py_pubsub/lib/py_pubsub\n'}
+[3.033437] (py_pubsub) StdoutLine: {'line': b'Installing talker script to /home/mili/Marvin/ros2_ws/install/py_pubsub/lib/py_pubsub\n'}
+[3.033682] (py_pubsub) StdoutLine: {'line': b"writing list of installed files to '/home/mili/Marvin/ros2_ws/build/py_pubsub/install.log'\n"}
+[3.047526] (py_pubsub) CommandEnded: {'returncode': 0}
+[3.103362] (-) TimerEvent: {}
+[3.106433] (py_pubsub) JobEnded: {'identifier': 'py_pubsub', 'rc': 0}
+[3.106934] (-) EventReactorShutdown: {}

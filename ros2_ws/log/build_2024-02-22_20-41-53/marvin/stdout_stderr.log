@@ -1,0 +1,46 @@
+running egg_info
+creating ../../build/marvin/marvin.egg-info
+writing ../../build/marvin/marvin.egg-info/PKG-INFO
+writing dependency_links to ../../build/marvin/marvin.egg-info/dependency_links.txt
+writing requirements to ../../build/marvin/marvin.egg-info/requires.txt
+writing top-level names to ../../build/marvin/marvin.egg-info/top_level.txt
+writing manifest file '../../build/marvin/marvin.egg-info/SOURCES.txt'
+reading manifest file '../../build/marvin/marvin.egg-info/SOURCES.txt'
+writing manifest file '../../build/marvin/marvin.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/mili/Marvin/ros2_ws/build/marvin/build
+creating /home/mili/Marvin/ros2_ws/build/marvin/build/lib
+creating /home/mili/Marvin/ros2_ws/build/marvin/build/lib/marvin
+copying marvin/__init__.py -> /home/mili/Marvin/ros2_ws/build/marvin/build/lib/marvin
+copying marvin/mediapipe.py -> /home/mili/Marvin/ros2_ws/build/marvin/build/lib/marvin
+running install
+/home/mili/.local/lib/python3.10/site-packages/setuptools/_distutils/cmd.py:66: SetuptoolsDeprecationWarning: setup.py install is deprecated.
+!!
+
+        ********************************************************************************
+        Please avoid running ``setup.py`` directly.
+        Instead, use pypa/build, pypa/installer or other
+        standards-based tools.
+
+        See https://blog.ganssle.io/articles/2021/10/setup-py-deprecated.html for details.
+        ********************************************************************************
+
+!!
+  self.initialize_options()
+running install_lib
+creating /home/mili/Marvin/ros2_ws/install/marvin/lib/python3.10/site-packages/marvin
+copying /home/mili/Marvin/ros2_ws/build/marvin/build/lib/marvin/__init__.py -> /home/mili/Marvin/ros2_ws/install/marvin/lib/python3.10/site-packages/marvin
+copying /home/mili/Marvin/ros2_ws/build/marvin/build/lib/marvin/mediapipe.py -> /home/mili/Marvin/ros2_ws/install/marvin/lib/python3.10/site-packages/marvin
+byte-compiling /home/mili/Marvin/ros2_ws/install/marvin/lib/python3.10/site-packages/marvin/__init__.py to __init__.cpython-310.pyc
+byte-compiling /home/mili/Marvin/ros2_ws/install/marvin/lib/python3.10/site-packages/marvin/mediapipe.py to mediapipe.cpython-310.pyc
+running install_data
+creating /home/mili/Marvin/ros2_ws/install/marvin/share/ament_index
+creating /home/mili/Marvin/ros2_ws/install/marvin/share/ament_index/resource_index
+creating /home/mili/Marvin/ros2_ws/install/marvin/share/ament_index/resource_index/packages
+copying resource/marvin -> /home/mili/Marvin/ros2_ws/install/marvin/share/ament_index/resource_index/packages
+copying package.xml -> /home/mili/Marvin/ros2_ws/install/marvin/share/marvin
+running install_egg_info
+Copying ../../build/marvin/marvin.egg-info to /home/mili/Marvin/ros2_ws/install/marvin/lib/python3.10/site-packages/marvin-0.0.0-py3.10.egg-info
+running install_scripts
+writing list of installed files to '/home/mili/Marvin/ros2_ws/build/marvin/install.log'

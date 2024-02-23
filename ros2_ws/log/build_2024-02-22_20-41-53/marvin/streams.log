@@ -1,0 +1,48 @@
+[0.689s] Invoking command in '/home/mili/Marvin/ros2_ws/src/marvin': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/mili/Marvin/ros2_ws/build/marvin/prefix_override:/home/mili/Marvin/ros2_ws/install/marvin/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/marvin build --build-base /home/mili/Marvin/ros2_ws/build/marvin/build install --record /home/mili/Marvin/ros2_ws/build/marvin/install.log --single-version-externally-managed
+[0.856s] running egg_info
+[0.857s] creating ../../build/marvin/marvin.egg-info
+[0.870s] writing ../../build/marvin/marvin.egg-info/PKG-INFO
+[0.870s] writing dependency_links to ../../build/marvin/marvin.egg-info/dependency_links.txt
+[0.870s] writing requirements to ../../build/marvin/marvin.egg-info/requires.txt
+[0.870s] writing top-level names to ../../build/marvin/marvin.egg-info/top_level.txt
+[0.870s] writing manifest file '../../build/marvin/marvin.egg-info/SOURCES.txt'
+[0.898s] reading manifest file '../../build/marvin/marvin.egg-info/SOURCES.txt'
+[0.898s] writing manifest file '../../build/marvin/marvin.egg-info/SOURCES.txt'
+[0.898s] running build
+[0.899s] running build_py
+[0.899s] creating /home/mili/Marvin/ros2_ws/build/marvin/build
+[0.899s] creating /home/mili/Marvin/ros2_ws/build/marvin/build/lib
+[0.899s] creating /home/mili/Marvin/ros2_ws/build/marvin/build/lib/marvin
+[0.899s] copying marvin/__init__.py -> /home/mili/Marvin/ros2_ws/build/marvin/build/lib/marvin
+[0.899s] copying marvin/mediapipe.py -> /home/mili/Marvin/ros2_ws/build/marvin/build/lib/marvin
+[0.899s] running install
+[0.899s] /home/mili/.local/lib/python3.10/site-packages/setuptools/_distutils/cmd.py:66: SetuptoolsDeprecationWarning: setup.py install is deprecated.
+[0.899s] !!
+[0.900s] 
+[0.900s]         ********************************************************************************
+[0.900s]         Please avoid running ``setup.py`` directly.
+[0.900s]         Instead, use pypa/build, pypa/installer or other
+[0.900s]         standards-based tools.
+[0.900s] 
+[0.900s]         See https://blog.ganssle.io/articles/2021/10/setup-py-deprecated.html for details.
+[0.900s]         ********************************************************************************
+[0.900s] 
+[0.900s] !!
+[0.900s]   self.initialize_options()
+[0.902s] running install_lib
+[0.916s] creating /home/mili/Marvin/ros2_ws/install/marvin/lib/python3.10/site-packages/marvin
+[0.916s] copying /home/mili/Marvin/ros2_ws/build/marvin/build/lib/marvin/__init__.py -> /home/mili/Marvin/ros2_ws/install/marvin/lib/python3.10/site-packages/marvin
+[0.916s] copying /home/mili/Marvin/ros2_ws/build/marvin/build/lib/marvin/mediapipe.py -> /home/mili/Marvin/ros2_ws/install/marvin/lib/python3.10/site-packages/marvin
+[0.917s] byte-compiling /home/mili/Marvin/ros2_ws/install/marvin/lib/python3.10/site-packages/marvin/__init__.py to __init__.cpython-310.pyc
+[0.917s] byte-compiling /home/mili/Marvin/ros2_ws/install/marvin/lib/python3.10/site-packages/marvin/mediapipe.py to mediapipe.cpython-310.pyc
+[0.918s] running install_data
+[0.931s] creating /home/mili/Marvin/ros2_ws/install/marvin/share/ament_index
+[0.931s] creating /home/mili/Marvin/ros2_ws/install/marvin/share/ament_index/resource_index
+[0.931s] creating /home/mili/Marvin/ros2_ws/install/marvin/share/ament_index/resource_index/packages
+[0.931s] copying resource/marvin -> /home/mili/Marvin/ros2_ws/install/marvin/share/ament_index/resource_index/packages
+[0.932s] copying package.xml -> /home/mili/Marvin/ros2_ws/install/marvin/share/marvin
+[0.932s] running install_egg_info
+[0.946s] Copying ../../build/marvin/marvin.egg-info to /home/mili/Marvin/ros2_ws/install/marvin/lib/python3.10/site-packages/marvin-0.0.0-py3.10.egg-info
+[0.946s] running install_scripts
+[1.074s] writing list of installed files to '/home/mili/Marvin/ros2_ws/build/marvin/install.log'
+[1.091s] Invoked command in '/home/mili/Marvin/ros2_ws/src/marvin' returned '0': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/mili/Marvin/ros2_ws/build/marvin/prefix_override:/home/mili/Marvin/ros2_ws/install/marvin/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/marvin build --build-base /home/mili/Marvin/ros2_ws/build/marvin/build install --record /home/mili/Marvin/ros2_ws/build/marvin/install.log --single-version-externally-managed
