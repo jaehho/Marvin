@@ -10,10 +10,10 @@ from custom_interfaces.msg import PoseLandmark
 from geometry_msgs.msg import Point
 
 
-class MinimalPublisher(Node):
+class PoseDetectionPublisher(Node):
 
     def __init__(self):
-        super().__init__('minimal_publisher')
+        super().__init__('pose_detection_publisher')
         self.publisher_ = self.create_publisher(PoseLandmark, 'topic', 10)
         
         plt.ion()  # Interactive mode on for Matplotlib.
@@ -145,14 +145,14 @@ class MinimalPublisher(Node):
 def main(args=None):
     rclpy.init(args=args)
 
-    minimal_publisher = MinimalPublisher()
+    pose_detection_publisher = PoseDetectionPublisher()
 
-    rclpy.spin(minimal_publisher)
+    rclpy.spin(pose_detection_publisher)
 
     # Destroy the node explicitly
     # (optional - otherwise it will be done automatically
     # when the garbage collector destroys the node object)
-    minimal_publisher.destroy_node()
+    pose_detection_publisher.destroy_node()
     rclpy.shutdown()
 
 if __name__ == '__main__':
