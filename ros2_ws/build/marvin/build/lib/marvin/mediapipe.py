@@ -93,29 +93,30 @@ class MinimalPublisher(Node):
                     24: "right_hip",
                 }
 
-                if results.pose_world_landmarks:
-                    # Filter the landmarks_data to only include selected landmarks with labels
-                    landmarks_data = [
-                        {
-                            'label': landmarks_labels.get(index),
-                            'x': landmark.x, 
-                            'y': landmark.y, 
-                            'z': landmark.z
-                        } 
-                        for index, landmark in enumerate(results.pose_world_landmarks.landmark) 
-                        if index in landmarks_labels
-                    ]
-                    global json_data
-                    json_data = json.dumps(landmarks_data, indent=2)
+                # if results.pose_world_landmarks:
+                #     # Filter the landmarks_data to only include selected landmarks with labels
+                #     landmarks_data = [
+                #         {
+                #             'label': landmarks_labels.get(index),
+                #             'x': landmark.x, 
+                #             'y': landmark.y, 
+                #             'z': landmark.z
+                #         } 
+                #         for index, landmark in enumerate(results.pose_world_landmarks.landmark) 
+                #         if index in landmarks_labels
+                #     ]
+                #     global json_data
+                #     json_data = json.dumps(landmarks_data, indent=2)
                 
                 msg = PoseLandmark()
-                for index in range (11, 24):
+                landmark = results.pose_world_landmarks.landmark
+                for index in range (14):
                     msg.label[index] = landmarks_labels.get(index)
                     msg.point[index] = [landmark.x, landmark.y, landmark.z]
 
 
                 self.publisher_.publish(msg)
-                self.get_logger().info('Publishing: "%s"' % msg.data)
+                self.get_logger().info('Publishing: "%s"' % msg.point[11])
 
                 image.flags.writeable = True
                 image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)

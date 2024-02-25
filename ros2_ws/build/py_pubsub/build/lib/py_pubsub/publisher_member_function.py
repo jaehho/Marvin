@@ -75,6 +75,7 @@ class MinimalPublisher(Node):
                 image.flags.writeable = False # Prevent image processing from writing to the image, also saves time/memory
                 results = pose.process(image)
 
+                json_data
                 if results.pose_world_landmarks:
                     # Define a dictionary mapping landmark indices to their labels for landmarks 11 through 24
                     landmarks_labels = {
@@ -105,7 +106,6 @@ class MinimalPublisher(Node):
                         for index, landmark in enumerate(results.pose_world_landmarks.landmark) 
                         if index in landmarks_labels
                     ]
-                    global json_data
                     json_data = json.dumps(landmarks_data, indent=2)
                     
                 msg = String()

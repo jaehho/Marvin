@@ -109,6 +109,7 @@ class MinimalPublisher(Node):
                     json_data = json.dumps(landmarks_data, indent=2)
                 
                 msg = PoseLandmark()
+                landmark = results.pose_world_landmarks.landmark
                 for index in range (11, 24):
                     msg.label[index] = landmarks_labels.get(index)
                     msg.point[index] = [landmark.x, landmark.y, landmark.z]

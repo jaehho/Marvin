@@ -4,6 +4,7 @@ setup.py
 ../../build/marvin/marvin.egg-info/PKG-INFO
 ../../build/marvin/marvin.egg-info/SOURCES.txt
 ../../build/marvin/marvin.egg-info/dependency_links.txt
+../../build/marvin/marvin.egg-info/entry_points.txt
 ../../build/marvin/marvin.egg-info/requires.txt
 ../../build/marvin/marvin.egg-info/top_level.txt
 ../../build/marvin/marvin.egg-info/zip-safe
