@@ -1,4 +1,0 @@
-Invoking command in '/home/mili/Marvin/ros2_ws/build/custom_interfaces': CMAKE_PREFIX_PATH=/opt/ros/humble DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --build /home/mili/Marvin/ros2_ws/build/custom_interfaces -- -j32 -l32
-Invoked command in '/home/mili/Marvin/ros2_ws/build/custom_interfaces' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --build /home/mili/Marvin/ros2_ws/build/custom_interfaces -- -j32 -l32
-Invoking command in '/home/mili/Marvin/ros2_ws/build/custom_interfaces': CMAKE_PREFIX_PATH=/opt/ros/humble DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --install /home/mili/Marvin/ros2_ws/build/custom_interfaces
-Invoked command in '/home/mili/Marvin/ros2_ws/build/custom_interfaces' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --install /home/mili/Marvin/ros2_ws/build/custom_interfaces
