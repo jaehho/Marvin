@@ -7,6 +7,7 @@ import rclpy
 from rclpy.node import Node
 
 from custom_interfaces.msg import PoseLandmark
+from geometry_msgs.msg import Point
 
 
 class MinimalPublisher(Node):
@@ -20,7 +21,7 @@ class MinimalPublisher(Node):
         fig = plt.figure(figsize=(10, 7))
         ax = fig.add_subplot(111, projection='3d')
 
-        def plot_landmarks(landmarks, connections):
+        def matplot_landmarks(landmarks, connections):
             ax.clear()
             if landmarks:
                 # Use World Landmark coordinates directly
@@ -75,27 +76,6 @@ class MinimalPublisher(Node):
                 image.flags.writeable = False # Prevent image processing from writing to the image, also saves time/memory
                 results = pose.process(image)
 
-                # Define a dictionary mapping landmark indices to their labels for landmarks 11 through 24
-                landmarks_labels = {
-                    11: "left_shoulder",
-                    12: "right_shoulder",
-                    13: "left_elbow",
-                    14: "right_elbow",
-                    15: "left_wrist",
-                    16: "right_wrist",
-                    17: "left_pinky",
-                    18: "right_pinky",
-                    19: "left_index",
-                    20: "right_index",
-                    21: "left_thumb",
-                    22: "right_thumb",
-                    23: "left_hip",
-                    24: "right_hip",
-                }
-
-                self.publisher_.publish(msg)
-                self.get_logger().info('Publishing: "%s"' % msg.data)
-
                 image.flags.writeable = True
                 image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
@@ -106,7 +86,8 @@ class MinimalPublisher(Node):
                         landmark_drawing_spec=mp_drawing.DrawingSpec(color=(245,117,66), thickness=2, circle_radius=2),
                         connection_drawing_spec=mp_drawing.DrawingSpec(color=(245,66,230), thickness=2, circle_radius=2))
 
-                    plot_landmarks(results.pose_world_landmarks, mp.solutions.pose.POSE_CONNECTIONS) # Use world landmarks for 3D graph view
+                    matplot_landmarks(results.pose_world_landmarks, mp.solutions.pose.POSE_CONNECTIONS) # Use world landmarks for 3D graph view
+                    self.plot_landmarks_and_publish(results.pose_world_landmarks)
 
                 cv2.imshow('MediaPipe Pose', image)
                 if cv2.waitKey(5) & 0xFF == 27:  # Press 'ESC' to exit.
@@ -116,6 +97,49 @@ class MinimalPublisher(Node):
             cv2.destroyAllWindows()
             plt.ioff()
             plt.close(fig)
+
+    def plot_landmarks_and_publish(self, landmarks):
+        # Define a dictionary mapping landmark indices to their labels for landmarks 11 through 24
+        landmarks_labels = {
+            11: "left_shoulder",
+            12: "right_shoulder",
+            13: "left_elbow",
+            14: "right_elbow",
+            15: "left_wrist",
+            16: "right_wrist",
+            17: "left_pinky",
+            18: "right_pinky",
+            19: "left_index",
+            20: "right_index",
+            21: "left_thumb",
+            22: "right_thumb",
+            23: "left_hip",
+            24: "right_hip",
+        }
+        
+        # Prepare a PoseLandmark message
+        pose_landmark_msg = PoseLandmark()
+        pose_landmark_msg.label = []
+        pose_landmark_msg.point = []
+
+        if landmarks:
+            for idx, landmark in enumerate(landmarks.landmark):
+                # Append label if it exists in the dictionary
+                if idx in landmarks_labels:
+                    # Get the label from the dictionary
+                    label = landmarks_labels[idx]
+                    pose_landmark_msg.label.append(label)
+                    
+                    # Create a Point message for the landmark
+                    point = Point()
+                    point.x = landmark.x
+                    point.y = landmark.y
+                    point.z = landmark.z
+                    pose_landmark_msg.point.append(point)
+
+            # Publish the message
+            self.publisher_.publish(pose_landmark_msg)
+            self.get_logger().info(f'Publishing: {pose_landmark_msg}')
 
 
 def main(args=None):

@@ -20,7 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'mediapipe = marvin.mediapipe:main',
+            'poseDetection = marvin.poseDetection:main',
         ],
     },
 )
