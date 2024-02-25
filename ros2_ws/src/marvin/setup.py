@@ -21,6 +21,7 @@ setup(
     entry_points={
         'console_scripts': [
             'poseDetection = marvin.poseDetection:main',
+            'shoulderAngles = marvin.shoulderAngles:main',
         ],
     },
 )

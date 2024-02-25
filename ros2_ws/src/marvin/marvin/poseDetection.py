@@ -14,7 +14,7 @@ class PoseDetectionPublisher(Node):
 
     def __init__(self):
         super().__init__('pose_detection_publisher')
-        self.publisher_ = self.create_publisher(PoseLandmark, 'topic', 10)
+        self.publisher_ = self.create_publisher(PoseLandmark, 'pose_landmarks', 10)
         
         plt.ion()  # Interactive mode on for Matplotlib.
         global fig
