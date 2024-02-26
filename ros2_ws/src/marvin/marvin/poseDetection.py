@@ -11,6 +11,7 @@ class PoseDetectionPublisher(Node):
     def __init__(self):
         super().__init__('pose_detection_publisher')
         self.publisher_ = self.create_publisher(PoseLandmark, 'pose_landmarks', 10)
+        # Initialize the Matplotlib figure for 3D plotting
         self.init_matplotlib()
 
     def init_matplotlib(self):
