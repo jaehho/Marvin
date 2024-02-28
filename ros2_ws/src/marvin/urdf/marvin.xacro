@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="simple_two_armed_robot">
+
+  <!-- Macro Definitions -->
+  <xacro:macro name="cylinder_link" params="name length radius color">
+    <link name="${name}">
+      <visual>
+        <geometry>
+          <cylinder length="${length}" radius="${radius}"/>
+        </geometry>
+        <material name="${color}"/>
+      </visual>
+    </link>
+  </xacro:macro>
+
+  <xacro:macro name="revolute_joint" params="name parent child origin axis limit">
+    <joint name="${name}" type="revolute">
+      <parent link="${parent}"/>
+      <child link="${child}"/>
+      <origin xyz="${origin}" rpy="0 0 0"/>
+      <axis xyz="${axis}"/>
+      <limit lower="${limit[0]}" upper="${limit[1]}" effort="100" velocity="0.5"/>
+    </joint>
+  </xacro:macro>
+
+  <!-- Material Definitions -->
+  <material name="blue">
+    <color rgba="0 0 1 1"/>
+  </material>
+
+  <material name="green">
+    <color rgba="0 1 0 1"/>
+  </material>
+
+  <material name="red">
+    <color rgba="1 0 0 1"/>
+  </material>
+
+  <!-- Body (Torso) Link -->
+  <link name="body">
+    <visual>
+      <geometry>
+        <box size="0.5 0.5 1"/>
+      </geometry>
+      <material name="blue"/>
+    </visual>
+  </link>
+
+  <!-- Left and Right Arm Links -->
+  <xacro:cylinder_link name="left_arm" length="1" radius="0.1" color="green"/>
+  <xacro:cylinder_link name="right_arm" length="1" radius="0.1" color="red"/>
+
+  <!-- Left and Right Shoulder Joints -->
+  <xacro:revolute_joint name="left_shoulder" parent="body" child="left_arm" origin="0.25 0 -0.5" axis="1 0 0" limit="-1.5 1.5"/>
+  <xacro:revolute_joint name="right_shoulder" parent="body" child="right_arm" origin="-0.25 0 -0.5" axis="1 0 0" limit="-1.5 1.5"/>
+
+</robot>
