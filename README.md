@@ -1,25 +1,32 @@
-# Real-Time MediaPipe Pose Mimicking with Open-Manipulator Robotic Arms
+# Marvin
 
-This project aims to create a real-time system for tracking human pose movements using MediaPipe and mirroring these movements with two Open-Manipulator robotic arms. It integrates cutting-edge pose estimation technologies with robotic manipulation, providing a seamless interface for human-robot interaction.
+The Marvin project aims to create a real-time system for tracking human pose movements using MediaPipe and mirroring these movements with two robotic arms. It integrates cutting-edge pose estimation technologies with robotic manipulation, providing a seamless interface for human-robot interaction.
 
 ## Overview
 
 The core of this project is built upon the integration of several technologies:
 - **MediaPipe**: For real-time, accurate pose estimation.
 - **OpenCV**: For video capture and processing.
-- **ROS2**: As the operating system for processing pose information and controlling the Open-Manipulator robotic arms.
+- **ROS2**: As the operating system for processing pose information and controlling the Open-Manipulator-X robotic arms.
 
-The end goal is to enable the robotic arms to mimic human movements in real-time, which can have applications in teleoperation, educational purposes, and surgical robotics.
+The end goal is to enable the robotic arms to mimic human movements in real-time, which can have applications in teleoperation, education, and surgical robotics.
+
+## Hardware
+
+- Open-Manipulator-X x2
+- PC running Ubuntu 22.04 or Raspberry Pi 4
 
 ## Software
 
 - Ubuntu 22.04
-- Python 3.x
+- Python 3.10
 - ROS2 Humble
 - OpenCV
 - MediaPipe
+- Gazebo Fortress
+- Rviz2
 
-Ensure software is up to date and all have their respective dependencies installed.
+Ensure software is up to date and respective dependencies installed.
 
 ## Installation
 
@@ -27,15 +34,14 @@ Clone this repository to your local machine:
 
 ```bash
 git clone https://github.com/GitJaehoCho/Marvin.git
-cd Marvin
 ```
 
-Install the required Python dependencies:
+Install the required Python libraries:
 
 ```bash
-pip3 install opencv-python // or opencv-contrib-python
+pip3 install opencv-python
 pip3 install mediapipe
-pip3 install -U matplotlib
+pip3 install matplotlib
 ```
 
 ## Usage
@@ -52,7 +58,7 @@ pip3 install -U matplotlib
 
 2. **ROS2 Integration**:
 
-(in development)
+   (in development)
 
 ## Contributing
 
