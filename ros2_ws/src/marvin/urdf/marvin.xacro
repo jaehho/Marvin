@@ -2,24 +2,25 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="simple_two_armed_robot">
 
   <!-- Macro Definitions -->
-  <xacro:macro name="cylinder_link" params="name length radius color">
+  <xacro:macro name="cylinder_link" params="name length radius origin color">
     <link name="${name}">
       <visual>
         <geometry>
           <cylinder length="${length}" radius="${radius}"/>
         </geometry>
+        <origin xyz="${origin}" rpy="0 0 0"/>
         <material name="${color}"/>
       </visual>
     </link>
   </xacro:macro>
 
-  <xacro:macro name="revolute_joint" params="name parent child origin axis limit">
+  <xacro:macro name="revolute_joint" params="name parent child origin axis lower_limit upper_limit">
     <joint name="${name}" type="revolute">
       <parent link="${parent}"/>
       <child link="${child}"/>
       <origin xyz="${origin}" rpy="0 0 0"/>
       <axis xyz="${axis}"/>
-      <limit lower="${limit[0]}" upper="${limit[1]}" effort="100" velocity="0.5"/>
+      <limit lower="${lower_limit}" upper="${upper_limit}" effort="100" velocity="0.5"/>
     </joint>
   </xacro:macro>
 
@@ -36,8 +37,8 @@
     <color rgba="1 0 0 1"/>
   </material>
 
-  <!-- Body (Torso) Link -->
-  <link name="body">
+  <!-- base_link (Torso) Link -->
+  <link name="base_link">
     <visual>
       <geometry>
         <box size="0.5 0.5 1"/>
@@ -47,11 +48,11 @@
   </link>
 
   <!-- Left and Right Arm Links -->
-  <xacro:cylinder_link name="left_arm" length="1" radius="0.1" color="green"/>
-  <xacro:cylinder_link name="right_arm" length="1" radius="0.1" color="red"/>
+  <xacro:cylinder_link name="left_arm" length="1" radius="0.1" origin="0.1 0 -0.5" color="green"/>
+  <xacro:cylinder_link name="right_arm" length="1" radius="0.1" origin="-0.1 0 -0.5" color="red"/>
 
   <!-- Left and Right Shoulder Joints -->
-  <xacro:revolute_joint name="left_shoulder" parent="body" child="left_arm" origin="0.25 0 -0.5" axis="1 0 0" limit="-1.5 1.5"/>
-  <xacro:revolute_joint name="right_shoulder" parent="body" child="right_arm" origin="-0.25 0 -0.5" axis="1 0 0" limit="-1.5 1.5"/>
+  <xacro:revolute_joint name="left_shoulder" parent="base_link" child="left_arm" origin="0.25 0 0.5" axis="0 1 0" lower_limit="-1.5" upper_limit="1.5"/>
+  <xacro:revolute_joint name="right_shoulder" parent="base_link" child="right_arm" origin="-0.25 0 0.5" axis="0 1 0" lower_limit="-1.5" upper_limit="1.5"/>
 
 </robot>
