@@ -3,6 +3,9 @@ from rclpy.node import Node
 from geometry_msgs.msg import Point
 from custom_interfaces.msg import PoseLandmark
 import numpy as np
+from std_msgs.msg import Header  # Import the Header message
+from sensor_msgs.msg import JointState  # Import the JointState message to publish the joint states
+from rclpy.qos import qos_profile_sensor_data  # Import the sensor data QoS profile
 
 def vector_from_points(p1, p2):
     """Create a vector from two points."""
@@ -26,11 +29,14 @@ class ShoulderAngleSubscriber(Node):
             'pose_landmarks',
             self.listener_callback,
             10)
+        # Add a publisher for JointState messages
+        self.joint_state_publisher = self.create_publisher(JointState, 'joint_states', 10)
 
     def listener_callback(self, msg):
         labels = msg.label
         points = msg.point
 
+        # Your existing logic to calculate angles
         # Find indices for shoulders, elbows, and hips
         left_shoulder_idx = labels.index('left_shoulder')
         right_shoulder_idx = labels.index('right_shoulder')
@@ -49,10 +55,23 @@ class ShoulderAngleSubscriber(Node):
         left_shoulder_angle = calculate_angle(left_upper_arm, left_shoulder_to_hip)
         right_shoulder_angle = calculate_angle(right_upper_arm, right_shoulder_to_hip)
 
-        self.get_logger().info(f'Left Shoulder Angle (relative to the hip): {left_shoulder_angle} degrees')
-        self.get_logger().info(f'Right Shoulder Angle (relative to the hip): {right_shoulder_angle} degrees')
+        left_shoulder_angle_radians = left_shoulder_angle * np.pi/180.0
+        right_shoulder_angle_radians = right_shoulder_angle * np.pi/180.0
+
+        # Prepare a JointState message
+        joint_state_msg = JointState()
+        joint_state_msg.header = Header()
+        joint_state_msg.header.stamp = self.get_clock().now().to_msg()
+        joint_state_msg.name = ['joint1','joint2','joint3','joint4','gripper','gripper_sub']  # Example names
+        joint_state_msg.position = [left_shoulder_angle_radians,0.0,0.0,0.0,0.0,0.0]  # Assuming you calculate these
+        joint_state_msg.velocity = []  # Leave empty if not used
+        joint_state_msg.effort = []  # Leave empty if not used
+
+        # Publish the JointState message
+        self.joint_state_publisher.publish(joint_state_msg)
 
 def main(args=None):
+    print('running')
     rclpy.init(args=args)
     shoulder_angle_subscriber = ShoulderAngleSubscriber()
     rclpy.spin(shoulder_angle_subscriber)

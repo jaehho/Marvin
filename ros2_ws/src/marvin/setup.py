@@ -29,6 +29,7 @@ setup(
         'console_scripts': [
             'poseDetection = marvin.poseDetection:main',
             'shoulderAngles = marvin.shoulderAngles:main',
+            'shoulderAngleJoint = marvin.shoulderAngleJoint:main',
         ],
     },
 )
