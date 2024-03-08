@@ -36,7 +36,6 @@ class ShoulderAngleSubscriber(Node):
         labels = msg.label
         points = msg.point
 
-        # Your existing logic to calculate angles
         # Find indices for shoulders, elbows, and hips
         left_shoulder_idx = labels.index('left_shoulder')
         right_shoulder_idx = labels.index('right_shoulder')
@@ -63,7 +62,7 @@ class ShoulderAngleSubscriber(Node):
         joint_state_msg.header = Header()
         joint_state_msg.header.stamp = self.get_clock().now().to_msg()
         joint_state_msg.name = ['joint1','joint2','joint3','joint4','gripper','gripper_sub']  # Example names
-        joint_state_msg.position = [left_shoulder_angle_radians,0.0,0.0,0.0,0.0,0.0]  # Assuming you calculate these
+        joint_state_msg.position = [0.0,left_shoulder_angle_radians,0.0,0.0,0.0,0.0]  # Assuming you calculate these
         joint_state_msg.velocity = []  # Leave empty if not used
         joint_state_msg.effort = []  # Leave empty if not used
 

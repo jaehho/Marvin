@@ -8,17 +8,6 @@
     <color rgba="0.5 0.5 0.5 1.0"/>
   </material>
 
-  <!-- Dummy link as new root -->
-  <link name="dummy_link">
-  </link>
-
-  <!-- Dummy joint to connect the dummy link with the original base link -->
-  <joint name="dummy_joint" type="fixed">
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-    <parent link="dummy_link"/>
-    <child link="base_link"/>
-  </joint>
-
   <!-- Link 1 -->
   <link name="base_link">
     <visual>
