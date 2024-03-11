@@ -11,15 +11,14 @@ class PoseDetectionPublisher(Node):
     def __init__(self):
         super().__init__('pose_detection_publisher')
         self.publisher_ = self.create_publisher(PoseLandmark, 'pose_landmarks', 10)
-        # Initialize the Matplotlib figure for 3D plotting
-        self.init_matplotlib()
+        # self.init_matplotlib()
 
     def init_matplotlib(self):
         """Initialize Matplotlib for 3D plotting."""
         plt.ion()  # Turn on interactive mode to update plots in real-time
         self.fig = plt.figure(figsize=(10, 7))
         self.ax = self.fig.add_subplot(111, projection='3d')
-        # Set the labels of the 3D plot
+        '''Set the labels of the 3D plot'''
         self.ax.set_xlabel('X')
         self.ax.set_ylabel('Y')
         self.ax.set_zlabel('Z')
@@ -82,7 +81,7 @@ class PoseDetectionPublisher(Node):
         image.flags.writeable = False  # Optimize performance by making image read-only
         results = pose.process(image)  # Apply pose detection
 
-        # Prepare the image for displaying
+        '''Prepare the image for displaying'''
         image.flags.writeable = True
         image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
@@ -91,10 +90,11 @@ class PoseDetectionPublisher(Node):
                 image, results.pose_landmarks, mp.solutions.pose.POSE_CONNECTIONS,
                 landmark_drawing_spec=mp.solutions.drawing_utils.DrawingSpec(color=(245, 117, 66), thickness=2, circle_radius=2),
                 connection_drawing_spec=mp.solutions.drawing_utils.DrawingSpec(color=(245, 66, 230), thickness=2, circle_radius=2))
-            # Update the 3D plot with new landmark data
-            self.draw_matplotlib_landmarks(results.pose_world_landmarks, mp.solutions.pose.POSE_CONNECTIONS)
-            # Publish the landmarks to a ROS topic
+            '''Publish the landmarks to a ROS topic'''
             self.plot_landmarks_and_publish(results.pose_world_landmarks)
+
+            '''Update the 3D plot with new landmark data'''
+            # self.draw_matplotlib_landmarks(results.pose_world_landmarks, mp.solutions.pose.POSE_CONNECTIONS)
         return image
 
     def plot_landmarks_and_publish(self, landmarks):
@@ -109,7 +109,7 @@ class PoseDetectionPublisher(Node):
         pose_landmark_msg.label = []
         pose_landmark_msg.point = []
 
-        # Fill the message with landmarks data
+        '''Fill the message with landmarks data'''
         for idx, landmark in enumerate(landmarks.landmark):
             if idx in landmarks_labels:
                 label = landmarks_labels[idx]
@@ -118,9 +118,9 @@ class PoseDetectionPublisher(Node):
                 point = Point(x=landmark.x, y=landmark.y, z=landmark.z)
                 pose_landmark_msg.point.append(point)
 
-        # Publish the landmarks to the ROS topic
+        '''Publish the landmarks to the ROS topic'''
         self.publisher_.publish(pose_landmark_msg)
-        self.get_logger().info(f'Publishing: {pose_landmark_msg}')
+        # self.get_logger().info(f'Publishing: {pose_landmark_msg}')
 
 def main(args=None):
     rclpy.init(args=args)  # Initialize ROS client library

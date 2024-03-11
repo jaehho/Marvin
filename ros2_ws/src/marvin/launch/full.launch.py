@@ -42,13 +42,29 @@ def generate_launch_description():
     )
     ld.add_action(pose_detection_node)
 
-    # shoulderAngleJoint node
-    shoulder_angle_joint_node = Node(
+    # shoulderJoint node
+    shoulder_joint_node = Node(
         package='marvin',
-        executable='shoulderAngleJoint',
+        executable='shoulderJoint',
         output='screen',
     )
-    ld.add_action(shoulder_angle_joint_node)
+    ld.add_action(shoulder_joint_node)
+
+    # elbowJoint node
+    elbow_joint_node = Node(
+        package='marvin',
+        executable='elbowJoint',
+        output='screen',
+    )
+    ld.add_action(elbow_joint_node)
+
+    # jointStatePublisher node
+    joint_state_publisher_node = Node(
+        package='marvin',
+        executable='jointStatePublisher',
+        output='screen',
+    )
+    ld.add_action(joint_state_publisher_node)
 
     # rviz2 node
     rviz_node = Node(

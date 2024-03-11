@@ -28,8 +28,9 @@ setup(
     entry_points={
         'console_scripts': [
             'poseDetection = marvin.poseDetection:main',
-            'shoulderAngles = marvin.shoulderAngles:main',
-            'shoulderAngleJoint = marvin.shoulderAngleJoint:main',
+            'shoulderJoint = marvin.shoulderJoint:main',
+            'elbowJoint = marvin.elbowJoint:main',
+            'jointStatePublisher = marvin.jointStatePublisher:main'
         ],
     },
 )
