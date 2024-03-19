@@ -9,6 +9,10 @@ def calculate_angle(v1, v2):
     dot_product = np.dot(v1, v2)
     magnitude_product = np.linalg.norm(v1) * np.linalg.norm(v2)
     cos_angle = dot_product / magnitude_product
-    angle_radians = np.arccos(cos_angle)
-    angle_degrees = np.degrees(angle_radians)
-    return angle_degrees
+    return np.arccos(cos_angle)
+
+def project_vector_onto_plane(vector, plane_normal):
+    """Project a vector onto a plane defined by its normal vector."""
+    plane_normal_normalized = plane_normal / np.linalg.norm(plane_normal)
+    dot_product = np.dot(vector, plane_normal_normalized)
+    return vector - dot_product * plane_normal_normalized

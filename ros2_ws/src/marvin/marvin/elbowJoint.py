@@ -36,12 +36,12 @@ class ElbowAngleSubscriber(Node):
         right_upper_arm = vector_from_points(points[right_shoulder_idx], points[right_elbow_idx])
 
         # Calculate angles
-        left_elbow_angle = calculate_angle(left_upper_arm, left_forearm) + 90
+        left_elbow_angle = calculate_angle(left_upper_arm, left_forearm)
         right_elbow_angle = calculate_angle(right_upper_arm, right_forearm)
 
         # Convert angle to radians and publish
         left_elbow_angle_msg = Float64()
-        left_elbow_angle_msg.data = np.deg2rad(left_elbow_angle)
+        left_elbow_angle_msg.data = left_elbow_angle
         self.elbow_angle_publisher.publish(left_elbow_angle_msg)
 
 def main(args=None):

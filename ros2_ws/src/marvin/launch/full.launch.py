@@ -9,7 +9,7 @@ from launch_ros.parameter_descriptions import ParameterValue
 def generate_launch_description():
     ld = LaunchDescription()
 
-    # Declare arguments for the package name, model path, and RViz config
+    # Declare parameters for the package name, model path, and RViz config
     ld.add_action(DeclareLaunchArgument('marvin', default_value='marvin',
                                         description='The package where the robot description is located'))
     
@@ -26,7 +26,6 @@ def generate_launch_description():
     model = PathJoinSubstitution([marvin_path, LaunchConfiguration('model')])
     robot_description_content = ParameterValue(Command(['xacro ', model]), value_type=str)
 
-    # robot state publisher node
     robot_state_publisher_node = Node(package='robot_state_publisher',
                                       executable='robot_state_publisher',
                                       parameters=[{
@@ -34,7 +33,6 @@ def generate_launch_description():
                                       }])
     ld.add_action(robot_state_publisher_node)
 
-    # poseDetection node
     pose_detection_node = Node(
         package='marvin',
         executable='poseDetection',
@@ -42,15 +40,42 @@ def generate_launch_description():
     )
     ld.add_action(pose_detection_node)
 
-    # shoulderJoint node
-    shoulder_joint_node = Node(
+    left_shoulder_flexion = Node(
         package='marvin',
-        executable='shoulderJoint',
-        output='screen',
+        executable='shoulderFlexion',
+        name='left_shoulder_flexion',
+        # parameters=[{'side': 'left'}],
+        output='screen'
     )
-    ld.add_action(shoulder_joint_node)
+    ld.add_action(left_shoulder_flexion)
 
-    # elbowJoint node
+    # right_shoulder_flexion = Node(
+    #     package='marvin',
+    #     executable='shoulderFlexion',
+    #     name='right_shoulder_flexion',
+    #     parameters=[{'side': 'right'}],
+    #     output='screen'
+    # )
+    # ld.add_action(right_shoulder_flexion)
+
+    left_shoulder_adduction = Node(
+        package='marvin',
+        executable='shoulderAdduction',
+        name='left_shoulder_adduction',
+        # parameters=[{'side': 'left'}],
+        output='screen'
+    )
+    ld.add_action(left_shoulder_adduction)
+
+    # right_shoulder_adduction = Node(
+    #     package='marvin',
+    #     executable='shoulderAdduction',
+    #     name='right_shoulder_adduction',
+    #     parameters=[{'side': 'right'}],
+    #     output='screen'
+    # )
+    # ld.add_action(right_shoulder_adduction)
+
     elbow_joint_node = Node(
         package='marvin',
         executable='elbowJoint',
@@ -58,7 +83,6 @@ def generate_launch_description():
     )
     ld.add_action(elbow_joint_node)
 
-    # jointStatePublisher node
     joint_state_publisher_node = Node(
         package='marvin',
         executable='jointStatePublisher',
@@ -66,7 +90,13 @@ def generate_launch_description():
     )
     ld.add_action(joint_state_publisher_node)
 
-    # rviz2 node
+    display_joint_states = Node(
+        package='marvin',
+        executable='displayJointStates',
+        output='screen',
+    )
+    ld.add_action(display_joint_states)
+
     rviz_node = Node(
         package='rviz2',
         executable='rviz2',
