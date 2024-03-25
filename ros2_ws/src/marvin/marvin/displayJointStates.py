@@ -13,7 +13,7 @@ class JointStateSubscriber(Node):
             'joint_states',
             self.listener_callback,
             10)
-        self.joint_positions = [[] for _ in range(10)]  # Adjust this based on the expected number of joints
+        self.joint_positions = [[] for _ in range(12)]  # Adjust this based on the expected number of joints
         self.time_stamps = []
 
     def listener_callback(self, msg):

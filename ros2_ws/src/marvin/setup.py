@@ -14,8 +14,8 @@ setup(
         ('share/' + package_name, ['package.xml']),
         (os.path.join('share', package_name, 'launch'), glob(os.path.join('launch', '*launch.[pxy][yma]*'))),
         # Add resources directories
-        (os.path.join('share', package_name, 'urdf'), glob(os.path.join('urdf/*'))),
-        (os.path.join('share', package_name, 'meshes'), glob('meshes/*')),
+        (os.path.join('share', package_name, 'urdf'), glob('urdf/*')),
+        (os.path.join('share', package_name, 'meshes', 'stl'), glob('meshes/stl/*')),
         (os.path.join('share', package_name, 'rviz'), glob('rviz/*')),
     ],
     install_requires=['setuptools'],
@@ -28,9 +28,10 @@ setup(
     entry_points={
         'console_scripts': [
             'poseDetection = marvin.poseDetection:main',
+            'poseDisplay = marvin.poseDisplay:main',
             'shoulderAdduction = marvin.shoulderAdduction:main',
             'shoulderFlexion = marvin.shoulderFlexion:main',
-            'elbowJoint = marvin.elbowJoint:main',
+            'elbowFlexion = marvin.elbowFlexion:main',
             'jointStatePublisher = marvin.jointStatePublisher:main',
             'displayJointStates = marvin.displayJointStates:main',
         ],
