@@ -34,11 +34,11 @@ class ShoulderFlexionNode(Node):
         # Calculate vectors and angles based on pre-determined labels
         upper_arm = vector_from_points(points[self.labels[f'{self.side}_shoulder']], points[self.labels[f'{self.side}_elbow']])
         shoulder_to_hip = vector_from_points(points[self.labels[f'{self.side}_shoulder']], points[self.labels[f'{self.side}_hip']])
-        shoulder_to_shoulder = vector_from_points(points[self.labels[f'{self.side}_shoulder']], points[self.labels[f'{self.opposite_side}_shoulder']])
+        hip_to_hip = vector_from_points(points[self.labels[f'{self.side}_hip']], points[self.labels[f'{self.opposite_side}_hip']])
 
         # Project vectors onto the shoulder_to_shoulder plane
-        projected_upper_arm = project_vector_onto_plane(upper_arm, shoulder_to_shoulder)
-        projected_shoulder_to_hip = project_vector_onto_plane(shoulder_to_hip, shoulder_to_shoulder)
+        projected_upper_arm = project_vector_onto_plane(upper_arm, hip_to_hip)
+        projected_shoulder_to_hip = project_vector_onto_plane(shoulder_to_hip, hip_to_hip)
 
         flexion = calculate_angle(projected_upper_arm, projected_shoulder_to_hip)
 
