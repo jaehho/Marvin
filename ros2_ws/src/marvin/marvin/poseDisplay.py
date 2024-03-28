@@ -3,12 +3,11 @@ from rclpy.node import Node
 from custom_interfaces.msg import PoseLandmark
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
-from mpl_toolkits.mplot3d import Axes3D  # Importing for 3D plotting capabilities
 
 class PoseLandmarkVisualizer(Node):
     def __init__(self):
         super().__init__('pose_landmark_visualizer')
-        self.subscription = self.create_subscription(PoseLandmark, 'pose_landmarks', self.pose_landmark_callback, 10)
+        self.subscription = self.create_subscription(PoseLandmark, 'pose_landmarks', self.pose_landmark_callback, 1)
         self.pose_landmarks = []  # This will store the latest landmarks
 
     def pose_landmark_callback(self, msg):
@@ -16,27 +15,101 @@ class PoseLandmarkVisualizer(Node):
         self.pose_landmarks = [{'x': point.x, 'y': point.y, 'z': point.z} for point in msg.point]
 
 def plot_pose_landmarks(node):
-    fig = plt.figure(figsize=(10, 7))
-    ax = fig.add_subplot(111, projection='3d')
-    ax.set_xlabel('X')
-    ax.set_ylabel('Y')
-    ax.set_zlabel('Z')
-    ax.view_init(elev=1, azim=-179) 
+    fig = plt.figure(figsize=(14, 10))
+
+    # Create subplots
+    ax_front = fig.add_subplot(221)  # Front view
+    ax_top = fig.add_subplot(222)  # Top view
+    ax_side = fig.add_subplot(223)  # Side view
+    ax_3d = fig.add_subplot(224, projection='3d')  # 3D view
+
+    # Set labels for each subplot
+    ax_front.set_title('Front View')
+    ax_top.set_title('Top View')
+    ax_side.set_title('Side View')
+    ax_3d.set_title('3D View')
+
+    # Setting labels for 2D plots
+    ax_front.set_xlabel('Y')
+    ax_front.set_ylabel('Z')
+    ax_top.set_xlabel('Y')
+    ax_top.set_ylabel('X')
+    ax_side.set_xlabel('X')
+    ax_side.set_ylabel('Z')
+
+    # Setting labels for 3D plot
+    ax_3d.set_xlabel('X')
+    ax_3d.set_ylabel('Y')
+    ax_3d.set_zlabel('Z')
+
+    # Set limits for all axes
+    default_limits = (-0.5, 0.5)
+    z_limits = (-0.5, 1)
+    ax_front.set_xlim(default_limits)
+    ax_front.set_ylim(z_limits)
+    ax_top.set_xlim(default_limits)
+    ax_top.set_ylim(default_limits)
+    ax_side.set_xlim(default_limits)
+    ax_side.set_ylim(z_limits)
+    ax_3d.set_xlim3d(default_limits)
+    ax_3d.set_ylim3d(default_limits)
+    ax_3d.set_zlim3d(z_limits)
+    ax_3d.view_init(elev=1, azim=-179) 
 
     def update(frame):
-        rclpy.spin_once(node, timeout_sec=0)  # Non-blocking spin to check for new messages
+        rclpy.spin_once(node, timeout_sec=0)  # Check for new messages
         if not node.pose_landmarks:
             return
-        ax.clear()
-        ax.set_xlim3d(-0.5, 0.5)
-        ax.set_ylim3d(-0.5, 0.5)
-        ax.set_zlim3d(-0.5, 0.5)
 
+        # Clear previous points
+        ax_front.cla()
+        ax_top.cla()
+        ax_side.cla()
+        ax_3d.cla()
+        
+        # Set labels for each subplot
+        ax_front.set_title('Front View')
+        ax_top.set_title('Top View')
+        ax_side.set_title('Side View')
+        ax_3d.set_title('3D View')
+
+        # Setting labels for 2D plots
+        ax_front.set_xlabel('Y')
+        ax_front.set_ylabel('Z')
+        ax_top.set_xlabel('Y')
+        ax_top.set_ylabel('X')
+        ax_side.set_xlabel('X')
+        ax_side.set_ylabel('Z')
+
+        # Setting labels for 3D plot
+        ax_3d.set_xlabel('X')
+        ax_3d.set_ylabel('Y')
+        ax_3d.set_zlabel('Z')
+
+        # Set limits for all axes
+        ax_front.set_xlim(default_limits)
+        ax_front.set_ylim(z_limits)
+        ax_top.set_xlim(default_limits)
+        ax_top.set_ylim(default_limits)
+        ax_side.set_xlim(default_limits)
+        ax_side.set_ylim(z_limits)
+        ax_3d.set_xlim3d(default_limits)
+        ax_3d.set_ylim3d(default_limits)
+        ax_3d.set_zlim3d(z_limits)
+
+        # Extract coordinates
         ys = [lm['x'] for lm in node.pose_landmarks]
         zs = [-lm['y'] for lm in node.pose_landmarks]
         xs = [lm['z'] for lm in node.pose_landmarks]
-        ax.scatter(xs, ys, zs, c='blue', marker='o')
-        
+
+        # Plot points in each view
+        flip_xs = [-x for x in xs]
+        flip_ys = [-y for y in ys]
+        ax_front.scatter(flip_ys, zs, c='blue')
+        ax_top.scatter(flip_ys, flip_xs, c='red')
+        ax_side.scatter(xs, zs, c='green')
+        ax_3d.scatter(xs, ys, zs, c='black')
+
         index_mapping = {
             11: 0, 12: 1, 13: 2, 14: 3,
             15: 4, 16: 5, 23: 6, 24: 7,
@@ -48,10 +121,19 @@ def plot_pose_landmarks(node):
         # Apply the mapping to the connections
         connections = [(index_mapping[start_idx], index_mapping[end_idx]) for start_idx, end_idx in original_connections]
         for start_idx, end_idx in connections:
-            ax.plot([xs[start_idx], xs[end_idx]], [ys[start_idx], ys[end_idx]], 
-                            [zs[start_idx], zs[end_idx]], 'ro-')
+            # Front View (use X and Z)
+            ax_front.plot([-ys[start_idx], -ys[end_idx]], [zs[start_idx], zs[end_idx]], 'bo-')
             
-    ani = FuncAnimation(fig, update, interval=100)  # Update the plot every 100 milliseconds
+            # Top View (use X and Y)
+            ax_top.plot([-ys[start_idx], -ys[end_idx]], [-xs[start_idx], -xs[end_idx]], 'ro-')
+            
+            # Side View (use Z and Y)
+            ax_side.plot([xs[start_idx], xs[end_idx]], [zs[start_idx], zs[end_idx]], 'go-')
+            
+            # 3D View
+            ax_3d.plot([xs[start_idx], xs[end_idx]], [ys[start_idx], ys[end_idx]], [zs[start_idx], zs[end_idx]], 'ko-')
+
+    ani = FuncAnimation(fig, update, interval=10)  # Update every 10 ms
     plt.show()
 
 def main(args=None):
