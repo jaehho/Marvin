@@ -43,8 +43,14 @@ class JointStatePublisher(Node):
                 f'{side}_joint1', f'{side}_joint2', f'{side}_joint3',
                 f'{side}_joint4', f'{side}_gripper', f'{side}_gripper_sub'
             ])
+            
+            if side == 'left':
+                shoulder_flexion_angle = self.joint_angles[f'{side}_shoulder_flexion']
+            else:
+                shoulder_flexion_angle = -self.joint_angles[f'{side}_shoulder_flexion']
+            
             joint_positions.extend([
-                self.joint_angles[f'{side}_shoulder_flexion'],
+                shoulder_flexion_angle,
                 -self.joint_angles[f'{side}_shoulder_adduction'] + np.pi / 2,
                 self.joint_angles[f'{side}_elbow_flexion'] + np.pi / 2,
                 0.0, 0.0, 0.0  # Placeholder for other joint values not computed
