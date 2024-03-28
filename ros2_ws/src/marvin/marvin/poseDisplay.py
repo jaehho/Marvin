@@ -1,4 +1,5 @@
 import rclpy
+import tkinter as tk
 from rclpy.node import Node
 from custom_interfaces.msg import PoseLandmark
 import matplotlib.pyplot as plt
@@ -15,13 +16,36 @@ class PoseLandmarkVisualizer(Node):
         self.pose_landmarks = [{'x': point.x, 'y': point.y, 'z': point.z} for point in msg.point]
 
 def plot_pose_landmarks(node):
-    fig = plt.figure(figsize=(14, 10))
+    fig = plt.figure()
 
     # Create subplots
     ax_front = fig.add_subplot(221)  # Front view
     ax_top = fig.add_subplot(222)  # Top view
     ax_side = fig.add_subplot(223)  # Side view
     ax_3d = fig.add_subplot(224, projection='3d')  # 3D view
+
+    def get_screen_size():
+        root = tk.Tk()
+        screen_width = root.winfo_screenwidth()
+        screen_height = root.winfo_screenheight()
+        root.destroy()  # Close the tkinter window as we no longer need it
+        return screen_width, screen_height
+
+    try:
+        # Determine window size and position
+        screen_width, screen_height = get_screen_size()
+        window_width = screen_width // 2
+        window_height = screen_height
+        window_position_x = 0  # Position on the left
+        window_position_y = 0  # Position at the top
+
+        # Format: "widthxheight+x+y"
+        geometry_str = f"{window_width}x{window_height}+{window_position_x}+{window_position_y}"
+
+        # Use the geometry method to set window size and position
+        plt.get_current_fig_manager().window.geometry(geometry_str)
+    except AttributeError as e:
+        print(f"Error adjusting window position and size: {e}")
 
     # Set labels for each subplot
     ax_front.set_title('Front View')
