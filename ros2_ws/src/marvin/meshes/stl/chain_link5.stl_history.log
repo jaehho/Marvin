@@ -1,3 +1,0 @@
-Instantiated with filepath=None->None, scale=[0.0010000000474974513, 0.0010000000474974513, 0.0010000000474974513], mesh=<bpy_struct, Mesh("chain_link5") at 0x7fb85ec18f08>, meshname=chain_link5, material=None, mesh_orientation=None, {}
-->trying export of <bpy_struct, Mesh("chain_link5") at 0x7fb85ec18f08> to /home/mili/marvin/blender/exports/marvin/meshes/stl/chain_link5.stl
-->wrote stl to /home/mili/marvin/blender/exports/marvin/meshes/stl/chain_link5.stl from bpy_types.Mesh

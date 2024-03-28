@@ -5,16 +5,13 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /RobotModel1
-        - /RobotModel1/Description Topic1
-        - /RobotModel1/Links1
-      Splitter Ratio: 0.5
-    Tree Height: 296
+      Splitter Ratio: 0.5977653861045837
+    Tree Height: 427
   - Class: rviz_common/Views
     Expanded:
       - /Current View1
-      - /Current View1/Focal Point1
     Name: Views
-    Splitter Ratio: 0.5
+    Splitter Ratio: 0.6529411673545837
 Visualization Manager:
   Class: ""
   Displays:
@@ -22,9 +19,9 @@ Visualization Manager:
       Cell Size: 1
       Class: rviz_default_plugins/Grid
       Color: 160; 160; 164
-      Enabled: true
+      Enabled: false
       Line Style:
-        Line Width: 0.029999999329447746
+        Line Width: 0.03
         Value: Lines
       Name: Grid
       Normal Cell Count: 0
@@ -35,7 +32,7 @@ Visualization Manager:
       Plane: XY
       Plane Cell Count: 10
       Reference Frame: <Fixed Frame>
-      Value: true
+      Value: false
     - Alpha: 1
       Class: rviz_default_plugins/RobotModel
       Collision Enabled: false
@@ -94,10 +91,6 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        marvin_fixed_frame:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
         right_end_effector_link:
           Alpha: 1
           Show Axes: false
@@ -133,6 +126,10 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
+        world:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
       Mass Properties:
         Inertia: false
         Mass: false
@@ -141,10 +138,24 @@ Visualization Manager:
       Update Interval: 0
       Value: true
       Visual Enabled: true
+    - Class: rviz_default_plugins/TF
+      Enabled: false
+      Frame Timeout: 15
+      Frames:
+        All Enabled: true
+      Marker Scale: 0.2
+      Name: ""
+      Show Arrows: true
+      Show Axes: true
+      Show Names: false
+      Tree:
+        {}
+      Update Interval: 0
+      Value: false
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: marvin_fixed_frame
+    Fixed Frame: world
     Frame Rate: 30
   Name: root
   Tools:
@@ -158,33 +169,33 @@ Visualization Manager:
       Class: rviz_default_plugins/Orbit
       Distance: 1
       Enable Stereo Rendering:
-        Stereo Eye Separation: 0.05999999865889549
+        Stereo Eye Separation: 0.06
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
         X: 0
         Y: 0
-        Z: -0.10000000149011612
+        Z: -0.1
       Focal Shape Fixed Size: false
-      Focal Shape Size: 0.009999999776482582
+      Focal Shape Size: 0.01
       Invert Z Axis: false
       Name: Current View
-      Near Clip Distance: 0.009999999776482582
-      Pitch: 0.20000000298023224
+      Near Clip Distance: 0.01
+      Pitch: 0.17000000178813934
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz_default_plugins)
-      Yaw: 4
+      Yaw: 4.711999893188477
     Saved: ~
 Window Geometry:
   Displays:
     collapsed: false
-  Height: 800
+  Height: 1016
   Hide Left Dock: false
   Hide Right Dock: false
-  QMainWindow State: 000000ff00000000fd0000000100000000000001cb000002c6fc0200000002fb000000100044006900730070006c006100790073010000003d000001ab000000c900fffffffb0000000a0056006900650077007301000001ee00000115000000a400ffffff000002df000002c600000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd0000000100000000000001560000039efc0200000002fb000000100044006900730070006c006100790073010000003d0000022e000000c900fffffffb0000000a0056006900650077007301000002710000016a000000a400ffffff000005de0000039e00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Views:
     collapsed: false
-  Width: 1200
-  X: 2322
-  Y: 133
+  Width: 1850
+  X: 1990
+  Y: 27

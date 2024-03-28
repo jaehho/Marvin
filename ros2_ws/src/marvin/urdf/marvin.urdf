@@ -1,10 +1,10 @@
 <robot name="marvin" version="1.0">
 
-  <link name="marvin_fixed_frame">
+  <link name="world">
   </link>
   <joint name="base_joint" type="fixed">
     <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.00000"/>
-    <parent link="marvin_fixed_frame"/>
+    <parent link="world"/>
     <child link="marvin"/>
   </joint>
 
@@ -78,7 +78,7 @@
   </joint>
   <joint name="right_joint1" type="revolute">
     <limit lower="-2.82743" upper="2.82743" effort="1" velocity="4.80000"/>
-    <origin rpy="-0.00000 1.57080 -0.00000" xyz="0.09700 0.00000 -0.01200"/>
+    <origin rpy="-0.00000 1.57080 -0.00000" xyz="0.09700 -0.00000 -0.01200"/>
     <parent link="marvin"/>
     <child link="right_link2"/>
     <axis xyz="0.00000 0.00000 1.00000"/>
@@ -246,14 +246,14 @@
       </geometry>
     </collision>
     <collision name="right_base_link_collision">
-      <origin rpy="-0.00000 1.57080 -0.00000" xyz="0.08000 0.00000 0.00000"/>
+      <origin rpy="-0.00000 1.57080 -0.00000" xyz="0.08000 -0.00000 0.00000"/>
       <geometry>
-        <mesh filename="package://marvin/meshes/stl/chain_link1.001.stl" scale="0.00100 0.00100 0.00100"/>
+        <mesh filename="package://marvin/meshes/stl/chain_link1.stl" scale="0.00100 0.00100 0.00100"/>
       </geometry>
     </collision>
     <inertial>
       <inertia ixx="0.00003" ixy="0.00000" ixz="-0.00000" iyy="0.00004" iyz="0.00000" izz="0.00004"/>
-      <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 0.00000 -0.00031"/>
+      <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 -0.00000 -0.00031"/>
       <mass value="0.15824"/>
     </inertial>
     <visual name="left_base_link_visual">
@@ -264,10 +264,10 @@
       </geometry>
     </visual>
     <visual name="right_base_link_visual">
-      <origin rpy="-0.00000 1.57080 -0.00000" xyz="0.08000 0.00000 0.00000"/>
+      <origin rpy="-0.00000 1.57080 -0.00000" xyz="0.08000 -0.00000 0.00000"/>
       <material name="grey"/>
       <geometry>
-        <mesh filename="package://marvin/meshes/stl/chain_link1.001.stl" scale="0.00100 0.00100 0.00100"/>
+        <mesh filename="package://marvin/meshes/stl/chain_link1.stl" scale="0.00100 0.00100 0.00100"/>
       </geometry>
     </visual>
   </link>
@@ -289,7 +289,7 @@
     <collision name="right_gripper_link_collision">
       <origin rpy="-0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.00000"/>
       <geometry>
-        <mesh filename="package://marvin/meshes/stl/chain_link_grip_l.001.stl" scale="0.00100 0.00100 0.00100"/>
+        <mesh filename="package://marvin/meshes/stl/chain_link_grip_l.stl" scale="0.00100 0.00100 0.00100"/>
       </geometry>
     </collision>
     <inertial>
@@ -301,7 +301,7 @@
       <origin rpy="-0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.00000"/>
       <material name="grey"/>
       <geometry>
-        <mesh filename="package://marvin/meshes/stl/chain_link_grip_l.001.stl" scale="0.00100 0.00100 0.00100"/>
+        <mesh filename="package://marvin/meshes/stl/chain_link_grip_l.stl" scale="0.00100 0.00100 0.00100"/>
       </geometry>
     </visual>
   </link>
@@ -309,7 +309,7 @@
     <collision name="right_gripper_link_sub_collision">
       <origin rpy="-0.00000 0.00000 0.00000" xyz="0.00000 -0.00000 0.00000"/>
       <geometry>
-        <mesh filename="package://marvin/meshes/stl/chain_link_grip_r.001.stl" scale="0.00100 0.00100 0.00100"/>
+        <mesh filename="package://marvin/meshes/stl/chain_link_grip_r.stl" scale="0.00100 0.00100 0.00100"/>
       </geometry>
     </collision>
     <inertial>
@@ -321,15 +321,15 @@
       <origin rpy="-0.00000 0.00000 0.00000" xyz="0.00000 -0.00000 0.00000"/>
       <material name="grey"/>
       <geometry>
-        <mesh filename="package://marvin/meshes/stl/chain_link_grip_r.001.stl" scale="0.00100 0.00100 0.00100"/>
+        <mesh filename="package://marvin/meshes/stl/chain_link_grip_r.stl" scale="0.00100 0.00100 0.00100"/>
       </geometry>
     </visual>
   </link>
   <link name="right_link2">
     <collision name="right_link2_collision">
-      <origin rpy="-0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.01900"/>
+      <origin rpy="-0.00000 0.00000 0.00000" xyz="0.00000 -0.00000 0.01900"/>
       <geometry>
-        <mesh filename="package://marvin/meshes/stl/chain_link2.001.stl" scale="0.00100 0.00100 0.00100"/>
+        <mesh filename="package://marvin/meshes/stl/chain_link2.stl" scale="0.00100 0.00100 0.00100"/>
       </geometry>
     </collision>
     <inertial>
@@ -338,10 +338,10 @@
       <mass value="0.09841"/>
     </inertial>
     <visual name="right_link2_visual">
-      <origin rpy="-0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.01900"/>
+      <origin rpy="-0.00000 0.00000 0.00000" xyz="0.00000 -0.00000 0.01900"/>
       <material name="grey"/>
       <geometry>
-        <mesh filename="package://marvin/meshes/stl/chain_link2.001.stl" scale="0.00100 0.00100 0.00100"/>
+        <mesh filename="package://marvin/meshes/stl/chain_link2.stl" scale="0.00100 0.00100 0.00100"/>
       </geometry>
     </visual>
   </link>
@@ -349,7 +349,7 @@
     <collision name="right_link3_collision">
       <origin rpy="-0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.00000"/>
       <geometry>
-        <mesh filename="package://marvin/meshes/stl/chain_link3.001.stl" scale="0.00100 0.00100 0.00100"/>
+        <mesh filename="package://marvin/meshes/stl/chain_link3.stl" scale="0.00100 0.00100 0.00100"/>
       </geometry>
     </collision>
     <inertial>
@@ -361,15 +361,15 @@
       <origin rpy="-0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.00000"/>
       <material name="grey"/>
       <geometry>
-        <mesh filename="package://marvin/meshes/stl/chain_link3.001.stl" scale="0.00100 0.00100 0.00100"/>
+        <mesh filename="package://marvin/meshes/stl/chain_link3.stl" scale="0.00100 0.00100 0.00100"/>
       </geometry>
     </visual>
   </link>
   <link name="right_link4">
     <collision name="right_link4_collision">
-      <origin rpy="-0.00000 0.00000 0.00000" xyz="-0.00000 -0.00000 0.00000"/>
+      <origin rpy="-0.00000 0.00000 0.00000" xyz="-0.00000 0.00000 0.00000"/>
       <geometry>
-        <mesh filename="package://marvin/meshes/stl/chain_link4.001.stl" scale="0.00100 0.00100 0.00100"/>
+        <mesh filename="package://marvin/meshes/stl/chain_link4.stl" scale="0.00100 0.00100 0.00100"/>
       </geometry>
     </collision>
     <inertial>
@@ -378,10 +378,10 @@
       <mass value="0.13275"/>
     </inertial>
     <visual name="right_link4_visual">
-      <origin rpy="-0.00000 0.00000 0.00000" xyz="-0.00000 -0.00000 0.00000"/>
+      <origin rpy="-0.00000 0.00000 0.00000" xyz="-0.00000 0.00000 0.00000"/>
       <material name="grey"/>
       <geometry>
-        <mesh filename="package://marvin/meshes/stl/chain_link4.001.stl" scale="0.00100 0.00100 0.00100"/>
+        <mesh filename="package://marvin/meshes/stl/chain_link4.stl" scale="0.00100 0.00100 0.00100"/>
       </geometry>
     </visual>
   </link>
@@ -389,7 +389,7 @@
     <collision name="right_link5_collision">
       <origin rpy="-0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.00000"/>
       <geometry>
-        <mesh filename="package://marvin/meshes/stl/chain_link5.001.stl" scale="0.00100 0.00100 0.00100"/>
+        <mesh filename="package://marvin/meshes/stl/chain_link5.stl" scale="0.00100 0.00100 0.00100"/>
       </geometry>
     </collision>
     <inertial>
@@ -401,7 +401,7 @@
       <origin rpy="-0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.00000"/>
       <material name="grey"/>
       <geometry>
-        <mesh filename="package://marvin/meshes/stl/chain_link5.001.stl" scale="0.00100 0.00100 0.00100"/>
+        <mesh filename="package://marvin/meshes/stl/chain_link5.stl" scale="0.00100 0.00100 0.00100"/>
       </geometry>
     </visual>
   </link>
