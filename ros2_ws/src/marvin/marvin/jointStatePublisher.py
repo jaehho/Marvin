@@ -52,7 +52,7 @@ class JointStatePublisher(Node):
             joint_positions.extend([
                 shoulder_flexion_angle,
                 -self.joint_angles[f'{side}_shoulder_adduction'] + np.pi / 2,
-                self.joint_angles[f'{side}_elbow_flexion'] + np.pi / 2,
+                -self.joint_angles[f'{side}_elbow_flexion'] + np.pi / 2,
                 0.0, 0.0, 0.0  # Placeholder for other joint values not computed
             ])
         

@@ -1,4 +1,6 @@
+from curses import window
 import rclpy
+import  subprocess
 from rclpy.node import Node
 from sensor_msgs.msg import JointState
 import matplotlib.pyplot as plt
@@ -51,21 +53,56 @@ class JointStateSubscriber(Node):
 def plot_joint_positions(node):
     fig, ax = plt.subplots()
 
+
+    def get_monitors_dimensions():
+        try:
+            # Execute xrandr to get display information
+            result = subprocess.run(['xrandr'], stdout=subprocess.PIPE, check=True)
+            output = result.stdout.decode('utf-8')
+
+            # Initialize variables
+            primary_dimensions = None
+            secondary_dimensions = None
+
+            # Search through each line of the xrandr output
+            for line in output.splitlines():
+                # Look for lines indicating a connected monitor and its resolution
+                if " connected" in line:
+                    dimensions_part = line.split()  # Split each part of the line
+                    for part in dimensions_part:
+                        # Check if part contains resolution information (e.g., 1920x1080)
+                        if 'x' in part and '+' in part:
+                            dimensions = part.split('+')[0]  # Extract resolution
+                            width, height = map(int, dimensions.split('x'))
+                            # Determine if the monitor is primary or secondary based on order of detection
+                            if "primary" in line:
+                                primary_dimensions = (width, height)
+                            elif not secondary_dimensions:  # Assign to secondary if not already assigned
+                                secondary_dimensions = (width, height)
+                            break  # Break the loop once dimensions are found
+
+            # Set default dimensions if not detected
+            if not primary_dimensions:
+                primary_dimensions = (1920, 1080)
+            if not secondary_dimensions:
+                secondary_dimensions = "No secondary monitor detected"
+
+            return primary_dimensions, secondary_dimensions
+        except subprocess.CalledProcessError as e:
+            print(f"Failed to get monitor dimensions: {e}")
+            return (1920, 1080), "No secondary monitor detected"
+    
+    primary, secondary = get_monitors_dimensions()
+    screen_width, screen_height = primary
+    window_width = screen_width // 2
+    window_height = screen_height // 2
+    window_position_x = window_width
+    window_position_y = 0
+    geometry_str = f"{window_width}x{window_height}+{window_position_x}+{window_position_y}"
+
     try:
-        # Determine window size and position
-        screen_width = 1920  # or use your actual screen width
-        screen_height = 1080  # or use your actual screen height
-        window_width = screen_width // 2
-        window_height = screen_height
-        window_position_x = screen_width // 2  # Position on the left
-        window_position_y = 0  # Position at the top
-
-        # Format: "widthxheight+x+y"
-        geometry_str = f"{window_width}x{window_height}+{window_position_x}+{window_position_y}"
-
-        # Use the geometry method to set window size and position
         plt.get_current_fig_manager().window.geometry(geometry_str)
-    except AttributeError as e:
+    except Exception as e:
         print(f"Error adjusting window position and size: {e}")
 
     ax.set_title('Joint Angles Over Time (Last 10 seconds)')
