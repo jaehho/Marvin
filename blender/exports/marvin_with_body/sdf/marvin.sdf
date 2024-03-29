@@ -1,0 +1,805 @@
+<sdf version="1.9">
+<model name="marvin" canonical_link="body">
+  <joint name="left_end_effector_joint" type="fixed">
+    <pose relative_to="left_link5">0.12600 -0.00000 0.00000 -0.00000 0.00000 -0.00000</pose>
+    <parent>left_link5</parent>
+    <child>left_end_effector_link</child>
+    <axis/>
+  </joint>
+  <joint name="left_gripper" type="prismatic">
+    <pose relative_to="left_link5">0.08170 0.02100 0.00000 -0.00000 0.00000 -0.00000</pose>
+    <parent>left_link5</parent>
+    <child>left_gripper_link</child>
+    <axis>
+      <limit>
+        <lower>-0.01000</lower>
+        <upper>0.01900</upper>
+        <effort>1</effort>
+        <velocity>4.80000</velocity>
+      </limit>
+      <xyz>0.00000 1.00000 0.00000</xyz>
+    </axis>
+  </joint>
+  <joint name="left_gripper_sub" type="prismatic">
+    <mimic multiplier="1.00000" offset="0.00000" joint="left_gripper"/>
+    <pose relative_to="left_link5">0.08170 -0.02100 0.00000 -0.00000 0.00000 -0.00000</pose>
+    <parent>left_link5</parent>
+    <child>left_gripper_link_sub</child>
+    <axis>
+      <limit>
+        <lower>-0.01000</lower>
+        <upper>0.01900</upper>
+        <effort>1</effort>
+        <velocity>4.80000</velocity>
+      </limit>
+      <xyz>0.00000 -1.00000 0.00000</xyz>
+    </axis>
+  </joint>
+  <joint name="left_joint1" type="revolute">
+    <pose relative_to="marvin">-0.09700 -0.00000 -0.01200 3.14159 1.57080 -0.00000</pose>
+    <parent>marvin</parent>
+    <child>left_link2</child>
+    <axis>
+      <limit>
+        <lower>-2.82743</lower>
+        <upper>2.82743</upper>
+        <effort>1</effort>
+        <velocity>4.80000</velocity>
+      </limit>
+      <xyz>0.00000 0.00000 1.00000</xyz>
+    </axis>
+  </joint>
+  <joint name="left_joint2" type="revolute">
+    <pose relative_to="left_link2">-0.00000 -0.00000 0.05950 -0.00000 0.00000 -0.00000</pose>
+    <parent>left_link2</parent>
+    <child>left_link3</child>
+    <axis>
+      <limit>
+        <lower>-1.79071</lower>
+        <upper>1.57080</upper>
+        <effort>1</effort>
+        <velocity>4.80000</velocity>
+      </limit>
+      <xyz>0.00000 1.00000 0.00000</xyz>
+    </axis>
+  </joint>
+  <joint name="left_joint3" type="revolute">
+    <pose relative_to="left_link3">0.02400 -0.00000 0.12800 -0.00000 0.00000 -0.00000</pose>
+    <parent>left_link3</parent>
+    <child>left_link4</child>
+    <axis>
+      <limit>
+        <lower>-0.94248</lower>
+        <upper>1.38230</upper>
+        <effort>1</effort>
+        <velocity>4.80000</velocity>
+      </limit>
+      <xyz>0.00000 1.00000 0.00000</xyz>
+    </axis>
+  </joint>
+  <joint name="left_joint4" type="revolute">
+    <pose relative_to="left_link4">0.12400 -0.00000 0.00000 -0.00000 0.00000 -0.00000</pose>
+    <parent>left_link4</parent>
+    <child>left_link5</child>
+    <axis>
+      <limit>
+        <lower>-1.79071</lower>
+        <upper>2.04204</upper>
+        <effort>1</effort>
+        <velocity>4.80000</velocity>
+      </limit>
+      <xyz>0.00000 1.00000 0.00000</xyz>
+    </axis>
+  </joint>
+  <joint name="marvin_to_body" type="fixed">
+    <pose relative_to="body">0.00000 0.00000 0.00000 0.00000 0.00000 0.00000</pose>
+    <parent>body</parent>
+    <child>marvin</child>
+    <axis/>
+  </joint>
+  <joint name="right_end_effector_joint" type="fixed">
+    <pose relative_to="right_link5">0.12600 0.00000 -0.00000 -0.00000 0.00000 0.00000</pose>
+    <parent>right_link5</parent>
+    <child>right_end_effector_link</child>
+    <axis/>
+  </joint>
+  <joint name="right_gripper" type="prismatic">
+    <pose relative_to="right_link5">0.08170 0.02100 -0.00000 -0.00000 0.00000 0.00000</pose>
+    <parent>right_link5</parent>
+    <child>right_gripper_link</child>
+    <axis>
+      <limit>
+        <lower>-0.01000</lower>
+        <upper>0.01900</upper>
+        <effort>1</effort>
+        <velocity>4.80000</velocity>
+      </limit>
+      <xyz>0.00000 1.00000 0.00000</xyz>
+    </axis>
+  </joint>
+  <joint name="right_gripper_sub" type="prismatic">
+    <mimic multiplier="1.00000" offset="0.00000" joint="right_gripper"/>
+    <pose relative_to="right_link5">0.08170 -0.02100 -0.00000 -0.00000 0.00000 0.00000</pose>
+    <parent>right_link5</parent>
+    <child>right_gripper_link_sub</child>
+    <axis>
+      <limit>
+        <lower>-0.01000</lower>
+        <upper>0.01900</upper>
+        <effort>1</effort>
+        <velocity>4.80000</velocity>
+      </limit>
+      <xyz>0.00000 -1.00000 0.00000</xyz>
+    </axis>
+  </joint>
+  <joint name="right_joint1" type="revolute">
+    <pose relative_to="marvin">0.09700 -0.00000 -0.01200 -0.00000 1.57080 -0.00000</pose>
+    <parent>marvin</parent>
+    <child>right_link2</child>
+    <axis>
+      <limit>
+        <lower>-2.82743</lower>
+        <upper>2.82743</upper>
+        <effort>1</effort>
+        <velocity>4.80000</velocity>
+      </limit>
+      <xyz>0.00000 0.00000 1.00000</xyz>
+    </axis>
+  </joint>
+  <joint name="right_joint2" type="revolute">
+    <pose relative_to="right_link2">0.00000 0.00000 0.05950 -0.00000 0.00000 0.00000</pose>
+    <parent>right_link2</parent>
+    <child>right_link3</child>
+    <axis>
+      <limit>
+        <lower>-1.79071</lower>
+        <upper>1.57080</upper>
+        <effort>1</effort>
+        <velocity>4.80000</velocity>
+      </limit>
+      <xyz>0.00000 1.00000 0.00000</xyz>
+    </axis>
+  </joint>
+  <joint name="right_joint3" type="revolute">
+    <pose relative_to="right_link3">0.02400 0.00000 0.12800 -0.00000 0.00000 0.00000</pose>
+    <parent>right_link3</parent>
+    <child>right_link4</child>
+    <axis>
+      <limit>
+        <lower>-0.94248</lower>
+        <upper>1.38230</upper>
+        <effort>1</effort>
+        <velocity>4.80000</velocity>
+      </limit>
+      <xyz>0.00000 1.00000 0.00000</xyz>
+    </axis>
+  </joint>
+  <joint name="right_joint4" type="revolute">
+    <pose relative_to="right_link4">0.12400 0.00000 -0.00000 -0.00000 0.00000 0.00000</pose>
+    <parent>right_link4</parent>
+    <child>right_link5</child>
+    <axis>
+      <limit>
+        <lower>-1.79071</lower>
+        <upper>2.04204</upper>
+        <effort>1</effort>
+        <velocity>4.80000</velocity>
+      </limit>
+      <xyz>0.00000 1.00000 0.00000</xyz>
+    </axis>
+  </joint>
+  <link name="body">
+    <collision name="Cube">
+      <pose relative_to="body">0.00000 0.00000 0.00000 0.00000 0.00000 0.00000</pose>
+      <geometry>
+        <box>
+          <size>0.16000 0.06000 0.60000</size>
+        </box>
+      </geometry>
+      <surface>
+        <contact/>
+      </surface>
+    </collision>
+  </link>
+  <link name="left_end_effector_link">
+    <inertial>
+      <inertia>
+        <ixx>0.00100</ixx>
+        <ixy>0.00000</ixy>
+        <ixz>0.00000</ixz>
+        <iyy>0.00100</iyy>
+        <iyz>0.00000</iyz>
+        <izz>0.00100</izz>
+      </inertia>
+      <pose relative_to="left_end_effector_link">0.00000 0.00000 0.00000 0.00000 0.00000 0.00000</pose>
+      <mass>0.00100</mass>
+    </inertial>
+    <visual name="left_end_effector_link_visual">
+      <material>
+        <diffuse>0.80000 0.00000 0.00000 1.00000</diffuse>
+        <specular>0.02745 0.02745 0.02745 1.00000</specular>
+        <emissive>0.00000 0.00000 0.00000 1.00000</emissive>
+      </material>
+      <pose relative_to="left_end_effector_link">0.00000 -0.00000 0.00000 -0.00000 0.00000 -0.00000</pose>
+      <geometry>
+        <box>
+          <size>0.01000 0.01000 0.01000</size>
+        </box>
+      </geometry>
+    </visual>
+  </link>
+  <link name="left_gripper_link">
+    <collision name="left_gripper_link_collision">
+      <pose relative_to="left_gripper_link">0.00000 0.00000 -0.00000 -0.00000 -0.00000 -0.00000</pose>
+      <geometry>
+        <mesh>
+          <uri>package://marvin/meshes/stl/chain_link_grip_l.stl</uri>
+          <scale>0.00100 0.00100 0.00100</scale>
+        </mesh>
+      </geometry>
+      <surface>
+        <contact/>
+      </surface>
+    </collision>
+    <inertial>
+      <inertia>
+        <ixx>0.00100</ixx>
+        <ixy>0.00000</ixy>
+        <ixz>0.00000</ixz>
+        <iyy>0.00100</iyy>
+        <iyz>0.00000</iyz>
+        <izz>0.00100</izz>
+      </inertia>
+      <pose relative_to="left_gripper_link">0.00000 0.00000 0.00000 0.00000 0.00000 0.00000</pose>
+      <mass>0.00100</mass>
+    </inertial>
+    <visual name="left_gripper_link_visual">
+      <material>
+        <diffuse>0.49804 0.49804 0.49804 1.00000</diffuse>
+        <specular>0.02745 0.02745 0.02745 1.00000</specular>
+        <emissive>0.00000 0.00000 0.00000 1.00000</emissive>
+      </material>
+      <pose relative_to="left_gripper_link">0.00000 0.00000 -0.00000 -0.00000 -0.00000 -0.00000</pose>
+      <geometry>
+        <mesh>
+          <uri>package://marvin/meshes/stl/chain_link_grip_l.stl</uri>
+          <scale>0.00100 0.00100 0.00100</scale>
+        </mesh>
+      </geometry>
+    </visual>
+  </link>
+  <link name="left_gripper_link_sub">
+    <collision name="left_gripper_link_sub_collision">
+      <pose relative_to="left_gripper_link_sub">-0.00000 0.00000 -0.00000 -0.00000 -0.00000 -0.00000</pose>
+      <geometry>
+        <mesh>
+          <uri>package://marvin/meshes/stl/chain_link_grip_r.stl</uri>
+          <scale>0.00100 0.00100 0.00100</scale>
+        </mesh>
+      </geometry>
+      <surface>
+        <contact/>
+      </surface>
+    </collision>
+    <inertial>
+      <inertia>
+        <ixx>0.00100</ixx>
+        <ixy>0.00000</ixy>
+        <ixz>0.00000</ixz>
+        <iyy>0.00100</iyy>
+        <iyz>0.00000</iyz>
+        <izz>0.00100</izz>
+      </inertia>
+      <pose relative_to="left_gripper_link_sub">0.00000 0.00000 0.00000 0.00000 0.00000 0.00000</pose>
+      <mass>0.00100</mass>
+    </inertial>
+    <visual name="left_gripper_link_sub_visual">
+      <material>
+        <diffuse>0.49804 0.49804 0.49804 1.00000</diffuse>
+        <specular>0.02745 0.02745 0.02745 1.00000</specular>
+        <emissive>0.00000 0.00000 0.00000 1.00000</emissive>
+      </material>
+      <pose relative_to="left_gripper_link_sub">-0.00000 0.00000 -0.00000 -0.00000 -0.00000 -0.00000</pose>
+      <geometry>
+        <mesh>
+          <uri>package://marvin/meshes/stl/chain_link_grip_r.stl</uri>
+          <scale>0.00100 0.00100 0.00100</scale>
+        </mesh>
+      </geometry>
+    </visual>
+  </link>
+  <link name="left_link2">
+    <collision name="left_link2_collision">
+      <pose relative_to="left_link2">-0.00000 -0.00000 0.01900 -0.00000 -0.00000 -0.00000</pose>
+      <geometry>
+        <mesh>
+          <uri>package://marvin/meshes/stl/chain_link2.stl</uri>
+          <scale>0.00100 0.00100 0.00100</scale>
+        </mesh>
+      </geometry>
+      <surface>
+        <contact/>
+      </surface>
+    </collision>
+    <inertial>
+      <inertia>
+        <ixx>0.00003</ixx>
+        <ixy>-0.00000</ixy>
+        <ixz>-0.00000</ixz>
+        <iyy>0.00003</iyy>
+        <iyz>0.00000</iyz>
+        <izz>0.00002</izz>
+      </inertia>
+      <pose relative_to="left_link2">-0.00030 0.00054 0.04743 0.00000 0.00000 0.00000</pose>
+      <mass>0.09841</mass>
+    </inertial>
+    <visual name="left_link2_visual">
+      <material>
+        <diffuse>0.49804 0.49804 0.49804 1.00000</diffuse>
+        <specular>0.02745 0.02745 0.02745 1.00000</specular>
+        <emissive>0.00000 0.00000 0.00000 1.00000</emissive>
+      </material>
+      <pose relative_to="left_link2">-0.00000 -0.00000 0.01900 -0.00000 -0.00000 -0.00000</pose>
+      <geometry>
+        <mesh>
+          <uri>package://marvin/meshes/stl/chain_link2.stl</uri>
+          <scale>0.00100 0.00100 0.00100</scale>
+        </mesh>
+      </geometry>
+    </visual>
+  </link>
+  <link name="left_link3">
+    <collision name="left_link3_collision">
+      <pose relative_to="left_link3">-0.00000 -0.00000 0.00000 -0.00000 -0.00000 -0.00000</pose>
+      <geometry>
+        <mesh>
+          <uri>package://marvin/meshes/stl/chain_link3.stl</uri>
+          <scale>0.00100 0.00100 0.00100</scale>
+        </mesh>
+      </geometry>
+      <surface>
+        <contact/>
+      </surface>
+    </collision>
+    <inertial>
+      <inertia>
+        <ixx>0.00033</ixx>
+        <ixy>-0.00000</ixy>
+        <ixz>-0.00004</ixz>
+        <iyy>0.00034</iyy>
+        <iyz>-0.00000</iyz>
+        <izz>0.00006</izz>
+      </inertia>
+      <pose relative_to="left_link3">0.01031 0.00038 0.10170 0.00000 0.00000 0.00000</pose>
+      <mass>0.13851</mass>
+    </inertial>
+    <visual name="left_link3_visual">
+      <material>
+        <diffuse>0.49804 0.49804 0.49804 1.00000</diffuse>
+        <specular>0.02745 0.02745 0.02745 1.00000</specular>
+        <emissive>0.00000 0.00000 0.00000 1.00000</emissive>
+      </material>
+      <pose relative_to="left_link3">-0.00000 -0.00000 0.00000 -0.00000 -0.00000 -0.00000</pose>
+      <geometry>
+        <mesh>
+          <uri>package://marvin/meshes/stl/chain_link3.stl</uri>
+          <scale>0.00100 0.00100 0.00100</scale>
+        </mesh>
+      </geometry>
+    </visual>
+  </link>
+  <link name="left_link4">
+    <collision name="left_link4_collision">
+      <pose relative_to="left_link4">0.00000 -0.00000 0.00000 -0.00000 -0.00000 -0.00000</pose>
+      <geometry>
+        <mesh>
+          <uri>package://marvin/meshes/stl/chain_link4.stl</uri>
+          <scale>0.00100 0.00100 0.00100</scale>
+        </mesh>
+      </geometry>
+      <surface>
+        <contact/>
+      </surface>
+    </collision>
+    <inertial>
+      <inertia>
+        <ixx>0.00003</ixx>
+        <ixy>-0.00000</ixy>
+        <ixz>-0.00000</ixz>
+        <iyy>0.00024</iyy>
+        <iyz>0.00000</iyz>
+        <izz>0.00025</izz>
+      </inertia>
+      <pose relative_to="left_link4">0.09091 0.00039 0.00022 0.00000 0.00000 0.00000</pose>
+      <mass>0.13275</mass>
+    </inertial>
+    <visual name="left_link4_visual">
+      <material>
+        <diffuse>0.49804 0.49804 0.49804 1.00000</diffuse>
+        <specular>0.02745 0.02745 0.02745 1.00000</specular>
+        <emissive>0.00000 0.00000 0.00000 1.00000</emissive>
+      </material>
+      <pose relative_to="left_link4">0.00000 -0.00000 0.00000 -0.00000 -0.00000 -0.00000</pose>
+      <geometry>
+        <mesh>
+          <uri>package://marvin/meshes/stl/chain_link4.stl</uri>
+          <scale>0.00100 0.00100 0.00100</scale>
+        </mesh>
+      </geometry>
+    </visual>
+  </link>
+  <link name="left_link5">
+    <collision name="left_link5_collision">
+      <pose relative_to="left_link5">-0.00000 -0.00000 0.00000 -0.00000 -0.00000 -0.00000</pose>
+      <geometry>
+        <mesh>
+          <uri>package://marvin/meshes/stl/chain_link5.stl</uri>
+          <scale>0.00100 0.00100 0.00100</scale>
+        </mesh>
+      </geometry>
+      <surface>
+        <contact/>
+      </surface>
+    </collision>
+    <inertial>
+      <inertia>
+        <ixx>0.00008</ixx>
+        <ixy>0.00000</ixy>
+        <ixz>-0.00000</ixz>
+        <iyy>0.00008</iyy>
+        <iyz>0.00000</iyz>
+        <izz>0.00009</izz>
+      </inertia>
+      <pose relative_to="left_link5">0.04421 0.00000 0.00891 0.00000 0.00000 0.00000</pose>
+      <mass>0.14328</mass>
+    </inertial>
+    <visual name="left_link5_visual">
+      <material>
+        <diffuse>0.49804 0.49804 0.49804 1.00000</diffuse>
+        <specular>0.02745 0.02745 0.02745 1.00000</specular>
+        <emissive>0.00000 0.00000 0.00000 1.00000</emissive>
+      </material>
+      <pose relative_to="left_link5">-0.00000 -0.00000 0.00000 -0.00000 -0.00000 -0.00000</pose>
+      <geometry>
+        <mesh>
+          <uri>package://marvin/meshes/stl/chain_link5.stl</uri>
+          <scale>0.00100 0.00100 0.00100</scale>
+        </mesh>
+      </geometry>
+    </visual>
+  </link>
+  <link name="marvin">
+    <collision name="left_base_link_collision">
+      <pose relative_to="marvin">-0.08000 0.00000 0.00000 3.14159 1.57080 -0.00000</pose>
+      <geometry>
+        <mesh>
+          <uri>package://marvin/meshes/stl/chain_link1.stl</uri>
+          <scale>0.00100 0.00100 0.00100</scale>
+        </mesh>
+      </geometry>
+      <surface>
+        <contact/>
+      </surface>
+    </collision>
+    <collision name="right_base_link_collision">
+      <pose relative_to="marvin">0.08000 -0.00000 0.00000 -0.00000 1.57080 -0.00000</pose>
+      <geometry>
+        <mesh>
+          <uri>package://marvin/meshes/stl/chain_link1.stl</uri>
+          <scale>0.00100 0.00100 0.00100</scale>
+        </mesh>
+      </geometry>
+      <surface>
+        <contact/>
+      </surface>
+    </collision>
+    <inertial>
+      <inertia>
+        <ixx>0.00003</ixx>
+        <ixy>0.00000</ixy>
+        <ixz>-0.00000</ixz>
+        <iyy>0.00004</iyy>
+        <iyz>0.00000</iyz>
+        <izz>0.00004</izz>
+      </inertia>
+      <pose relative_to="marvin">0.00000 -0.00000 -0.00031 0.00000 0.00000 0.00000</pose>
+      <mass>0.15824</mass>
+    </inertial>
+    <visual name="left_base_link_visual">
+      <material>
+        <diffuse>0.49804 0.49804 0.49804 1.00000</diffuse>
+        <specular>0.02745 0.02745 0.02745 1.00000</specular>
+        <emissive>0.00000 0.00000 0.00000 1.00000</emissive>
+      </material>
+      <pose relative_to="marvin">-0.08000 0.00000 0.00000 3.14159 1.57080 -0.00000</pose>
+      <geometry>
+        <mesh>
+          <uri>package://marvin/meshes/stl/chain_link1.stl</uri>
+          <scale>0.00100 0.00100 0.00100</scale>
+        </mesh>
+      </geometry>
+    </visual>
+    <visual name="right_base_link_visual">
+      <material>
+        <diffuse>0.49804 0.49804 0.49804 1.00000</diffuse>
+        <specular>0.02745 0.02745 0.02745 1.00000</specular>
+        <emissive>0.00000 0.00000 0.00000 1.00000</emissive>
+      </material>
+      <pose relative_to="marvin">0.08000 -0.00000 0.00000 -0.00000 1.57080 -0.00000</pose>
+      <geometry>
+        <mesh>
+          <uri>package://marvin/meshes/stl/chain_link1.stl</uri>
+          <scale>0.00100 0.00100 0.00100</scale>
+        </mesh>
+      </geometry>
+    </visual>
+  </link>
+  <link name="right_end_effector_link">
+    <inertial>
+      <inertia>
+        <ixx>0.00100</ixx>
+        <ixy>0.00000</ixy>
+        <ixz>0.00000</ixz>
+        <iyy>0.00100</iyy>
+        <iyz>0.00000</iyz>
+        <izz>0.00100</izz>
+      </inertia>
+      <pose relative_to="right_end_effector_link">-0.00000 0.00000 0.00000 0.00000 0.00000 0.00000</pose>
+      <mass>0.00100</mass>
+    </inertial>
+    <visual name="right_end_effector_link_visual">
+      <material>
+        <diffuse>0.80000 0.00000 0.00000 1.00000</diffuse>
+        <specular>0.02745 0.02745 0.02745 1.00000</specular>
+        <emissive>0.00000 0.00000 0.00000 1.00000</emissive>
+      </material>
+      <pose relative_to="right_end_effector_link">0.00000 -0.00000 0.00000 -0.00000 0.00000 0.00000</pose>
+      <geometry>
+        <box>
+          <size>0.01000 0.01000 0.01000</size>
+        </box>
+      </geometry>
+    </visual>
+  </link>
+  <link name="right_gripper_link">
+    <collision name="right_gripper_link_collision">
+      <pose relative_to="right_gripper_link">0.00000 0.00000 0.00000 -0.00000 0.00000 0.00000</pose>
+      <geometry>
+        <mesh>
+          <uri>package://marvin/meshes/stl/chain_link_grip_l.stl</uri>
+          <scale>0.00100 0.00100 0.00100</scale>
+        </mesh>
+      </geometry>
+      <surface>
+        <contact/>
+      </surface>
+    </collision>
+    <inertial>
+      <inertia>
+        <ixx>0.00100</ixx>
+        <ixy>0.00000</ixy>
+        <ixz>0.00000</ixz>
+        <iyy>0.00100</iyy>
+        <iyz>0.00000</iyz>
+        <izz>0.00100</izz>
+      </inertia>
+      <pose relative_to="right_gripper_link">-0.00000 0.00000 0.00000 0.00000 0.00000 0.00000</pose>
+      <mass>0.00100</mass>
+    </inertial>
+    <visual name="right_gripper_link_visual">
+      <material>
+        <diffuse>0.49804 0.49804 0.49804 1.00000</diffuse>
+        <specular>0.02745 0.02745 0.02745 1.00000</specular>
+        <emissive>0.00000 0.00000 0.00000 1.00000</emissive>
+      </material>
+      <pose relative_to="right_gripper_link">0.00000 0.00000 0.00000 -0.00000 0.00000 0.00000</pose>
+      <geometry>
+        <mesh>
+          <uri>package://marvin/meshes/stl/chain_link_grip_l.stl</uri>
+          <scale>0.00100 0.00100 0.00100</scale>
+        </mesh>
+      </geometry>
+    </visual>
+  </link>
+  <link name="right_gripper_link_sub">
+    <collision name="right_gripper_link_sub_collision">
+      <pose relative_to="right_gripper_link_sub">0.00000 -0.00000 0.00000 -0.00000 0.00000 0.00000</pose>
+      <geometry>
+        <mesh>
+          <uri>package://marvin/meshes/stl/chain_link_grip_r.stl</uri>
+          <scale>0.00100 0.00100 0.00100</scale>
+        </mesh>
+      </geometry>
+      <surface>
+        <contact/>
+      </surface>
+    </collision>
+    <inertial>
+      <inertia>
+        <ixx>0.00100</ixx>
+        <ixy>0.00000</ixy>
+        <ixz>0.00000</ixz>
+        <iyy>0.00100</iyy>
+        <iyz>0.00000</iyz>
+        <izz>0.00100</izz>
+      </inertia>
+      <pose relative_to="right_gripper_link_sub">-0.00000 0.00000 0.00000 0.00000 0.00000 0.00000</pose>
+      <mass>0.00100</mass>
+    </inertial>
+    <visual name="right_gripper_link_sub_visual">
+      <material>
+        <diffuse>0.49804 0.49804 0.49804 1.00000</diffuse>
+        <specular>0.02745 0.02745 0.02745 1.00000</specular>
+        <emissive>0.00000 0.00000 0.00000 1.00000</emissive>
+      </material>
+      <pose relative_to="right_gripper_link_sub">0.00000 -0.00000 0.00000 -0.00000 0.00000 0.00000</pose>
+      <geometry>
+        <mesh>
+          <uri>package://marvin/meshes/stl/chain_link_grip_r.stl</uri>
+          <scale>0.00100 0.00100 0.00100</scale>
+        </mesh>
+      </geometry>
+    </visual>
+  </link>
+  <link name="right_link2">
+    <collision name="right_link2_collision">
+      <pose relative_to="right_link2">0.00000 -0.00000 0.01900 -0.00000 0.00000 0.00000</pose>
+      <geometry>
+        <mesh>
+          <uri>package://marvin/meshes/stl/chain_link2.stl</uri>
+          <scale>0.00100 0.00100 0.00100</scale>
+        </mesh>
+      </geometry>
+      <surface>
+        <contact/>
+      </surface>
+    </collision>
+    <inertial>
+      <inertia>
+        <ixx>0.00003</ixx>
+        <ixy>-0.00000</ixy>
+        <ixz>-0.00000</ixz>
+        <iyy>0.00003</iyy>
+        <iyz>0.00000</iyz>
+        <izz>0.00002</izz>
+      </inertia>
+      <pose relative_to="right_link2">-0.00030 0.00054 0.04743 0.00000 0.00000 0.00000</pose>
+      <mass>0.09841</mass>
+    </inertial>
+    <visual name="right_link2_visual">
+      <material>
+        <diffuse>0.49804 0.49804 0.49804 1.00000</diffuse>
+        <specular>0.02745 0.02745 0.02745 1.00000</specular>
+        <emissive>0.00000 0.00000 0.00000 1.00000</emissive>
+      </material>
+      <pose relative_to="right_link2">0.00000 -0.00000 0.01900 -0.00000 0.00000 0.00000</pose>
+      <geometry>
+        <mesh>
+          <uri>package://marvin/meshes/stl/chain_link2.stl</uri>
+          <scale>0.00100 0.00100 0.00100</scale>
+        </mesh>
+      </geometry>
+    </visual>
+  </link>
+  <link name="right_link3">
+    <collision name="right_link3_collision">
+      <pose relative_to="right_link3">0.00000 0.00000 0.00000 -0.00000 0.00000 0.00000</pose>
+      <geometry>
+        <mesh>
+          <uri>package://marvin/meshes/stl/chain_link3.stl</uri>
+          <scale>0.00100 0.00100 0.00100</scale>
+        </mesh>
+      </geometry>
+      <surface>
+        <contact/>
+      </surface>
+    </collision>
+    <inertial>
+      <inertia>
+        <ixx>0.00033</ixx>
+        <ixy>-0.00000</ixy>
+        <ixz>-0.00004</ixz>
+        <iyy>0.00034</iyy>
+        <iyz>-0.00000</iyz>
+        <izz>0.00006</izz>
+      </inertia>
+      <pose relative_to="right_link3">0.01031 0.00038 0.10170 0.00000 0.00000 0.00000</pose>
+      <mass>0.13851</mass>
+    </inertial>
+    <visual name="right_link3_visual">
+      <material>
+        <diffuse>0.49804 0.49804 0.49804 1.00000</diffuse>
+        <specular>0.02745 0.02745 0.02745 1.00000</specular>
+        <emissive>0.00000 0.00000 0.00000 1.00000</emissive>
+      </material>
+      <pose relative_to="right_link3">0.00000 0.00000 0.00000 -0.00000 0.00000 0.00000</pose>
+      <geometry>
+        <mesh>
+          <uri>package://marvin/meshes/stl/chain_link3.stl</uri>
+          <scale>0.00100 0.00100 0.00100</scale>
+        </mesh>
+      </geometry>
+    </visual>
+  </link>
+  <link name="right_link4">
+    <collision name="right_link4_collision">
+      <pose relative_to="right_link4">-0.00000 0.00000 0.00000 -0.00000 0.00000 0.00000</pose>
+      <geometry>
+        <mesh>
+          <uri>package://marvin/meshes/stl/chain_link4.stl</uri>
+          <scale>0.00100 0.00100 0.00100</scale>
+        </mesh>
+      </geometry>
+      <surface>
+        <contact/>
+      </surface>
+    </collision>
+    <inertial>
+      <inertia>
+        <ixx>0.00003</ixx>
+        <ixy>-0.00000</ixy>
+        <ixz>-0.00000</ixz>
+        <iyy>0.00024</iyy>
+        <iyz>0.00000</iyz>
+        <izz>0.00025</izz>
+      </inertia>
+      <pose relative_to="right_link4">0.09091 0.00039 0.00022 0.00000 0.00000 0.00000</pose>
+      <mass>0.13275</mass>
+    </inertial>
+    <visual name="right_link4_visual">
+      <material>
+        <diffuse>0.49804 0.49804 0.49804 1.00000</diffuse>
+        <specular>0.02745 0.02745 0.02745 1.00000</specular>
+        <emissive>0.00000 0.00000 0.00000 1.00000</emissive>
+      </material>
+      <pose relative_to="right_link4">-0.00000 0.00000 0.00000 -0.00000 0.00000 0.00000</pose>
+      <geometry>
+        <mesh>
+          <uri>package://marvin/meshes/stl/chain_link4.stl</uri>
+          <scale>0.00100 0.00100 0.00100</scale>
+        </mesh>
+      </geometry>
+    </visual>
+  </link>
+  <link name="right_link5">
+    <collision name="right_link5_collision">
+      <pose relative_to="right_link5">0.00000 0.00000 0.00000 -0.00000 0.00000 0.00000</pose>
+      <geometry>
+        <mesh>
+          <uri>package://marvin/meshes/stl/chain_link5.stl</uri>
+          <scale>0.00100 0.00100 0.00100</scale>
+        </mesh>
+      </geometry>
+      <surface>
+        <contact/>
+      </surface>
+    </collision>
+    <inertial>
+      <inertia>
+        <ixx>0.00008</ixx>
+        <ixy>0.00000</ixy>
+        <ixz>-0.00000</ixz>
+        <iyy>0.00008</iyy>
+        <iyz>0.00000</iyz>
+        <izz>0.00009</izz>
+      </inertia>
+      <pose relative_to="right_link5">0.04421 0.00000 0.00891 0.00000 0.00000 0.00000</pose>
+      <mass>0.14328</mass>
+    </inertial>
+    <visual name="right_link5_visual">
+      <material>
+        <diffuse>0.49804 0.49804 0.49804 1.00000</diffuse>
+        <specular>0.02745 0.02745 0.02745 1.00000</specular>
+        <emissive>0.00000 0.00000 0.00000 1.00000</emissive>
+      </material>
+      <pose relative_to="right_link5">0.00000 0.00000 0.00000 -0.00000 0.00000 0.00000</pose>
+      <geometry>
+        <mesh>
+          <uri>package://marvin/meshes/stl/chain_link5.stl</uri>
+          <scale>0.00100 0.00100 0.00100</scale>
+        </mesh>
+      </geometry>
+    </visual>
+  </link>
+</model>
+</sdf>

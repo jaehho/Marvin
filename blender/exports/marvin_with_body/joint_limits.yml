@@ -1,0 +1,140 @@
+{
+  "limits": {
+    "elements": [
+      {
+        "max": {
+          "effort": 1,
+          "position": 0.019,
+          "speed": 4.8
+        },
+        "min": {
+          "position": -0.01
+        }
+      },
+      {
+        "max": {
+          "effort": 1,
+          "position": 0.019,
+          "speed": 4.8
+        },
+        "min": {
+          "position": -0.01
+        }
+      },
+      {
+        "max": {
+          "effort": 1,
+          "position": 2.827433388230814,
+          "speed": 4.8
+        },
+        "min": {
+          "position": -2.827433388230814
+        }
+      },
+      {
+        "max": {
+          "effort": 1,
+          "position": 1.5707963267948966,
+          "speed": 4.8
+        },
+        "min": {
+          "position": -1.790707812546182
+        }
+      },
+      {
+        "max": {
+          "effort": 1,
+          "position": 1.382300767579509,
+          "speed": 4.8
+        },
+        "min": {
+          "position": -0.9424777960769379
+        }
+      },
+      {
+        "max": {
+          "effort": 1,
+          "position": 2.0420352248333655,
+          "speed": 4.8
+        },
+        "min": {
+          "position": -1.790707812546182
+        }
+      },
+      {
+        "max": {
+          "effort": 1,
+          "position": 0.019,
+          "speed": 4.8
+        },
+        "min": {
+          "position": -0.01
+        }
+      },
+      {
+        "max": {
+          "effort": 1,
+          "position": 0.019,
+          "speed": 4.8
+        },
+        "min": {
+          "position": -0.01
+        }
+      },
+      {
+        "max": {
+          "effort": 1,
+          "position": 2.827433388230814,
+          "speed": 4.8
+        },
+        "min": {
+          "position": -2.827433388230814
+        }
+      },
+      {
+        "max": {
+          "effort": 1,
+          "position": 1.5707963267948966,
+          "speed": 4.8
+        },
+        "min": {
+          "position": -1.790707812546182
+        }
+      },
+      {
+        "max": {
+          "effort": 1,
+          "position": 1.382300767579509,
+          "speed": 4.8
+        },
+        "min": {
+          "position": -0.9424777960769379
+        }
+      },
+      {
+        "max": {
+          "effort": 1,
+          "position": 2.0420352248333655,
+          "speed": 4.8
+        },
+        "min": {
+          "position": -1.790707812546182
+        }
+      }
+    ],
+    "names": [
+      "left_gripper",
+      "left_gripper_sub",
+      "left_joint1",
+      "left_joint2",
+      "left_joint3",
+      "left_joint4",
+      "right_gripper",
+      "right_gripper_sub",
+      "right_joint1",
+      "right_joint2",
+      "right_joint3",
+      "right_joint4"
+    ]
+  }
+}

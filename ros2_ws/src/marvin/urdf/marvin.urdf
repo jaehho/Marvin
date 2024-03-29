@@ -1,13 +1,4 @@
 <robot name="marvin" version="1.0">
-
-  <link name="world">
-  </link>
-  <joint name="base_joint" type="fixed">
-    <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.00000"/>
-    <parent link="world"/>
-    <child link="marvin"/>
-  </joint>
-
   <joint name="left_end_effector_joint" type="fixed">
     <origin rpy="-0.00000 0.00000 -0.00000" xyz="0.12600 -0.00000 0.00000"/>
     <parent link="left_link5"/>
@@ -55,6 +46,11 @@
     <parent link="left_link4"/>
     <child link="left_link5"/>
     <axis xyz="0.00000 1.00000 0.00000"/>
+  </joint>
+  <joint name="marvin_to_body" type="fixed">
+    <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.00000"/>
+    <parent link="body"/>
+    <child link="marvin"/>
   </joint>
   <joint name="right_end_effector_joint" type="fixed">
     <origin rpy="-0.00000 0.00000 0.00000" xyz="0.12600 0.00000 -0.00000"/>
@@ -104,6 +100,14 @@
     <child link="right_link5"/>
     <axis xyz="0.00000 1.00000 0.00000"/>
   </joint>
+  <link name="body">
+    <collision name="Cube">
+      <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 0.00000 -0.22261"/>
+      <geometry>
+        <box size="0.16000 0.06000 0.60000"/>
+      </geometry>
+    </collision>
+  </link>
   <link name="left_end_effector_link">
     <inertial>
       <inertia ixx="0.00100" ixy="0.00000" ixz="0.00000" iyy="0.00100" iyz="0.00000" izz="0.00100"/>
