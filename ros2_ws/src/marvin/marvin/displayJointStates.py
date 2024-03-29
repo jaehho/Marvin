@@ -122,7 +122,8 @@ def plot_joint_positions(node):
                 original_name = node.joint_names[idx]
                 # Use the display name if available, otherwise use the original name
                 display_name = node.display_names.get(original_name, original_name)
-                ax.plot(node.time_stamps, positions, label=display_name)
+                color = 'red' if 'right' in original_name else 'blue'
+                ax.plot(node.time_stamps, positions, label=display_name, color=color)
         ax.legend(loc='upper left')
 
     ani = FuncAnimation(fig, update, interval=10)
