@@ -1,0 +1,10 @@
+moveit_setup_assistant_config:
+  urdf:
+    package: marvin
+    relative_path: urdf/marvin.urdf
+  srdf:
+    relative_path: config/marvin.srdf
+  package_settings:
+    author_name: Jaeho
+    author_email: jaeho.cho@cooper.edu
+    generated_timestamp: 1711730444
