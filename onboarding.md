@@ -1,87 +1,106 @@
-# Onboarding Page
+# Onboarding
 
-**Last Updated:** February 10, 2024
+## Prerequisites
 
-Flash Ubuntu 22.04
+1. Install ROS2 Humble
 
-- Clone Repository (<https://github.com/GitJaehoCho/Marvin>)
+    <https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debians.html>
 
-    ```bash
-    sudo apt install git
-    ```
-
-    Install gh
+2. Install Colcon
 
     ```bash
-    type -p curl >/dev/null || (sudo apt update && sudo apt install curl -y)
-    curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
-    && sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
-    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
-    && sudo apt update \
-    && sudo apt install gh -y
+    sudo apt install python3-colcon-common-extensions
     ```
 
-    Install/Update Curl
+## Setup
+
+1. Clone repository
 
     ```bash
-    sudo apt-get install curl
-    sudo apt-get update
-    sudo apt-get upgrade curl
+    git clone https://github.com/jaehho/Marvin.git
     ```
 
-    Clone Marvin Repository
+2. Build Packages
 
     ```bash
-    gh repo clone GitJaehoCho/Marvin
+    source /opt/ros/humble/setup.bash
+    cd ros2_ws
+    colcon build --symlink-install
     ```
 
-- Install Libraries
+3. Install Python modules
 
     ```bash
-    sudo apt-get install python3-pip
+    sudo apt install python3-tk python3-pip
+    sudo apt-get install x11-xserver-utils # for xrandr
+    pip install matplotlib mediapipe opencv-python
     ```
 
-  - Install OpenCV ([OpenCV](https://docs.opencv.org/4.x/d2/de6/tutorial_py_setup_in_ubuntu.html)) ([potentially unnecessary](https://pypi.org/project/opencv-python/))
+## Usage
+
+1. Source current workspace
 
     ```bash
-    sudo apt-get install python3-opencv -y
-    sudo apt-get install cmake -y
-    sudo apt-get install gcc g++ -y
-    sudo apt-get install python3-dev python3-numpy -y
-    sudo apt-get install libavcodec-dev libavformat-dev libswscale-dev -y
-    sudo apt-get install libgstreamer-plugins-base1.0-dev libgstreamer1.0-dev -y
-    sudo apt-get install libgtk-3-dev -y
-    sudo apt-get install libpng-dev -y
-    sudo apt-get install libjpeg-dev -y
-    sudo apt-get install libopenexr-dev -y
-    sudo apt-get install libtiff-dev -y
-    sudo apt-get install libwebp-dev -y
-    
-    # Necessary for Mediapipe Framework(maybe unnecessary for Mediapipe Library
-    git clone https://github.com/opencv/opencv.git
-    cd opencv/
-    mkdir build
-    cd build/
-    cmake ../
+    . install/setup.bash
     ```
 
-  - Install MediaPipe Framework (Not necessary? - might only need to install Mediapipe library)
-    - Install Bazelisk
-
-        [Bazelisk Release](https://github.com/bazelbuild/bazelisk/releases) ([bazelisk-linux-amd64](https://github.com/bazelbuild/bazelisk/releases/download/v1.19.0/bazelisk-linux-amd64))
-
-        ```bash
-        git clone --depth 1 https://github.com/google/mediapipe.git
-        ```
-
-  - Install Mediapipe
+2. Full Launch
 
     ```bash
-    pip3 install mediapipe
+    ros2 launch marvin full.launch.py
     ```
 
-  - Install Matplotlib
+## Troubleshooting
 
-    ```bash
-    pip3 install -U matplotlib
-    ```
+### Cmake Error after colcon build
+
+```bash
+CMake Error at CMakeLists.txt:2 (project):
+  No CMAKE_CXX_COMPILER could be found.
+
+  Tell CMake where to find the compiler by setting either the environment
+  variable "CXX" or the CMake cache entry CMAKE_CXX_COMPILER to the full path
+  to the compiler, or to the compiler name if it is in the PATH.
+```
+
+**Solution**: Ensure C++ compiler is Installed
+
+```bash
+sudo apt install build-essential
+```
+
+---
+
+### Missing xacro or rviz2
+
+You may be missing packages if you installed ROS-Base Install (Bare Bones)
+
+**Solution**: Install missing packages
+
+```bash
+sudo apt install ros-humble-xacro
+sudo apt install ros-humble-rviz2
+```
+
+---
+
+### Can't create Python virtual environment
+
+```bash
+The virtual environment was not created successfully because ensurepip is not
+available.  On Debian/Ubuntu systems, you need to install the python3-venv
+package using the following command.
+
+    apt install python3.10-venv
+
+You may need to use sudo with that command.  After installing the python3-venv
+package, recreate your virtual environment.
+
+Failing command: /home/jaeho/Marvin/ros2_ws/.venv/bin/python3
+```
+
+**Solution**: Install `python3.10-venv`
+
+```bash
+    sudo apt install python3.10-venv
+```
