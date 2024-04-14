@@ -1,4 +1,3 @@
-from curses import window
 import rclpy
 import  subprocess
 from rclpy.node import Node

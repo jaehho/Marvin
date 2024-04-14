@@ -1,4 +1,3 @@
-import numpy as np
 import rclpy
 from rclpy.node import Node
 from custom_interfaces.msg import PoseLandmark

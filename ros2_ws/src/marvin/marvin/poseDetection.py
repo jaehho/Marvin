@@ -1,5 +1,4 @@
 import subprocess
-from turtle import window_width
 import cv2
 import mediapipe as mp
 import rclpy
