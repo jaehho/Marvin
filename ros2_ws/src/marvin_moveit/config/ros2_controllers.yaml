@@ -27,9 +27,10 @@ right_open_manipulator_controller:
       - right_joint4
       - right_gripper
     command_interfaces:
-      []
+      - position
     state_interfaces:
-      []
+      - position
+      - velocity
 left_open_manipulator_controller:
   ros__parameters:
     joints:
@@ -39,9 +40,10 @@ left_open_manipulator_controller:
       - left_joint4
       - left_gripper
     command_interfaces:
-      []
+      - position
     state_interfaces:
-      []
+      - position
+      - velocity
 marvin_controller:
   ros__parameters:
     joints:
@@ -56,6 +58,7 @@ marvin_controller:
       - right_joint4
       - right_gripper
     command_interfaces:
-      []
+      - position
     state_interfaces:
-      []
+      - position
+      - velocity

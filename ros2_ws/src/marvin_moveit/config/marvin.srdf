@@ -28,21 +28,6 @@
         <joint name="left_gripper_sub"/>
     </group>
     <group name="marvin">
-        <joint name="marvin_to_body"/>
-        <joint name="left_joint1"/>
-        <joint name="left_joint2"/>
-        <joint name="left_joint3"/>
-        <joint name="left_joint4"/>
-        <joint name="left_end_effector_joint"/>
-        <joint name="left_gripper"/>
-        <joint name="left_gripper_sub"/>
-        <joint name="right_joint1"/>
-        <joint name="right_joint2"/>
-        <joint name="right_joint3"/>
-        <joint name="right_joint4"/>
-        <joint name="right_end_effector_joint"/>
-        <joint name="right_gripper"/>
-        <joint name="right_gripper_sub"/>
         <group name="right_open_manipulator"/>
         <group name="left_open_manipulator"/>
     </group>
@@ -60,10 +45,10 @@
         <joint name="right_joint4" value="0"/>
     </group_state>
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
-    <end_effector name="right_end_effector" parent_link="right_end_effector_link" group="right_open_manipulator"/>
-    <end_effector name="left_end_effector" parent_link="left_end_effector_link" group="left_open_manipulator"/>
+    <end_effector name="right_end_effector" parent_link="right_end_effector_link" group="right_open_manipulator" parent_group="marvin"/>
+    <end_effector name="left_end_effector" parent_link="left_end_effector_link" group="left_open_manipulator" parent_group="marvin"/>
     <!--VIRTUAL JOINT: Purpose: this element defines a virtual joint between a robot link and an external frame of reference (considered fixed with respect to the robot)-->
-    <virtual_joint name="virtual_joint" type="fixed" parent_frame="world" child_link="marvin"/>
+    <virtual_joint name="marvin_to_body" type="fixed" parent_frame="body" child_link="marvin"/>
     <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
     <disable_collisions link1="body" link2="left_link2" reason="Never"/>
     <disable_collisions link1="body" link2="marvin" reason="Adjacent"/>
