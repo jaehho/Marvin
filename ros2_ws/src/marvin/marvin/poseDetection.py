@@ -1,4 +1,3 @@
-import subprocess
 import cv2
 import mediapipe as mp
 import rclpy
@@ -15,62 +14,13 @@ class PoseDetectionPublisher(Node):
                                       enable_segmentation=False, min_detection_confidence=0.5, min_tracking_confidence=0.5)
         self.drawing_utils = mp.solutions.drawing_utils
 
-    def get_monitors_dimensions(self):
-        try:
-            # Execute xrandr to get display information
-            result = subprocess.run(['xrandr'], stdout=subprocess.PIPE, check=True)
-            output = result.stdout.decode('utf-8')
-
-            # Initialize variables
-            primary_dimensions = None
-            secondary_dimensions = None
-
-            # Search through each line of the xrandr output
-            for line in output.splitlines():
-                # Look for lines indicating a connected monitor and its resolution
-                if " connected" in line:
-                    dimensions_part = line.split()  # Split each part of the line
-                    for part in dimensions_part:
-                        # Check if part contains resolution information (e.g., 1920x1080)
-                        if 'x' in part and '+' in part:
-                            dimensions = part.split('+')[0]  # Extract resolution
-                            width, height = map(int, dimensions.split('x'))
-                            # Determine if the monitor is primary or secondary based on order of detection
-                            if "primary" in line:
-                                primary_dimensions = (width, height)
-                            elif not secondary_dimensions:  # Assign to secondary if not already assigned
-                                secondary_dimensions = (width, height)
-                            break  # Break the loop once dimensions are found
-
-            # Set default dimensions if not detected
-            if not primary_dimensions:
-                primary_dimensions = (1920, 1080)
-            if not secondary_dimensions:
-                secondary_dimensions = "No secondary monitor detected"
-
-            return primary_dimensions, secondary_dimensions
-        except subprocess.CalledProcessError as e:
-            print(f"Failed to get monitor dimensions: {e}")
-            return (1920, 1080), "No secondary monitor detected"
-
     def run_pose_detection(self):
-        primary, secondary = self.get_monitors_dimensions()
-        primary_screen_width, primary_screen_height = primary
-        secondary_screen_width, secondary_screen_height = secondary
-        window_width, window_height = 600, 480
-
-        # Calculate position for the window to be in the bottom left of second monitor
-        position_x = primary_screen_width
-        position_y = secondary_screen_height - window_height
-
         cap = cv2.VideoCapture(0)
         if not cap.isOpened():
             self.get_logger().error("Cannot open webcam")
             return
 
         try:
-            initialized = False
-
             while cap.isOpened():
                 success, image = cap.read()
                 if not success:
@@ -78,16 +28,7 @@ class PoseDetectionPublisher(Node):
                     continue
 
                 image = self.process_image(image)
-
-                if not initialized:
-                    cv2.namedWindow('MediaPipe Pose', cv2.WINDOW_NORMAL)
-                    cv2.resizeWindow('MediaPipe Pose', window_width, window_height)
-                    cv2.moveWindow('MediaPipe Pose', position_x, position_y)
-                    cv2.imshow('MediaPipe Pose', image)
-                    initialized = True
-                else:
-                    cv2.imshow('MediaPipe Pose', cv2.flip(image, 1))
-
+                cv2.imshow('MediaPipe Pose', cv2.flip(image, 1))
                 if cv2.waitKey(5) & 0xFF == 27:  # Exit loop if 'ESC' is pressed
                     break
         finally:

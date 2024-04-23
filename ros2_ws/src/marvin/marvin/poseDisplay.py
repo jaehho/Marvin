@@ -1,5 +1,4 @@
 import rclpy
-import subprocess
 from rclpy.node import Node
 from custom_interfaces.msg import PoseLandmark
 import matplotlib.pyplot as plt
@@ -23,36 +22,6 @@ def plot_pose_landmarks(node):
     ax_top = fig.add_subplot(222)  # Top view
     ax_side = fig.add_subplot(223)  # Side view
     ax_3d = fig.add_subplot(224, projection='3d')  # 3D view
-
-    def get_primary_monitor_dimensions():
-        try:
-            # Execute xrandr to get display information
-            result = subprocess.run(['xrandr'], stdout=subprocess.PIPE)
-            output = result.stdout.decode('utf-8')
-            
-            # Search for the primary monitor line and extract its resolution
-            for line in output.splitlines():
-                if "primary" in line:
-                    dimensions = line.split()[3].split('+')[0]
-                    width, height = map(int, dimensions.split('x'))
-                    return width, height
-            # Default fallback in case no primary is found
-            return 1920, 1080
-        except Exception as e:
-            print(f"Failed to get monitor dimensions: {e}")
-            return 1920, 1080
-        
-    screen_width, screen_height = get_primary_monitor_dimensions()
-    window_width = screen_width // 2
-    window_height = screen_height
-    window_position_x = 0
-    window_position_y = 0
-    geometry_str = f"{window_width}x{window_height}+{window_position_x}+{window_position_y}"
-
-    try:
-        plt.get_current_fig_manager().window.geometry(geometry_str)
-    except Exception as e:
-        print(f"Error adjusting window position and size: {e}")
 
     # Set labels for each subplot
     ax_front.set_title('Front View')
