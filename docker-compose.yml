@@ -1,0 +1,15 @@
+services:
+  ros_noetic:
+    build:
+      context: .
+    volumes:
+      - ./noetic_ws:/root/ros_ws
+    environment:
+      - DISPLAY=:0
+      - QT_X11_NO_MITSHM=1
+    devices:
+      - "/dev/dri:/dev/dri"  # To enable graphical applications
+    network_mode: "host"     # Use host network mode to avoid issues with ROS networking
+    privileged: true         # Needed if you want access to hardware, e.g., USB devices
+    stdin_open: true         # Keep stdin open
+    tty: true                # Allocate a pseudo-TTY
