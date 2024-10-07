@@ -7,12 +7,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     rm -rf /var/lib/apt/lists/*
 
 # Always source environment in bashrc
-RUN echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc && \
-    echo "source ~/catkin_ws/devel/setup.bash" >> ~/.bashrc
+RUN echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc
 
 # Install necessary packages
 RUN apt-get update && apt-get install -y \
-    git
+    git \
+    udev
 
 # Install OpenManipulator-X packages
 RUN apt-get install -y \
