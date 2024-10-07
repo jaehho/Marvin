@@ -1,15 +1,10 @@
 services:
   ros_noetic:
     build:
-      context: .
+      context: ./noetic_ws
     volumes:
       - ./noetic_ws:/root/catkin_ws
-    environment:
-      - DISPLAY=:0
-      - QT_X11_NO_MITSHM=1  # TODO: Check if this is needed
-    devices:
-      - "/dev/dri:/dev/dri" # To enable graphical applications TODO: Check if this is needed
     network_mode: "host"    # Use host network mode to avoid issues with ROS networking TODO: Check if this is needed
     privileged: true        # Needed if you want access to hardware, e.g., USB devices TODO: Check if this is needed
-    stdin_open: true        # Keep stdin open TODO: Check if this is needed
-    tty: true               # Allocate a pseudo-TTY TODO: Check if this is needed
+    stdin_open: true
+    tty: true
