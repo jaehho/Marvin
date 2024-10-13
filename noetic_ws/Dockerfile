@@ -7,17 +7,14 @@ RUN echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc
 # Install necessary packages
 RUN apt-get update && apt-get install -y \
     git \
-    udev
+    udev \
+    && apt upgrade -y
 
 # Install OpenManipulator-X packages
 RUN apt-get install -y \
-    # ros-noetic-ros-controllers \
-    # ros-noetic-gazebo* \
-    # ros-noetic-moveit* \
-    # ros-noetic-industrial-core \
     ros-noetic-dynamixel-sdk \
     ros-noetic-dynamixel-workbench* \
     ros-noetic-robotis-manipulator
 
-# ENTRYPOINT [ "/ros_entrypoint.sh" ]
-ENTRYPOINT [ "/bin/bash" ]
+# COPY ./ros_entrypoint.sh /
+ENTRYPOINT [ "/ros_entrypoint.sh" ]

@@ -4,7 +4,22 @@ services:
       context: ./noetic_ws
     volumes:
       - ./noetic_ws:/root/catkin_ws
-    network_mode: "host"    # Use host network mode to avoid issues with ROS networking TODO: Check if this is needed
-    privileged: true        # Needed if you want access to hardware, e.g., USB devices TODO: Check if this is needed
+    privileged: true        # Needed if you want access to hardware
     stdin_open: true
     tty: true
+    command: roscore
+  ros_jazzy:
+    build:
+      context: ./ros2_ws
+    volumes:
+      - ./ros2_ws:/root/ros2_ws
+    privileged: true        # Needed if you want access to hardware
+    stdin_open: true
+    tty: true
+    command: bash
+  ros1_bridge:
+    image: ros:foxy-ros1-bridge
+    environment:
+      - "ROS_HOSTNAME=ros1_bridge"
+      - "ROS_MASTER_URI=http://ros_noetic:11311"
+    command: ros2 run ros1_bridge dynamic_bridge --bridge-all-topics
