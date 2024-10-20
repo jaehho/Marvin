@@ -4,22 +4,38 @@ services:
       context: ./noetic_ws
     volumes:
       - ./noetic_ws:/root/catkin_ws
-    privileged: true        # Needed if you want access to hardware
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    environment:
+      - DISPLAY=${DISPLAY}
+      - XDG_RUNTIME_DIR=/tmp/runtime-root
+    privileged: true
     stdin_open: true
     tty: true
     command: roscore
+    networks:
+      - ros_network
+
   ros_jazzy:
     build:
       context: ./ros2_ws
     volumes:
       - ./ros2_ws:/root/ros2_ws
-    privileged: true        # Needed if you want access to hardware
+    privileged: true
     stdin_open: true
     tty: true
     command: bash
+    networks:
+      - ros_network
+
   ros1_bridge:
     image: ros:foxy-ros1-bridge
     environment:
       - "ROS_HOSTNAME=ros1_bridge"
       - "ROS_MASTER_URI=http://ros_noetic:11311"
     command: ros2 run ros1_bridge dynamic_bridge --bridge-all-topics
+    networks:
+      - ros_network
+
+networks:
+  ros_network:
+    driver: bridge

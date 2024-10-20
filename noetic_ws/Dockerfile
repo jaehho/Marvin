@@ -16,5 +16,4 @@ RUN apt-get install -y \
     ros-noetic-dynamixel-workbench* \
     ros-noetic-robotis-manipulator
 
-# COPY ./ros_entrypoint.sh /
 ENTRYPOINT [ "/ros_entrypoint.sh" ]
