@@ -15,3 +15,5 @@ RUN apt-get install -y \
     ros-noetic-dynamixel-sdk \
     ros-noetic-dynamixel-workbench* \
     ros-noetic-robotis-manipulator
+
+WORKDIR /root/catkin_ws

@@ -8,4 +8,6 @@ RUN echo "source /opt/ros/jazzy/setup.bash" >> ~/.bashrc
 RUN apt-get update && apt-get install -y \
     git
 
+WORKDIR /root/ros2_ws
+
 ENTRYPOINT [ "/ros_entrypoint.sh" ]
