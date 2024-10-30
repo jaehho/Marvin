@@ -1,24 +1,22 @@
 services:
-  ros_noetic:
-    build:
-      context: ./noetic_ws
-    volumes:
-      - ./noetic_ws:/root/catkin_ws
-      - /tmp/.X11-unix:/tmp/.X11-unix
-    environment:
-      - DISPLAY=${DISPLAY}
-      - XDG_RUNTIME_DIR=/tmp/runtime-root
-    privileged: true
-    stdin_open: true
-    tty: true
-    entrypoint: ["/bin/bash", "-c", "cd ~/catkin_ws && source /opt/ros/noetic/setup.bash && catkin_make && source devel/setup.bash && roscore"]
-    networks:
-      - ros_network
-    healthcheck:
-      test: ["CMD", "bash", "-c", "source /opt/ros/noetic/setup.bash && rosnode list"]
-      interval: 15s
-      timeout: 10s
-      retries: 10
+  # ros_noetic:
+  #   build:
+  #     context: ./noetic_ws
+  #   volumes:
+  #     - ./noetic_ws:/root/catkin_ws
+  #     - /tmp/.X11-unix:/tmp/.X11-unix
+  #   environment:
+  #     - DISPLAY=${DISPLAY}
+  #     - XDG_RUNTIME_DIR=/tmp/runtime-root
+  #   privileged: true
+  #   stdin_open: true
+  #   tty: true
+  #   entrypoint: ["/bin/bash", "-c", "cd ~/catkin_ws && source /opt/ros/noetic/setup.bash && catkin_make && source devel/setup.bash && roscore"]
+  #   healthcheck:
+  #     test: ["CMD", "bash", "-c", "source /opt/ros/noetic/setup.bash && rosnode list"]
+  #     interval: 15s
+  #     timeout: 10s
+  #     retries: 10
 
   ros_jazzy:
     build:
@@ -29,21 +27,30 @@ services:
     stdin_open: true
     tty: true
     command: bash
-    networks:
-      - ros_network
 
-  ros1_bridge:
-    image: ros:foxy-ros1-bridge
+  # ros1_bridge:
+  #   image: ros:foxy-ros1-bridge
+  #   environment:
+  #     - "ROS_HOSTNAME=ros1_bridge"
+  #     - "ROS_MASTER_URI=http://ros_noetic:11311"
+  #   depends_on:
+  #     ros_noetic:
+  #       condition: service_healthy
+  #   command: ros2 run ros1_bridge dynamic_bridge --bridge-all-topics
+
+  moveit:
+    image: moveit/moveit2:main-jazzy-tutorial-source
+    container_name: moveit2_container
+    privileged: true
+    network_mode: host
+    command: /bin/bash
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - $XAUTHORITY:/root/.Xauthority
+      - ./ros2_ws:/root/ros2_ws
     environment:
-      - "ROS_HOSTNAME=ros1_bridge"
-      - "ROS_MASTER_URI=http://ros_noetic:11311"
-    depends_on:
-      ros_noetic:
-        condition: service_healthy
-    command: ros2 run ros1_bridge dynamic_bridge --bridge-all-topics
-    networks:
-      - ros_network
+      QT_X11_NO_MITSHM: 1
+      DISPLAY: $DISPLAY
+    stdin_open: true
+    tty: true
 
-networks:
-  ros_network:
-    driver: bridge
