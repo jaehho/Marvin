@@ -1,49 +1,15 @@
 services:
-  ros_noetic:
+  ros2_jazzy:
     build:
-      context: ./noetic_ws
-    volumes:
-      - ./noetic_ws:/root/catkin_ws
-      - /tmp/.X11-unix:/tmp/.X11-unix
+      context: ./ros2_ws                  # Path to the workspace and Dockerfile
+    container_name: ros2_jazzy
     environment:
-      - DISPLAY=${DISPLAY}
-      - XDG_RUNTIME_DIR=/tmp/runtime-root
-    privileged: true
-    stdin_open: true
-    tty: true
-    entrypoint: ["/bin/bash", "-c", "cd ~/catkin_ws && source /opt/ros/noetic/setup.bash && catkin_make && source devel/setup.bash && roscore"]
-    networks:
-      - ros_network
-    healthcheck:
-      test: ["CMD", "bash", "-c", "source /opt/ros/noetic/setup.bash && rosnode list"]
-      interval: 15s
-      timeout: 10s
-      retries: 10
-
-  ros_jazzy:
-    build:
-      context: ./ros2_ws
+      - DISPLAY=${DISPLAY}                # Required for GUI applications
+      - XDG_RUNTIME_DIR=/tmp/runtime-root # Required for GUI applications
     volumes:
-      - ./ros2_ws:/root/ros2_ws
+      - /tmp/.X11-unix:/tmp/.X11-unix     # Required for GUI applications
+      - ./ros2_ws:/root/ros2_ws      # Mount the workspace
     privileged: true
     stdin_open: true
     tty: true
     command: bash
-    networks:
-      - ros_network
-
-  ros1_bridge:
-    image: ros:foxy-ros1-bridge
-    environment:
-      - "ROS_HOSTNAME=ros1_bridge"
-      - "ROS_MASTER_URI=http://ros_noetic:11311"
-    depends_on:
-      ros_noetic:
-        condition: service_healthy
-    command: ros2 run ros1_bridge dynamic_bridge --bridge-all-topics
-    networks:
-      - ros_network
-
-networks:
-  ros_network:
-    driver: bridge

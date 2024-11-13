@@ -1,7 +1,7 @@
 # Dockerfile for Marvin with ROS2 Jazzy
 FROM osrf/ros:jazzy-desktop-full-noble
 
-# Add sourcing to shell startup script
+# Add sourcing underlay to shell startup script
 RUN echo "source /opt/ros/jazzy/setup.bash" >> ~/.bashrc
 
 # Install necessary packages
