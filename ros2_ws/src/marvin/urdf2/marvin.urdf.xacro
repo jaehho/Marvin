@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!-- Open_Manipulator Chain -->
+<robot name="marvin" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- Import Rviz colors -->
+  <xacro:include filename="/home/jaeho/marvin/ros2_ws/src/marvin/urdf2/materials.xacro" />
+
+  <!-- Import all Gazebo-customization elements, including Gazebo colors -->
+  <xacro:include filename="/home/jaeho/marvin/ros2_ws/src/marvin/urdf2/open_manipulator.gazebo.xacro" />
+
+  <!-- Import Transmission -->
+  <xacro:include filename="/home/jaeho/marvin/ros2_ws/src/marvin/urdf2/open_manipulator.transmission.xacro" />
+
+  <!-- Import URDF -->
+  <xacro:include filename="/home/jaeho/marvin/ros2_ws/src/marvin/urdf2/open_manipulator.urdf.xacro" />
+
+  <!-- World -->
+  <link name="world"/>
+
+  <!-- World fixed joint-->
+  <joint name="world_fixed" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="world"/>
+    <child link="link1"/>
+  </joint>
+
+  <!-- Torso Link -->
+  <link name="torso">
+    <collision name="Cube">
+      <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 0.00000 -0.22261"/>
+      <geometry>
+        <box size="0.16000 0.06000 0.60000"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- Left Arm -->
+  <!--xacro:include filename="single_arm.xacro"/-->
+  <xacro:property name="left_arm_origin" value="0.5 0.2 0"/>
+  <joint name="left_arm_joint" type="fixed">
+    <parent link="torso"/>
+    <child link="left_arm_base"/>
+    <origin xyz="${left_arm_origin}" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Right Arm (mirrored) -->
+  <xacro:property name="right_arm_origin" value="-0.5 0.2 0"/>
+  <joint name="right_arm_joint" type="fixed">
+    <parent link="torso"/>
+    <child link="right_arm_base"/>
+    <origin xyz="${right_arm_origin}" rpy="0 0 ${pi}"/>
+  </joint>
+
+</robot>

@@ -7,13 +7,14 @@ moveit_setup_assistant_config:
   package_settings:
     author_name: Jaeho
     author_email: jaeho.cho@cooper.edu
-    generated_timestamp: 1713229698
+    generated_timestamp: 1730255746
   control_xacro:
     command:
       - position
     state:
       - position
       - velocity
+      - effort
   modified_urdf:
     xacros:
       - control_xacro
@@ -23,3 +24,4 @@ moveit_setup_assistant_config:
     state:
       - position
       - velocity
+      - effort

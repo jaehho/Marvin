@@ -31,6 +31,8 @@ right_open_manipulator_controller:
     state_interfaces:
       - position
       - velocity
+      - effort
+    allow_nonzero_velocity_at_trajectory_end: true
 left_open_manipulator_controller:
   ros__parameters:
     joints:
@@ -44,6 +46,8 @@ left_open_manipulator_controller:
     state_interfaces:
       - position
       - velocity
+      - effort
+    allow_nonzero_velocity_at_trajectory_end: true
 marvin_controller:
   ros__parameters:
     joints:
@@ -62,3 +66,5 @@ marvin_controller:
     state_interfaces:
       - position
       - velocity
+      - effort
+    allow_nonzero_velocity_at_trajectory_end: true
