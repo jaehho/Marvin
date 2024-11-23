@@ -6,13 +6,14 @@
   <xacro:include filename="/home/jaeho/marvin/ros2_ws/src/marvin/urdf2/materials.xacro" />
 
   <!-- Import all Gazebo-customization elements, including Gazebo colors -->
-  <xacro:include filename="/home/jaeho/marvin/ros2_ws/src/marvin/urdf2/open_manipulator.gazebo.xacro" />
+  <!--xacro:include filename="/home/jaeho/marvin/ros2_ws/src/marvin/urdf2/open_manipulator.gazebo.xacro" /-->
 
   <!-- Import Transmission -->
   <xacro:include filename="/home/jaeho/marvin/ros2_ws/src/marvin/urdf2/open_manipulator.transmission.xacro" />
 
   <!-- Import URDF -->
-  <xacro:include filename="/home/jaeho/marvin/ros2_ws/src/marvin/urdf2/open_manipulator.urdf.xacro" />
+  <!--xacro:include filename="/home/jaeho/marvin/ros2_ws/src/marvin/urdf2/open_manipulator.urdf.xacro" /-->
+  <xacro:include filename="/home/jaeho/marvin/ros2_ws/src/marvin/urdf2/single_arm.xacro" />
 
   <!-- World -->
   <link name="world"/>
@@ -21,7 +22,7 @@
   <joint name="world_fixed" type="fixed">
     <origin xyz="0 0 0" rpy="0 0 0"/>
     <parent link="world"/>
-    <child link="link1"/>
+    <child link="torso"/>
   </joint>
 
   <!-- Torso Link -->
@@ -32,23 +33,37 @@
         <box size="0.16000 0.06000 0.60000"/>
       </geometry>
     </collision>
+    <visual name="Cube">
+      <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 0.00000 -0.22261"/>
+      <geometry>
+        <box size="0.16000 0.06000 0.60000"/>
+      </geometry>
+    </visual>
+    <parent link="world"/>
   </link>
 
-  <!-- Left Arm -->
-  <!--xacro:include filename="single_arm.xacro"/-->
-  <xacro:property name="left_arm_origin" value="0.5 0.2 0"/>
+  <xacro:property name="left_arm_origin_xyz" value="0.08 0 0"/>
   <joint name="left_arm_joint" type="fixed">
     <parent link="torso"/>
-    <child link="left_arm_base"/>
-    <origin xyz="${left_arm_origin}" rpy="0 0 0"/>
+    <child link="link1_left"/>
+    <origin xyz="${left_arm_origin_xyz}" rpy="0 1.5708 0"/>
   </joint>
 
-  <!-- Right Arm (mirrored) -->
-  <xacro:property name="right_arm_origin" value="-0.5 0.2 0"/>
+  <xacro:property name="right_arm_origin_xyz" value="-0.08 0 0"/>
   <joint name="right_arm_joint" type="fixed">
     <parent link="torso"/>
-    <child link="right_arm_base"/>
-    <origin xyz="${right_arm_origin}" rpy="0 0 ${pi}"/>
+    <child link="link1_right"/>
+    <origin xyz="${right_arm_origin_xyz}" rpy="0 1.5708 3.1415926535"/> <!-- Rotate by pi -->
   </joint>
+
+  <xacro:arm name="left"/>
+   <!-- Left Arm -->
+ 
+
+  <xacro:arm name="right"/>
+  <!-- Right Arm (Mirrored) -->
+  
+
+
 
 </robot>
