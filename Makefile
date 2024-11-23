@@ -1,12 +1,13 @@
 # Variables
+SHELL := /bin/bash
 DOCKER_COMPOSE = docker compose
 ROS_DISTRO = jazzy
 SERVICE_NAME = ros2_${ROS_DISTRO}
 WORKSPACE = ./ros2_ws
 
 # Colors
-COLOR_GREEN = \033[0;32m
-COLOR_RESET = \033[0m
+COLOR_GREEN = \\033[0;32m
+COLOR_RESET = \\033[0m
 
 .PHONY: default help build up down clean rebuild logs shell ws-build ws-clean
 
@@ -63,3 +64,25 @@ ws-build:
 ws-clean:
 	@echo "$(COLOR_GREEN)Cleaning ROS2 workspace build files inside container...$(COLOR_RESET)"
 	@rm -rf ${WORKSPACE}/build ${WORKSPACE}/install ${WORKSPACE}/log
+
+##
+## Local ROS2
+##
+
+source_marvin:
+	@echo "$(COLOR_GREEN)Sourcing Marvin workspace...$(COLOR_RESET)"
+	. ros2_ws/install/setup.bash
+
+##
+## MoveIt2 specific targets
+##
+
+# Source MoveIt2 workspace
+source_moveit:
+	@echo "$(COLOR_GREEN)Sourcing MoveIt2 workspace...$(COLOR_RESET)"
+	. ~/ws_moveit/install/setup.bash 
+
+# Launch MoveIt2 setup assistant
+launch_setup_assistant:
+	@echo "$(COLOR_GREEN)Launching MoveIt2 setup assistant...$(COLOR_RESET)"
+	ros2 launch moveit_setup_assistant setup_assistant.launch.py
