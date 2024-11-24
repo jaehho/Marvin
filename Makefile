@@ -9,72 +9,58 @@ WORKSPACE = ./ros2_ws
 COLOR_GREEN = \\033[0;32m
 COLOR_RESET = \\033[0m
 
-.PHONY: default help build up down clean rebuild logs shell ws-build ws-clean
-
-# Default target is `up`
-default: up
+.PHONY: help build up down clean rebuild logs shell ws-build ws-clean
 
 # Show this help message
 help:
 	@cat $(MAKEFILE_LIST) | docker run --rm -i xanders/make-help
 
+##
+## Docker targets
+##
+
 # Build Docker images
-build:
+docker_build:
 	@echo "$(COLOR_GREEN)Building Docker images...$(COLOR_RESET)"
 	${DOCKER_COMPOSE} build
 
 # Create and start containers
-up:
+docker_up:
 	@echo "$(COLOR_GREEN)Starting containers...$(COLOR_RESET)"
 	${DOCKER_COMPOSE} up -d
 
 # Stop and remove containers and associated resources
-down:
+docker_down:
 	@echo "$(COLOR_GREEN)Removing containers...$(COLOR_RESET)"
 	${DOCKER_COMPOSE} down --remove-orphans
 
 # Clean up Docker environment
-clean:
+docker_clean:
 	@echo "$(COLOR_GREEN)Cleaning up Docker environment...$(COLOR_RESET)"
 	${DOCKER_COMPOSE} down --remove-orphans
 	@docker system prune -a --volumes -f
-	@docker rmi -f $(docker images -q) || true
-	@docker volume rm $(docker volume ls -q) || true
 
 # Rebuild the Docker image
-rebuild: clean build up
+docker_rebuild: clean build up
 	@echo "$(COLOR_GREEN)Rebuilt Docker image and restarted container...$(COLOR_RESET)"
 
 # Follow logs of the container
-logs:
+docker_logs:
 	@echo "$(COLOR_GREEN)Viewing logs for ${SERVICE_NAME}...$(COLOR_RESET)"
 	${DOCKER_COMPOSE} logs -f ${SERVICE_NAME}
 
 # Access the container shell
-shell:
+docker_shell:
 	@echo "$(COLOR_GREEN)Accessing ${SERVICE_NAME} container shell...$(COLOR_RESET)"
 	${DOCKER_COMPOSE} exec ${SERVICE_NAME} bash
 
 # Build ROS2 workspace
-ws-build:
+build: clean
 	@echo "$(COLOR_GREEN)Building ROS2 workspace inside container...$(COLOR_RESET)"
 	${DOCKER_COMPOSE} exec ${SERVICE_NAME} bash -c "source /opt/ros/${ROS_DISTRO}/setup.bash && colcon build"
 
-# Clean ROS2 workspace
-ws-clean:
-	@echo "$(COLOR_GREEN)Cleaning ROS2 workspace build files inside container...$(COLOR_RESET)"
-	@rm -rf ${WORKSPACE}/build ${WORKSPACE}/install ${WORKSPACE}/log
-
 ##
-## Local ROS2
-##
-
-source_marvin:
-	@echo "$(COLOR_GREEN)Sourcing Marvin workspace...$(COLOR_RESET)"
-	. ros2_ws/install/setup.bash
-
-##
-## MoveIt2 specific targets
+## MoveIt targets
 ##
 
 # Source MoveIt2 workspace
@@ -86,3 +72,33 @@ source_moveit:
 launch_setup_assistant:
 	@echo "$(COLOR_GREEN)Launching MoveIt2 setup assistant...$(COLOR_RESET)"
 	ros2 launch moveit_setup_assistant setup_assistant.launch.py
+
+##
+## Local targets
+##
+
+# Check for missing dependencies
+check_dependencies:
+	@echo "$(COLOR_GREEN)Checking for missing dependencies...$(COLOR_RESET)"
+	rosdep install -i --from-path ${WORKSPACE}/src --rosdistro jazzy -y
+
+# Clean ROS2 workspace
+clean:
+	@echo "$(COLOR_GREEN)Cleaning ROS2 workspace build files...$(COLOR_RESET)"
+	@rm -rf ${WORKSPACE}/build ${WORKSPACE}/install ${WORKSPACE}/log
+
+source_marvin:
+	@echo "$(COLOR_GREEN)Sourcing Marvin workspace...$(COLOR_RESET)"
+	. ros2_ws/install/setup.bash
+
+##
+## OpenManipulator targets
+##
+
+# Launch OpenManipulatorX controller
+launch_open_manipulator_x_controller:
+	ros2 launch open_manipulator_x_controller open_manipulator_x_controller.launch.py
+
+# Launch OpenManipulatorX RViz
+launch_open_manipulator_x_rviz:
+	ros2 launch open_manipulator_x_description open_manipulator_x_rviz.launch.py 
