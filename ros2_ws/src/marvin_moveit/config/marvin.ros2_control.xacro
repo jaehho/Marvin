@@ -8,85 +8,75 @@
                 <!-- By default, set up controllers for simulation. This won't work on real hardware -->
                 <plugin>mock_components/GenericSystem</plugin>
             </hardware>
-            <joint name="right_joint1">
+            <joint name="joint1_left">
                 <command_interface name="position"/>
                 <state_interface name="position">
-                  <param name="initial_value">${initial_positions['right_joint1']}</param>
+                  <param name="initial_value">${initial_positions['joint1_left']}</param>
                 </state_interface>
                 <state_interface name="velocity"/>
-                <state_interface name="effort"/>
             </joint>
-            <joint name="right_joint2">
+            <joint name="joint2_left">
                 <command_interface name="position"/>
                 <state_interface name="position">
-                  <param name="initial_value">${initial_positions['right_joint2']}</param>
+                  <param name="initial_value">${initial_positions['joint2_left']}</param>
                 </state_interface>
                 <state_interface name="velocity"/>
-                <state_interface name="effort"/>
             </joint>
-            <joint name="right_joint3">
+            <joint name="joint3_left">
                 <command_interface name="position"/>
                 <state_interface name="position">
-                  <param name="initial_value">${initial_positions['right_joint3']}</param>
+                  <param name="initial_value">${initial_positions['joint3_left']}</param>
                 </state_interface>
                 <state_interface name="velocity"/>
-                <state_interface name="effort"/>
             </joint>
-            <joint name="right_joint4">
+            <joint name="joint4_left">
                 <command_interface name="position"/>
                 <state_interface name="position">
-                  <param name="initial_value">${initial_positions['right_joint4']}</param>
+                  <param name="initial_value">${initial_positions['joint4_left']}</param>
                 </state_interface>
                 <state_interface name="velocity"/>
-                <state_interface name="effort"/>
             </joint>
-            <joint name="right_gripper">
+            <joint name="joint1_right">
                 <command_interface name="position"/>
                 <state_interface name="position">
-                  <param name="initial_value">${initial_positions['right_gripper']}</param>
+                  <param name="initial_value">${initial_positions['joint1_right']}</param>
                 </state_interface>
                 <state_interface name="velocity"/>
-                <state_interface name="effort"/>
             </joint>
-            <joint name="left_joint1">
+            <joint name="joint2_right">
                 <command_interface name="position"/>
                 <state_interface name="position">
-                  <param name="initial_value">${initial_positions['left_joint1']}</param>
+                  <param name="initial_value">${initial_positions['joint2_right']}</param>
                 </state_interface>
                 <state_interface name="velocity"/>
-                <state_interface name="effort"/>
             </joint>
-            <joint name="left_joint2">
+            <joint name="joint3_right">
                 <command_interface name="position"/>
                 <state_interface name="position">
-                  <param name="initial_value">${initial_positions['left_joint2']}</param>
+                  <param name="initial_value">${initial_positions['joint3_right']}</param>
                 </state_interface>
                 <state_interface name="velocity"/>
-                <state_interface name="effort"/>
             </joint>
-            <joint name="left_joint3">
+            <joint name="joint4_right">
                 <command_interface name="position"/>
                 <state_interface name="position">
-                  <param name="initial_value">${initial_positions['left_joint3']}</param>
+                  <param name="initial_value">${initial_positions['joint4_right']}</param>
                 </state_interface>
                 <state_interface name="velocity"/>
-                <state_interface name="effort"/>
             </joint>
-            <joint name="left_joint4">
+            <joint name="gripper_left">
                 <command_interface name="position"/>
                 <state_interface name="position">
-                  <param name="initial_value">${initial_positions['left_joint4']}</param>
+                  <param name="initial_value">${initial_positions['gripper_left']}</param>
                 </state_interface>
                 <state_interface name="velocity"/>
-                <state_interface name="effort"/>
             </joint>
-            <joint name="left_gripper">
+            <joint name="gripper_right">
                 <command_interface name="position"/>
                 <state_interface name="position">
-                  <param name="initial_value">${initial_positions['left_gripper']}</param>
+                  <param name="initial_value">${initial_positions['gripper_right']}</param>
                 </state_interface>
                 <state_interface name="velocity"/>
-                <state_interface name="effort"/>
             </joint>
 
         </ros2_control>

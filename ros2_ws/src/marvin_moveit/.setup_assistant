@@ -5,16 +5,15 @@ moveit_setup_assistant_config:
   srdf:
     relative_path: config/marvin.srdf
   package_settings:
-    author_name: Jaeho
-    author_email: jaeho.cho@cooper.edu
-    generated_timestamp: 1730255746
+    author_name: Sophia
+    author_email: sophia.klymchuk@gmail.com
+    generated_timestamp: 1732483842
   control_xacro:
     command:
       - position
     state:
       - position
       - velocity
-      - effort
   modified_urdf:
     xacros:
       - control_xacro
@@ -24,4 +23,3 @@ moveit_setup_assistant_config:
     state:
       - position
       - velocity
-      - effort
