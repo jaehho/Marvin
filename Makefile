@@ -1,5 +1,4 @@
 # Variables
-SHELL := /bin/bash
 DOCKER_COMPOSE = docker compose
 ROS_DISTRO = jazzy
 SERVICE_NAME = ros2_${ROS_DISTRO}

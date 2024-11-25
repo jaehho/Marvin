@@ -148,7 +148,7 @@
     <child link="link2_left"/>
     <origin rpy="0 0 0" xyz="0.012 0.0 0.017"/>
     <axis xyz="0 0 1"/>
-    <limit effort="1" lower="-2.827433388230814" upper="2.827433388230814" velocity="4.8"/>
+    <limit effort="1" lower="-2.827433388230814" upper="2.827433388230814" velocity="4.8" acceleration="1.0"/>
   </joint>
   <!--  Link 2 -->
   <link name="link2_left">
@@ -177,7 +177,7 @@
     <child link="link3_left"/>
     <origin rpy="0 0 0" xyz="0.0 0.0 0.0595"/>
     <axis xyz="0 1 0"/>
-    <limit effort="1" lower="-1.790707812546182" upper="1.5707963267948966" velocity="4.8"/>
+    <limit effort="1" lower="-1.790707812546182" upper="1.5707963267948966" velocity="4.8" acceleration="1.0"/>
   </joint>
   <!--  Link 3 -->
   <link name="link3_left">
@@ -206,7 +206,7 @@
     <child link="link4_left"/>
     <origin rpy="0 0 0" xyz="0.024 0 0.128"/>
     <axis xyz="0 1 0"/>
-    <limit effort="1" lower="-0.9424777960769379" upper="1.382300767579509" velocity="4.8"/>
+    <limit effort="1" lower="-0.9424777960769379" upper="1.382300767579509" velocity="4.8" acceleration="1.0"/>
   </joint>
   <!--  Link 4 -->
   <link name="link4_left">
@@ -235,7 +235,7 @@
     <child link="link5_left"/>
     <origin rpy="0 0 0" xyz="0.124 0.0 0.0"/>
     <axis xyz="0 1 0"/>
-    <limit effort="1" lower="-1.790707812546182" upper="2.0420352248333655" velocity="4.8"/>
+    <limit effort="1" lower="-1.790707812546182" upper="2.0420352248333655" velocity="4.8" acceleration="1.0"/>
   </joint>
   <!--  Link 5 -->
   <link name="link5_left">
@@ -264,7 +264,7 @@
     <child link="gripper_link_left"/>
     <origin rpy="0 0 0" xyz="0.0817 0.021 0.0"/>
     <axis xyz="0 1 0"/>
-    <limit effort="1" lower="-0.010" upper="0.019" velocity="4.8"/>
+    <limit effort="1" lower="-0.010" upper="0.019" velocity="4.8" acceleration="1.0"/>
   </joint>
   <!--  Gripper link -->
   <link name="gripper_link_left">
@@ -293,7 +293,7 @@
     <child link="gripper_link_sub_left"/>
     <origin rpy="0 0 0" xyz="0.0817 -0.021 0"/>
     <axis xyz="0 -1 0"/>
-    <limit effort="1" lower="-0.010" upper="0.019" velocity="4.8"/>
+    <limit effort="1" lower="-0.010" upper="0.019" velocity="4.8" acceleration="1.0"/>
     <mimic joint="gripper_left" multiplier="1"/>
   </joint>
   <!--  Gripper link sub -->
@@ -367,7 +367,7 @@
     <child link="link2_right"/>
     <origin rpy="0 0 0" xyz="0.012 0.0 0.017"/>
     <axis xyz="0 0 1"/>
-    <limit effort="1" lower="-2.827433388230814" upper="2.827433388230814" velocity="4.8"/>
+    <limit effort="1" lower="-2.827433388230814" upper="2.827433388230814" velocity="4.8" acceleration="1.0"/>
   </joint>
   <!--  Link 2 -->
   <link name="link2_right">
@@ -396,7 +396,7 @@
     <child link="link3_right"/>
     <origin rpy="0 0 0" xyz="0.0 0.0 0.0595"/>
     <axis xyz="0 1 0"/>
-    <limit effort="1" lower="-1.790707812546182" upper="1.5707963267948966" velocity="4.8"/>
+    <limit effort="1" lower="-1.790707812546182" upper="1.5707963267948966" velocity="4.8" acceleration="1.0"/>
   </joint>
   <!--  Link 3 -->
   <link name="link3_right">
@@ -425,7 +425,7 @@
     <child link="link4_right"/>
     <origin rpy="0 0 0" xyz="0.024 0 0.128"/>
     <axis xyz="0 1 0"/>
-    <limit effort="1" lower="-0.9424777960769379" upper="1.382300767579509" velocity="4.8"/>
+    <limit effort="1" lower="-0.9424777960769379" upper="1.382300767579509" velocity="4.8" acceleration="1.0"/>
   </joint>
   <!--  Link 4 -->
   <link name="link4_right">
@@ -454,7 +454,7 @@
     <child link="link5_right"/>
     <origin rpy="0 0 0" xyz="0.124 0.0 0.0"/>
     <axis xyz="0 1 0"/>
-    <limit effort="1" lower="-1.790707812546182" upper="2.0420352248333655" velocity="4.8"/>
+    <limit effort="1" lower="-1.790707812546182" upper="2.0420352248333655" velocity="4.8" acceleration="1.0"/>
   </joint>
   <!--  Link 5 -->
   <link name="link5_right">
@@ -483,7 +483,7 @@
     <child link="gripper_link_right"/>
     <origin rpy="0 0 0" xyz="0.0817 0.021 0.0"/>
     <axis xyz="0 1 0"/>
-    <limit effort="1" lower="-0.010" upper="0.019" velocity="4.8"/>
+    <limit effort="1" lower="-0.010" upper="0.019" velocity="4.8" acceleration="1.0"/>
   </joint>
   <!--  Gripper link -->
   <link name="gripper_link_right">
@@ -512,7 +512,7 @@
     <child link="gripper_link_sub_right"/>
     <origin rpy="0 0 0" xyz="0.0817 -0.021 0"/>
     <axis xyz="0 -1 0"/>
-    <limit effort="1" lower="-0.010" upper="0.019" velocity="4.8"/>
+    <limit effort="1" lower="-0.010" upper="0.019" velocity="4.8" acceleration="1.0"/>
     <mimic joint="gripper_right" multiplier="1"/>
   </joint>
   <!--  Gripper link sub -->

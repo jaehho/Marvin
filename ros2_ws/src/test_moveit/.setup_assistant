@@ -1,0 +1,25 @@
+moveit_setup_assistant_config:
+  urdf:
+    package: marvin
+    relative_path: urdf/rrbot.urdf
+  srdf:
+    relative_path: config/2dof_robot.srdf
+  package_settings:
+    author_name: jae
+    author_email: jae@gmail.com
+    generated_timestamp: 1732498623
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity
+  modified_urdf:
+    xacros:
+      - control_xacro
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity
