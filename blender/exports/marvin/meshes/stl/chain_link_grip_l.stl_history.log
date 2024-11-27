@@ -1,3 +1,0 @@
-Instantiated with filepath=None->None, scale=[0.0010000000474974513, 0.0010000000474974513, 0.0010000000474974513], mesh=<bpy_struct, Mesh("chain_link_grip_l") at 0x79fdc4ad0f08>, meshname=chain_link_grip_l, material=None, mesh_orientation=None, {}
-->trying export of <bpy_struct, Mesh("chain_link_grip_l") at 0x79fdc4ad0f08> to /home/mili/marvin/blender/exports/marvin/meshes/stl/chain_link_grip_l.stl
-->wrote stl to /home/mili/marvin/blender/exports/marvin/meshes/stl/chain_link_grip_l.stl from bpy_types.Mesh

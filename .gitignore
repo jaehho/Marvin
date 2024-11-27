@@ -1,6 +1,2 @@
 .vscode
-open_manipulator_github
-.venv
-.python_history
-.ros
-.rviz2
+__pycache__
