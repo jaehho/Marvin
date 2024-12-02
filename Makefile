@@ -9,56 +9,58 @@ COLOR_GREEN = \033[0;32m
 COLOR_BLUE = \033[0;34m
 COLOR_RESET = \033[0m
 
-.PHONY: help build up down clean rebuild logs shell ws-build ws-clean
+.PHONY: help docker_build docker_up docker_down docker_clean docker_rebuild docker_logs docker_shell docker_ws_build\
+		launch_setup_assistant launch_open_manipulator_x_controller launch_open_manipulator_x_rviz\
+		check_dependencies clean build
 
 # Show this help message
 help:
 	@cat $(MAKEFILE_LIST) | docker run --rm -i xanders/make-help
 	@echo "$(COLOR_BLUE)Source workspace with \`. ros2_ws/install/setup.bash\`$(COLOR_RESET)"
 
-##
-## Docker targets
-##
+# ##
+# ## Docker targets
+# ##
 
-# Build Docker images
-docker_build:
-	@echo "$(COLOR_GREEN)Building Docker images...$(COLOR_RESET)"
-	${DOCKER_COMPOSE} build
+# # Build Docker images
+# docker_build:
+# 	@echo "$(COLOR_GREEN)Building Docker images...$(COLOR_RESET)"
+# 	${DOCKER_COMPOSE} build
 
-# Create and start containers
-docker_up:
-	@echo "$(COLOR_GREEN)Starting containers...$(COLOR_RESET)"
-	${DOCKER_COMPOSE} up -d
+# # Create and start containers
+# docker_up:
+# 	@echo "$(COLOR_GREEN)Starting containers...$(COLOR_RESET)"
+# 	${DOCKER_COMPOSE} up -d
 
-# Stop and remove containers and associated resources
-docker_down:
-	@echo "$(COLOR_GREEN)Removing containers...$(COLOR_RESET)"
-	${DOCKER_COMPOSE} down --remove-orphans
+# # Stop and remove containers and associated resources
+# docker_down:
+# 	@echo "$(COLOR_GREEN)Removing containers...$(COLOR_RESET)"
+# 	${DOCKER_COMPOSE} down --remove-orphans
 
-# Clean up Docker environment
-docker_clean:
-	@echo "$(COLOR_GREEN)Cleaning up Docker environment...$(COLOR_RESET)"
-	${DOCKER_COMPOSE} down --remove-orphans
-	@docker system prune -a --volumes -f
+# # Clean up Docker environment
+# docker_clean:
+# 	@echo "$(COLOR_GREEN)Cleaning up Docker environment...$(COLOR_RESET)"
+# 	${DOCKER_COMPOSE} down --remove-orphans
+# 	@docker system prune -a --volumes -f
 
-# Rebuild the Docker image
-docker_rebuild: clean build up
-	@echo "$(COLOR_GREEN)Rebuilt Docker image and restarted container...$(COLOR_RESET)"
+# # Rebuild the Docker image
+# docker_rebuild: clean build up
+# 	@echo "$(COLOR_GREEN)Rebuilt Docker image and restarted container...$(COLOR_RESET)"
 
-# Follow logs of the container
-docker_logs:
-	@echo "$(COLOR_GREEN)Viewing logs for ${SERVICE_NAME}...$(COLOR_RESET)"
-	${DOCKER_COMPOSE} logs -f ${SERVICE_NAME}
+# # Follow logs of the container
+# docker_logs:
+# 	@echo "$(COLOR_GREEN)Viewing logs for ${SERVICE_NAME}...$(COLOR_RESET)"
+# 	${DOCKER_COMPOSE} logs -f ${SERVICE_NAME}
 
-# Access the container shell
-docker_shell:
-	@echo "$(COLOR_GREEN)Accessing ${SERVICE_NAME} container shell...$(COLOR_RESET)"
-	${DOCKER_COMPOSE} exec ${SERVICE_NAME} bash
+# # Access the container shell
+# docker_shell:
+# 	@echo "$(COLOR_GREEN)Accessing ${SERVICE_NAME} container shell...$(COLOR_RESET)"
+# 	${DOCKER_COMPOSE} exec ${SERVICE_NAME} bash
 
-# Build ROS2 workspace
-docker_ws_build:
-	@echo "$(COLOR_GREEN)Building ROS2 workspace inside container...$(COLOR_RESET)"
-	${DOCKER_COMPOSE} exec ${SERVICE_NAME} bash -c "source /opt/ros/${ROS_DISTRO}/setup.bash && colcon build"
+# # Build ROS2 workspace
+# docker_ws_build:
+# 	@echo "$(COLOR_GREEN)Building ROS2 workspace inside container...$(COLOR_RESET)"
+# 	${DOCKER_COMPOSE} exec ${SERVICE_NAME} bash -c "source /opt/ros/${ROS_DISTRO}/setup.bash && colcon build"
 
 ##
 ## MoveIt targets
