@@ -13,7 +13,7 @@ class PoseDetectionPublisher(Node):
         super().__init__('pose_detection_publisher')
         self.publisher_ = self.create_publisher(PoseLandmark, 'pose_landmarks', 10)
         self.mp_pose = mp.solutions.pose
-        self.pose = self.mp_pose.Pose(static_image_mode=False, model_complexity=2, smooth_landmarks=True,
+        self.pose = self.mp_pose.Pose(static_image_mode=False, model_complexity=1, smooth_landmarks=True,
                                       enable_segmentation=False, min_detection_confidence=0.5, min_tracking_confidence=0.5)
         self.drawing_utils = mp.solutions.drawing_utils
 
