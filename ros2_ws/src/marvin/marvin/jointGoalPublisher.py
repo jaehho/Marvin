@@ -56,15 +56,10 @@ class JointGoalPublisher(Node):
             else:
                 shoulder_flexion_angle = self.joint_angles[f'{side}_shoulder_flexion']
             
-            # joint_positions.extend([
-            #     shoulder_flexion_angle,
-            #     np.pi / 2 - self.joint_angles[f'{side}_shoulder_adduction'],
-            #     np.pi / 2 - self.joint_angles[f'{side}_elbow_flexion'],
-            #     0.0, 0.0, 0.0  # Placeholder for other joint values not computed
-            # ])
             joint_positions.extend([
-                shoulder_flexion_angle,
-                0.0, 0.0,
+                np.clip(shoulder_flexion_angle, -2.82743, 2.82743),
+                np.clip(np.pi / 2 - self.joint_angles[f'{side}_shoulder_adduction'], -1.79071, 1.57080),
+                np.clip(np.pi / 2 - self.joint_angles[f'{side}_elbow_flexion'], -0.94248, 1.38230),
                 0.0, 0.0, 0.0  # Placeholder for other joint values not computed
             ])
         
