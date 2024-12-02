@@ -98,4 +98,4 @@ clean:
 # Build ROS2 workspace
 build:
 	@echo "$(COLOR_GREEN)Building ROS2 workspace...$(COLOR_RESET)"
-	@cd ${WORKSPACE} && colcon build
+	@cd ${WORKSPACE} && colcon build --symlink-install

@@ -5,10 +5,10 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 import time
 
-class JointStateSubscriber(Node):
+class JointGoalSubscriber(Node):
     def __init__(self, selected_joints=None, display_names=None):
         super().__init__('joint_state_subscriber')
-        self.subscription = self.create_subscription( JointState, 'joint_states', self.listener_callback, 10)
+        self.subscription = self.create_subscription( JointState, 'joint_goals', self.listener_callback, 10)
         self.joint_positions = []
         self.time_stamps = []
         self.joint_names = []
@@ -95,7 +95,7 @@ def main(args=None):
         # 'right_gripper_sub': 'Right Gripper Sub'
     }
 
-    joint_state_subscriber = JointStateSubscriber(selected_joints=selected_joints, display_names=display_names)
+    joint_state_subscriber = JointGoalSubscriber(selected_joints=selected_joints, display_names=display_names)
 
     try:
         plot_joint_positions(joint_state_subscriber)
