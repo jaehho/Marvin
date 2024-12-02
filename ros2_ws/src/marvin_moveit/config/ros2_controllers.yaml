@@ -11,11 +11,7 @@ controller_manager:
       type: position_controllers/GripperActionController
 
 
-    right_arm_controller:
-      type: joint_trajectory_controller/JointTrajectoryController
-
-
-    left_arm_controller:
+    marvin_controller:
       type: joint_trajectory_controller/JointTrajectoryController
 
 
@@ -28,26 +24,17 @@ left_hand_controller:
 right_hand_controller:
   ros__parameters:
     joint: gripper_right
-right_arm_controller:
-  ros__parameters:
-    joints:
-      - joint1_right
-      - joint2_right
-      - joint3_right
-      - joint4_right
-    command_interfaces:
-      - position
-    state_interfaces:
-      - position
-      - velocity
-    allow_nonzero_velocity_at_trajectory_end: true
-left_arm_controller:
+marvin_controller:
   ros__parameters:
     joints:
       - joint1_left
       - joint2_left
       - joint3_left
       - joint4_left
+      - joint1_right
+      - joint2_right
+      - joint3_right
+      - joint4_right
     command_interfaces:
       - position
     state_interfaces:

@@ -18,11 +18,11 @@ int main(int argc, char * argv[])
   // Next step goes here
   // Create the MoveIt MoveGroup Interface
   using moveit::planning_interface::MoveGroupInterface;
-  auto move_group_interface = MoveGroupInterface(node, "left_arm");
+  auto move_group_interface = MoveGroupInterface(node, "marvin");
 
  
 
-std::vector<double> joint_positions = {0.0, -180, -9, -46};
+std::vector<double> joint_positions = {0.0, -100, -9, -46, 0.0, -100, -9, -46};
 move_group_interface.setJointValueTarget(joint_positions);
 
 auto const [success, plan] = [&move_group_interface] {
