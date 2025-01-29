@@ -6,11 +6,14 @@ from custom_interfaces.msg import PoseLandmark
 from geometry_msgs.msg import Point
 
 class PoseDetectionPublisher(Node):
+    """
+    Publishes to: [topic] /pose_landmarks
+    """
     def __init__(self):
         super().__init__('pose_detection_publisher')
         self.publisher_ = self.create_publisher(PoseLandmark, 'pose_landmarks', 10)
         self.mp_pose = mp.solutions.pose
-        self.pose = self.mp_pose.Pose(static_image_mode=False, model_complexity=2, smooth_landmarks=True,
+        self.pose = self.mp_pose.Pose(static_image_mode=False, model_complexity=1, smooth_landmarks=True,
                                       enable_segmentation=False, min_detection_confidence=0.5, min_tracking_confidence=0.5)
         self.drawing_utils = mp.solutions.drawing_utils
 
