@@ -1,7 +1,7 @@
 # Variables
 DOCKER_COMPOSE = docker compose
 ROS_DISTRO = jazzy
-SERVICE_NAME = ros2_${ROS_DISTRO}
+CONTAINER = ros2
 WORKSPACE = ./ros2_ws
 
 # Colors
@@ -16,6 +16,9 @@ help: ## Show this help message
 		awk 'BEGIN {FS = ":.*?## "}; \
 		     /^# Section:/ {gsub("^# Section: ", ""); print "\n\033[1;35m" $$0 "\033[0m"}; \
 		     /^[a-zA-Z_-]+:/ {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}'
+
+chownme: ## Change ownership of all files in the workspace to the current user
+	@sudo chown -R $(shell whoami) ./
 
 # Section: MoveIt2 targets
 
@@ -33,7 +36,7 @@ launch_open_manipulator_x_rviz: ## Launch OpenManipulatorX RViz
 
 # Section: Local targets
 
-check_dependencies: ## Check for missing dependencies
+install-dependencies: ## Check for missing dependencies
 	@echo "$(COLOR_GREEN)Checking for missing dependencies...$(COLOR_RESET)"
 	rosdep install -i --from-path ${WORKSPACE}/src --rosdistro ${ROS_DISTRO} -y
 
@@ -44,3 +47,20 @@ clean: ## Clean ROS2 workspace build files
 build: ## Build ROS2 workspace
 	@echo "$(COLOR_GREEN)Building ROS2 workspace...$(COLOR_RESET)"
 	@cd ${WORKSPACE} && colcon build --symlink-install
+
+# Section: Docker
+
+docker_build: ## Build Docker container(s)
+	@$(DOCKER_COMPOSE) build
+
+docker_up: ## Start Docker container(s)
+	@$(DOCKER_COMPOSE) up -d
+
+docker_attach: ## Attach to the container
+	@$(DOCKER_COMPOSE) exec -it $(CONTAINER) bash
+
+docker_teardown: ## Stop Docker containers and clean up
+	@$(DOCKER_COMPOSE) down -t 1 --remove-orphans
+
+test: ## Test Docker container(s)
+	echo $(IS_RUNNING)

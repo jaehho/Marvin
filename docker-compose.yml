@@ -2,7 +2,7 @@ services:
   ros2:
     build:
       context: .
-    container_name: ros2_humble
+    container_name: ros2
     devices:
       - /dev/video0:/dev/video0           # Required for camera access
       - /dev/video1:/dev/video1           # Required for camera access
@@ -14,4 +14,4 @@ services:
       - ./:/root/marvin/
     tty: true
     stdin_open: true
-    command: /bin/bash
+    command: /bin/bash -c "source /opt/ros/jazzy/setup.bash && /bin/bash"

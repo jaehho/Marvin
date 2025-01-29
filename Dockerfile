@@ -1,16 +1,20 @@
 # Use the official ROS 2 Humble base image
-FROM osrf/ros:humble-desktop-full
+FROM osrf/ros:jazzy-desktop-full
 
-# Install additional dependencies if needed
-RUN apt-get update && apt-get upgrade -y && apt-get install -y \
-    python3 \
-    python-is-python3 \
-    python3-pip \
-    && rm -rf /var/lib/apt/lists/*
+# # Install additional dependencies if needed
+# RUN apt-get update && apt-get upgrade -y && apt-get install -y \
+#     python3 \
+#     python-is-python3 \
+#     python3-pip \
+#     && rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt /tmp/
-RUN pip3 install --no-cache-dir -r /tmp/requirements.txt
+# ========================
+# ENTRYPOINT from ros-core
+# ========================
+# #!/bin/bash
+# set -e
 
-WORKDIR /root/marvin/
-
-ENTRYPOINT [ "/ros_entrypoint.sh" ]
+# # setup ros2 environment
+# source "/opt/ros/$ROS_DISTRO/setup.bash" --
+# exec "$@"
+# ------------------------
