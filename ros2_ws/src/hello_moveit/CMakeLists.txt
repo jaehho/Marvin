@@ -9,6 +9,7 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(moveit_ros_planning_interface REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(std_msgs REQUIRED)
 
 add_executable(hello_moveit src/hello_moveit.cpp)
 target_include_directories(hello_moveit PUBLIC
@@ -21,7 +22,26 @@ ament_target_dependencies(
   "rclcpp"
 )
 
-install(TARGETS hello_moveit
+add_executable(publisher src/publisher.cpp)
+ament_target_dependencies(
+  publisher
+  "rclcpp"
+  "std_msgs"
+)
+
+add_executable(subscriber src/subscriber.cpp)
+target_include_directories(subscriber PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include/${PROJECT_NAME}>)
+target_compile_features(subscriber PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
+ament_target_dependencies(
+  subscriber
+  "moveit_ros_planning_interface"
+  "rclcpp"
+  "std_msgs"
+)
+
+install(TARGETS hello_moveit publisher subscriber
   DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)
