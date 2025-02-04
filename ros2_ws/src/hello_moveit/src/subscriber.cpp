@@ -20,6 +20,9 @@ public:
           RCLCPP_INFO(this->get_logger(), "%.2f", position);
         }
 
+        //Stop any ongoing motion
+        this->stop_execution();
+
         // Plan and execute with received joint positions
         this->execute_plan(msg->data);
       });
@@ -37,6 +40,15 @@ private:
   rclcpp::Subscription<std_msgs::msg::Float64MultiArray>::SharedPtr subscription_;
   std::shared_ptr<moveit::planning_interface::MoveGroupInterface> move_group_interface_;
 
+  //Function to stop ongoing motion
+  void stop_execution()
+  {
+    if (move_group_interface_) {
+      RCLCPP_WARN(this->get_logger(), "Stopping any ongoing motion...");
+      move_group_interface_->stop();
+    }
+  }
+
   // Function to plan and execute
   void execute_plan(const std::vector<double> &joint_positions)
   {
@@ -48,7 +60,10 @@ private:
     // Set the joint positions as the target
     move_group_interface_->setJointValueTarget(joint_positions);
 
+    
+
     // Plan the motion
+    //at face value, move_group_interface_->move(); should be equivalent
     auto const [success, plan] = [&]() {
       moveit::planning_interface::MoveGroupInterface::Plan msg;
       auto const ok = static_cast<bool>(move_group_interface_->plan(msg));
@@ -58,7 +73,7 @@ private:
     if (success) {
       // Execute the motion
       RCLCPP_INFO(this->get_logger(), "Motion plan succeeded. Executing...");
-      move_group_interface_->execute(plan);
+      move_group_interface_->asyncExecute(plan);
     } else {
       RCLCPP_ERROR(this->get_logger(), "Planning failed!");
     }

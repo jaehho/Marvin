@@ -19,7 +19,7 @@ public:
       [this]() -> void {
         // Define the two alternating joint positions
         std::vector<double> joint_positions1 = {0.0, -100, -9, -46, 0.0, -100, -9, -46};
-        std::vector<double> joint_positions2 = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+        std::vector<double> joint_positions2 = {0.0, 90, -6, -81, 0.0, 90, -6, -81};
 
         // Alternate between the two positions every second
         std::vector<double> current_positions = (count_ % 2 == 0) ? joint_positions1 : joint_positions2;
@@ -32,7 +32,7 @@ public:
 
         count_++;
       };
-    timer_ = this->create_wall_timer(1s, timer_callback);
+    timer_ = this->create_wall_timer(7s, timer_callback);
 
     
   }
