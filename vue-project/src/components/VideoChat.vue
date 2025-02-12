@@ -20,38 +20,67 @@ export default {
   data() {
     return {
       peer: null,
-      peerId: "", // Store the local peer ID
-      remotePeerId: "", // Input for calling another peer
+      peerId: "",
+      remotePeerId: "",
       localStream: null,
       remoteStream: null,
       call: null,
+      iceServers: [],
     };
   },
   async mounted() {
-    this.peer = new Peer(); // Automatically generate a unique ID
-
-    this.peer.on("open", (id) => {
-      this.peerId = id; // Store the peer ID
-      console.log("My peer ID:", id);
-    });
-
-    this.peer.on("call", (incomingCall) => {
-      incomingCall.answer(this.localStream); // Answer the call
-      incomingCall.on("stream", (remoteStream) => {
-        this.$refs.remoteVideo.srcObject = remoteStream;
-      });
-
-      this.call = incomingCall;
-    });
-
-    this.localStream = await navigator.mediaDevices.getUserMedia({
-      video: true,
-      audio: true,
-    });
-
-    this.$refs.localVideo.srcObject = this.localStream;
+    await this.fetchTurnServers(); // Get TURN servers dynamically
+    this.initializePeer();
   },
   methods: {
+    async fetchTurnServers() {
+      try {
+        const response = await fetch(
+          "https://marvin.metered.live/api/v1/turn/credentials?apiKey=bca769dfeca57f21e5ceb9eada5afbbf71cd"
+        );
+        this.iceServers = await response.json();
+        console.log("Fetched TURN Servers:", this.iceServers);
+      } catch (error) {
+        console.error("Failed to fetch TURN servers:", error);
+      }
+    },
+
+    initializePeer() {
+      this.peer = new Peer({
+        config: {
+          iceServers: this.iceServers, // Use fetched TURN servers
+        },
+      });
+
+      this.peer.on("open", (id) => {
+        this.peerId = id;
+        console.log("My Peer ID:", id);
+      });
+
+      this.peer.on("call", async (incomingCall) => {
+        await this.getLocalStream();
+        incomingCall.answer(this.localStream);
+        incomingCall.on("stream", (remoteStream) => {
+          this.$refs.remoteVideo.srcObject = remoteStream;
+        });
+        this.call = incomingCall;
+      });
+
+      this.getLocalStream();
+    },
+
+    async getLocalStream() {
+      try {
+        this.localStream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+          audio: true,
+        });
+        this.$refs.localVideo.srcObject = this.localStream;
+      } catch (error) {
+        console.error("Error accessing media devices:", error);
+      }
+    },
+
     callPeer() {
       if (!this.remotePeerId) {
         alert("Enter a Peer ID to call!");
@@ -64,6 +93,7 @@ export default {
         this.$refs.remoteVideo.srcObject = remoteStream;
       });
     },
+
     endCall() {
       if (this.call) {
         this.call.close();
@@ -71,13 +101,13 @@ export default {
       }
 
       if (this.localStream) {
-        this.localStream.getTracks().forEach(track => track.stop());
+        this.localStream.getTracks().forEach((track) => track.stop());
         this.localStream = null;
         this.$refs.localVideo.srcObject = null;
       }
 
       if (this.remoteStream) {
-        this.remoteStream.getTracks().forEach(track => track.stop());
+        this.remoteStream.getTracks().forEach((track) => track.stop());
         this.remoteStream = null;
         this.$refs.remoteVideo.srcObject = null;
       }
@@ -86,8 +116,8 @@ export default {
         this.peer.destroy();
         this.peer = null;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
