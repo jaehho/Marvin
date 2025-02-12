@@ -1,6 +1,7 @@
 <template>
   <div class="video-container">
     <h2>Your Peer ID: <span>{{ peerId }}</span></h2>
+
     <input v-model="remotePeerId" placeholder="Enter Peer ID to Call" />
     <button @click="callPeer">Call</button>
 
@@ -29,7 +30,7 @@ export default {
     };
   },
   async mounted() {
-    await this.fetchTurnServers(); // Get TURN servers dynamically
+    await this.fetchTurnServers(); // Fetch TURN servers dynamically
     this.initializePeer();
   },
   methods: {
@@ -38,8 +39,17 @@ export default {
         const response = await fetch(
           "https://marvin.metered.live/api/v1/turn/credentials?apiKey=bca769dfeca57f21e5ceb9eada5afbbf71cd"
         );
-        this.iceServers = await response.json();
-        console.log("Fetched TURN Servers:", this.iceServers);
+        const turnServers = await response.json();
+
+        // Merge STUN and TURN servers
+        this.iceServers = [
+          { urls: "stun:stun.l.google.com:19302" },
+          { urls: "stun:stun1.l.google.com:19302" },
+          { urls: "stun:stun2.l.google.com:19302" },
+          ...turnServers, // Append dynamically fetched TURN servers
+        ];
+
+        console.log("ICE Servers:", this.iceServers);
       } catch (error) {
         console.error("Failed to fetch TURN servers:", error);
       }
@@ -48,7 +58,7 @@ export default {
     initializePeer() {
       this.peer = new Peer({
         config: {
-          iceServers: this.iceServers, // Use fetched TURN servers
+          iceServers: this.iceServers, // Use merged STUN & TURN servers
         },
       });
 
