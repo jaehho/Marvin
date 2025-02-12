@@ -5,8 +5,15 @@
     <input v-model="remotePeerId" placeholder="Enter Peer ID to Call" />
     <button @click="callPeer">Call</button>
 
-    <video ref="localVideo" autoplay playsinline></video>
-    <video ref="remoteVideo" autoplay playsinline></video>
+    <div style="position: relative;">
+      <video ref="localVideo" autoplay playsinline></video>
+      <canvas ref="localCanvas" class="output_canvas"></canvas>
+    </div>
+
+    <div style="position: relative;">
+      <video ref="remoteVideo" autoplay playsinline></video>
+      <canvas ref="remoteCanvas" class="output_canvas"></canvas>
+    </div>
 
     <div class="controls">
       <button @click="endCall">End Call</button>
@@ -16,6 +23,11 @@
 
 <script>
 import Peer from "peerjs";
+import {
+  PoseLandmarker,
+  FilesetResolver,
+  DrawingUtils
+} from "https://cdn.skypack.dev/@mediapipe/tasks-vision@0.10.0";
 
 export default {
   data() {
@@ -27,10 +39,13 @@ export default {
       remoteStream: null,
       call: null,
       iceServers: [],
+      poseLandmarker: null,
+      webcamRunning: false,
     };
   },
   async mounted() {
-    await this.fetchTurnServers(); // Fetch TURN servers dynamically
+    await this.fetchTurnServers();
+    await this.loadPoseDetection();
     this.initializePeer();
   },
   methods: {
@@ -41,24 +56,37 @@ export default {
         );
         const turnServers = await response.json();
 
-        // Merge STUN and TURN servers
         this.iceServers = [
           { urls: "stun:stun.l.google.com:19302" },
           { urls: "stun:stun1.l.google.com:19302" },
           { urls: "stun:stun2.l.google.com:19302" },
-          ...turnServers, // Append dynamically fetched TURN servers
+          ...turnServers
         ];
-
         console.log("ICE Servers:", this.iceServers);
       } catch (error) {
         console.error("Failed to fetch TURN servers:", error);
       }
     },
 
+    async loadPoseDetection() {
+      const vision = await FilesetResolver.forVisionTasks(
+        "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0/wasm"
+      );
+      this.poseLandmarker = await PoseLandmarker.createFromOptions(vision, {
+        baseOptions: {
+          modelAssetPath: `https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task`,
+          delegate: "GPU",
+        },
+        runningMode: "VIDEO",
+        numPoses: 1
+      });
+      console.log("Pose Landmarker Loaded!");
+    },
+
     initializePeer() {
       this.peer = new Peer({
         config: {
-          iceServers: this.iceServers, // Use merged STUN & TURN servers
+          iceServers: this.iceServers,
         },
       });
 
@@ -72,6 +100,8 @@ export default {
         incomingCall.answer(this.localStream);
         incomingCall.on("stream", (remoteStream) => {
           this.$refs.remoteVideo.srcObject = remoteStream;
+          this.remoteStream = remoteStream;
+          this.startPoseDetection(remoteStream, this.$refs.remoteCanvas);
         });
         this.call = incomingCall;
       });
@@ -86,6 +116,7 @@ export default {
           audio: true,
         });
         this.$refs.localVideo.srcObject = this.localStream;
+        this.startPoseDetection(this.localStream, this.$refs.localCanvas);
       } catch (error) {
         console.error("Error accessing media devices:", error);
       }
@@ -101,6 +132,8 @@ export default {
 
       this.call.on("stream", (remoteStream) => {
         this.$refs.remoteVideo.srcObject = remoteStream;
+        this.remoteStream = remoteStream;
+        this.startPoseDetection(remoteStream, this.$refs.remoteCanvas);
       });
     },
 
@@ -127,6 +160,36 @@ export default {
         this.peer = null;
       }
     },
+
+    async startPoseDetection(videoStream, canvasElement) {
+      const video = document.createElement("video");
+      video.srcObject = videoStream;
+      video.play();
+
+      const canvasCtx = canvasElement.getContext("2d");
+      const drawingUtils = new DrawingUtils(canvasCtx);
+
+      const detect = async () => {
+        if (video.readyState === video.HAVE_ENOUGH_DATA) {
+          canvasElement.width = video.videoWidth;
+          canvasElement.height = video.videoHeight;
+          canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+
+          const result = await this.poseLandmarker.detectForVideo(video, performance.now());
+          for (const landmark of result.landmarks) {
+            drawingUtils.drawLandmarks(landmark, {
+              radius: (data) => DrawingUtils.lerp(data.from?.z ?? 0, -0.15, 0.1, 5, 1)
+            });
+            drawingUtils.drawConnectors(landmark, PoseLandmarker.POSE_CONNECTIONS);
+          }
+        }
+
+        if (this.localStream || this.remoteStream) {
+          requestAnimationFrame(detect);
+        }
+      };
+      detect();
+    },
   },
 };
 </script>
@@ -143,6 +206,14 @@ video {
   height: 300px;
   background: black;
   border: 1px solid #ccc;
+}
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 400px;
+  height: 300px;
+  pointer-events: none;
 }
 input {
   margin: 10px;
