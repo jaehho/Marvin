@@ -36,7 +36,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import Peer from "peerjs";
-import { usePoseDetection } from "~/composables/usePoseDetection";
 
 export default defineComponent({
   name: "VideoChat",
