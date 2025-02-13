@@ -1,6 +1,5 @@
 <template>
-    <section>
-      <p>This is Marvin</p>
-    </section>
-  </template>
-  
+  <section>
+    <p>This is Marvin</p>
+  </section>
+</template>
