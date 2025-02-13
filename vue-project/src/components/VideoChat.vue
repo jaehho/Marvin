@@ -1,35 +1,27 @@
-<!-- src/components/VideoChat.vue -->
 <template>
-  <div class="video-container">
-    <h2>Your Peer ID: <span>{{ peerId }}</span></h2>
-    
-    <div class="main-content">
-      <!-- Video Section -->
-      <div class="video-section">
-        <!-- Local Video with Overlay -->
-        <div class="local-video">
-          <h3>Local Video</h3>
-          <div style="position: relative;">
-            <video ref="localVideo" autoplay playsinline></video>
-            <!-- This canvas draws the pose overlay on top of the video -->
-            <canvas ref="localOverlayCanvas" class="overlay_canvas"></canvas>
-          </div>
-        </div>
-        <!-- Remote Video -->
-        <div class="remote-video">
-          <h3>Remote Video</h3>
-          <video ref="remoteVideo" autoplay playsinline></video>
+  <div class="video-chat-container">
+    <h2>Your Peer ID: {{ peerId }}</h2>
+    <div class="video-area">
+      <!-- Local Video with Overlay -->
+      <div class="local-video">
+        <h3>Local Video</h3>
+        <div class="video-wrapper">
+          <video ref="localVideo" autoplay playsinline></video>
+          <canvas ref="localOverlay" class="overlay-canvas"></canvas>
         </div>
       </div>
-      
-      <!-- Landmarks Section: Normalized Landmarks -->
-      <div class="landmarks-section">
+      <!-- Remote Video -->
+      <div class="remote-video">
+        <h3>Remote Video</h3>
+        <video ref="remoteVideo" autoplay playsinline></video>
+      </div>
+      <!-- Normalized Pose Landmarks Canvas -->
+      <div class="pose-landmarks">
         <h3>Normalized Pose Landmarks</h3>
-        <canvas ref="poseCanvas" class="pose_canvas"></canvas>
+        <canvas ref="normalizedCanvas" class="normalized-canvas"></canvas>
       </div>
     </div>
-    
-    <div class="controls-panel">
+    <div class="controls">
       <input v-model="remotePeerId" placeholder="Enter Peer ID to Call" />
       <button @click="callPeer">Call</button>
       <button @click="togglePoseDetection">
@@ -43,6 +35,7 @@
 <script>
 import Peer from "peerjs";
 import { usePoseDetection } from "../composables/usePoseDetection.js";
+import { drawNormalizedLandmarks } from "../utils/drawingHelpers.js";
 
 export default {
   name: "VideoChat",
@@ -56,8 +49,8 @@ export default {
       call: null,
       iceServers: [],
       poseDetection: null,
-      poseEnabled: true,         // Toggle flag for pose detection
-      detectionLoopRunning: false
+      poseEnabled: true,
+      detectionLoopRunning: false,
     };
   },
   async mounted() {
@@ -83,9 +76,7 @@ export default {
       }
     },
     initializePeer() {
-      this.peer = new Peer({
-        config: { iceServers: this.iceServers }
-      });
+      this.peer = new Peer({ config: { iceServers: this.iceServers } });
       this.peer.on("open", (id) => {
         this.peerId = id;
       });
@@ -104,7 +95,7 @@ export default {
       try {
         this.localStream = await navigator.mediaDevices.getUserMedia({
           video: true,
-          audio: true
+          audio: true,
         });
         this.$refs.localVideo.srcObject = this.localStream;
         if (this.poseEnabled) {
@@ -131,12 +122,12 @@ export default {
         this.call = null;
       }
       if (this.localStream) {
-        this.localStream.getTracks().forEach(track => track.stop());
+        this.localStream.getTracks().forEach((track) => track.stop());
         this.localStream = null;
         this.$refs.localVideo.srcObject = null;
       }
       if (this.remoteStream) {
-        this.remoteStream.getTracks().forEach(track => track.stop());
+        this.remoteStream.getTracks().forEach((track) => track.stop());
         this.remoteStream = null;
         this.$refs.remoteVideo.srcObject = null;
       }
@@ -151,41 +142,38 @@ export default {
       if (this.poseEnabled && this.localStream) {
         this.startPoseDetectionLoop();
       } else {
-        // Clear both canvases when disabled.
-        this.$refs.localOverlayCanvas.getContext("2d").clearRect(0, 0, this.$refs.localOverlayCanvas.width, this.$refs.localOverlayCanvas.height);
-        this.$refs.poseCanvas.getContext("2d").clearRect(0, 0, this.$refs.poseCanvas.width, this.$refs.poseCanvas.height);
+        this.$refs.localOverlay.getContext("2d").clearRect(0, 0, this.$refs.localOverlay.width, this.$refs.localOverlay.height);
+        this.$refs.normalizedCanvas.getContext("2d").clearRect(0, 0, this.$refs.normalizedCanvas.width, this.$refs.normalizedCanvas.height);
       }
     },
     async startPoseDetectionLoop() {
       if (!this.poseEnabled) return;
       this.detectionLoopRunning = true;
       const video = this.$refs.localVideo;
-      const overlayCanvas = this.$refs.localOverlayCanvas;
-      const normCanvas = this.$refs.poseCanvas;
-      
+      const overlayCanvas = this.$refs.localOverlay;
+      const normCanvas = this.$refs.normalizedCanvas;
+
       const loop = async () => {
         if (!this.poseEnabled) {
-          // If detection is disabled, clear canvases and exit.
           overlayCanvas.getContext("2d").clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
           normCanvas.getContext("2d").clearRect(0, 0, normCanvas.width, normCanvas.height);
           this.detectionLoopRunning = false;
           return;
         }
-        
-        // Update canvas dimensions to match the video.
+
+        // Update canvas sizes to match video dimensions.
         overlayCanvas.width = video.videoWidth;
         overlayCanvas.height = video.videoHeight;
         normCanvas.width = video.videoWidth;
         normCanvas.height = video.videoHeight;
-        
+
         if (video.readyState >= video.HAVE_ENOUGH_DATA) {
           try {
             const now = performance.now();
-            // Run pose detection; this will draw landmarks on overlayCanvas.
+            // Run pose detection (which draws the overlay on overlayCanvas).
             const result = await this.poseDetection.detectPose(video, overlayCanvas, now);
-            console.log("Detection result:", result);
-            // Draw normalized landmarks (scaled to canvas dimensions) on the separate canvas.
-            this.drawNormalizedLandmarks(result.landmarks, normCanvas);
+            // Use our drawing helper to draw normalized landmarks (with connections) on the separate canvas.
+            drawNormalizedLandmarks(result.landmarks, normCanvas);
           } catch (error) {
             console.error("Error during pose detection:", error);
           }
@@ -194,73 +182,32 @@ export default {
       };
       loop();
     },
-    drawNormalizedLandmarks(landmarksArray, canvas) {
-      const ctx = canvas.getContext("2d");
-      const width = canvas.width;
-      const height = canvas.height;
-      ctx.clearRect(0, 0, width, height);
-      
-      if (!landmarksArray || landmarksArray.length === 0) return;
-      
-      // For each set of landmarks (for each detected person)
-      landmarksArray.forEach(landmarks => {
-        // Draw each landmark as a red circle.
-        ctx.fillStyle = "red";
-        landmarks.forEach(point => {
-          const x = point.x * width;
-          const y = point.y * height;
-          ctx.beginPath();
-          ctx.arc(x, y, 5, 0, 2 * Math.PI);
-          ctx.fill();
-        });
-        // Optionally, draw connections (using blue lines).
-        if (this.poseDetection && this.poseDetection.poseLandmarker) {
-          const connections = this.poseDetection.poseLandmarker.constructor.POSE_CONNECTIONS;
-          if (connections) {
-            ctx.strokeStyle = "blue";
-            ctx.lineWidth = 2;
-            connections.forEach(([start, end]) => {
-              if (landmarks[start] && landmarks[end]) {
-                const startX = landmarks[start].x * width;
-                const startY = landmarks[start].y * height;
-                const endX = landmarks[end].x * width;
-                const endY = landmarks[end].y * height;
-                ctx.beginPath();
-                ctx.moveTo(startX, startY);
-                ctx.lineTo(endX, endY);
-                ctx.stroke();
-              }
-            });
-          }
-        }
-      });
-    }
-  }
+  },
 };
 </script>
 
 <style scoped>
-.video-container {
+.video-chat-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 20px;
 }
-.main-content {
+.video-area {
   display: flex;
   gap: 20px;
-  width: 100%;
-  justify-content: center;
   flex-wrap: wrap;
-}
-.video-section {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  justify-content: center;
 }
 .local-video,
-.remote-video {
+.remote-video,
+.pose-landmarks {
   text-align: center;
+}
+.video-wrapper {
+  position: relative;
+  width: 400px;
+  height: 300px;
 }
 video {
   width: 400px;
@@ -268,7 +215,7 @@ video {
   background: black;
   border: 1px solid #ccc;
 }
-.overlay_canvas {
+.overlay-canvas {
   position: absolute;
   top: 0;
   left: 0;
@@ -276,21 +223,12 @@ video {
   height: 300px;
   pointer-events: none;
 }
-.landmarks-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 10px;
-  border: 1px solid #ccc;
-  background: #fff;
-}
-.pose_canvas {
+.normalized-canvas {
   border: 1px solid #aaa;
   width: 400px;
   height: 300px;
 }
-.controls-panel {
-  margin-top: 10px;
+.controls {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;

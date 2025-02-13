@@ -1,4 +1,3 @@
-// src/composables/usePoseDetection.js
 import { PoseLandmarker, FilesetResolver, DrawingUtils } from "https://cdn.skypack.dev/@mediapipe/tasks-vision@0.10.0";
 
 export async function usePoseDetection(runningMode = "VIDEO", numPoses = 1) {
@@ -15,19 +14,20 @@ export async function usePoseDetection(runningMode = "VIDEO", numPoses = 1) {
     numPoses
   });
 
-  // detectPose now accepts an optional timestamp (so every frame uses a fresh time)
+  // detectPose accepts a video element, a canvas element, and an optional timestamp.
   async function detectPose(videoElement, canvasElement, timestamp) {
     const canvasCtx = canvasElement.getContext("2d");
     const drawingUtils = new DrawingUtils(canvasCtx);
 
-    // Match canvas size to video dimensions.
+    // Ensure the canvas matches the video dimensions.
     canvasElement.width = videoElement.videoWidth;
     canvasElement.height = videoElement.videoHeight;
     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
 
     const ts = timestamp || performance.now();
     const result = await poseLandmarker.detectForVideo(videoElement, ts);
-    // Draw the landmarks directly on the provided canvas.
+
+    // Draw overlay using MediaPipe's drawing utilities.
     for (const landmark of result.landmarks) {
       drawingUtils.drawLandmarks(landmark, {
         radius: (data) => DrawingUtils.lerp(data.from?.z ?? 0, -0.15, 0.1, 5, 1)
