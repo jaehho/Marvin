@@ -4,6 +4,11 @@
     <input v-model="remotePeerId" placeholder="Enter Peer ID to Call" />
     <button @click="callPeer">Call</button>
 
+    <!-- Toggle Pose Detection -->
+    <button @click="togglePoseDetection">
+      {{ poseEnabled ? "Disable" : "Enable" }} Pose Detection
+    </button>
+
     <!-- Local video and pose overlay -->
     <div style="position: relative;">
       <video ref="localVideo" autoplay playsinline></video>
@@ -36,7 +41,8 @@ export default {
       remoteStream: null,
       call: null,
       iceServers: [],
-      poseDetection: null
+      poseDetection: null,
+      poseEnabled: true, // Flag for enabling/disabling pose detection
     };
   },
   async mounted() {
@@ -57,31 +63,36 @@ export default {
           { urls: "stun:stun2.l.google.com:19302" },
           ...turnServers
         ];
-        console.log("ICE Servers:", this.iceServers);
       } catch (error) {
         console.error("Failed to fetch TURN servers:", error);
       }
     },
+
     initializePeer() {
       this.peer = new Peer({
         config: { iceServers: this.iceServers }
       });
+
       this.peer.on("open", (id) => {
         this.peerId = id;
-        console.log("My Peer ID:", id);
       });
+
       this.peer.on("call", async (incomingCall) => {
         await this.getLocalStream();
         incomingCall.answer(this.localStream);
         incomingCall.on("stream", (remoteStream) => {
           this.$refs.remoteVideo.srcObject = remoteStream;
           this.remoteStream = remoteStream;
-          this.startPoseDetection(remoteStream, this.$refs.remoteCanvas);
+          if (this.poseEnabled) {
+            this.startPoseDetection(remoteStream, this.$refs.remoteCanvas);
+          }
         });
         this.call = incomingCall;
       });
+
       this.getLocalStream();
     },
+
     async getLocalStream() {
       try {
         this.localStream = await navigator.mediaDevices.getUserMedia({
@@ -89,11 +100,14 @@ export default {
           audio: true
         });
         this.$refs.localVideo.srcObject = this.localStream;
-        this.startPoseDetection(this.localStream, this.$refs.localCanvas);
+        if (this.poseEnabled) {
+          this.startPoseDetection(this.localStream, this.$refs.localCanvas);
+        }
       } catch (error) {
         console.error("Error accessing media devices:", error);
       }
     },
+
     callPeer() {
       if (!this.remotePeerId) {
         alert("Enter a Peer ID to call!");
@@ -103,41 +117,76 @@ export default {
       this.call.on("stream", (remoteStream) => {
         this.$refs.remoteVideo.srcObject = remoteStream;
         this.remoteStream = remoteStream;
-        this.startPoseDetection(remoteStream, this.$refs.remoteCanvas);
+        if (this.poseEnabled) {
+          this.startPoseDetection(remoteStream, this.$refs.remoteCanvas);
+        }
       });
     },
+
     endCall() {
       if (this.call) {
         this.call.close();
         this.call = null;
       }
+
       if (this.localStream) {
         this.localStream.getTracks().forEach(track => track.stop());
         this.localStream = null;
         this.$refs.localVideo.srcObject = null;
       }
+
       if (this.remoteStream) {
         this.remoteStream.getTracks().forEach(track => track.stop());
         this.remoteStream = null;
         this.$refs.remoteVideo.srcObject = null;
       }
+
       if (this.peer) {
         this.peer.destroy();
         this.peer = null;
       }
     },
+
+    togglePoseDetection() {
+      this.poseEnabled = !this.poseEnabled;
+
+      if (this.poseEnabled) {
+        // Restart pose detection for local and remote streams if available
+        if (this.localStream) {
+          this.startPoseDetection(this.localStream, this.$refs.localCanvas);
+        }
+        if (this.remoteStream) {
+          this.startPoseDetection(this.remoteStream, this.$refs.remoteCanvas);
+        }
+      } else {
+        // Clear the canvas if pose detection is disabled
+        const localCtx = this.$refs.localCanvas.getContext("2d");
+        const remoteCtx = this.$refs.remoteCanvas.getContext("2d");
+        localCtx.clearRect(0, 0, this.$refs.localCanvas.width, this.$refs.localCanvas.height);
+        remoteCtx.clearRect(0, 0, this.$refs.remoteCanvas.width, this.$refs.remoteCanvas.height);
+      }
+    },
+
     startPoseDetection(stream, canvasElement) {
-      // Create an off-screen video element to run detection
       const video = document.createElement("video");
       video.srcObject = stream;
       video.play();
+
       const detect = async () => {
+        if (!this.poseEnabled) {
+          // Clear the canvas if pose detection is disabled
+          const canvasCtx = canvasElement.getContext("2d");
+          canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+          return;
+        }
+
         if (video.readyState >= video.HAVE_ENOUGH_DATA) {
           await this.poseDetection.detectPose(video, canvasElement);
         }
-        // Continue detection as long as the stream is active
+
         if (stream) requestAnimationFrame(detect);
       };
+
       detect();
     }
   }
