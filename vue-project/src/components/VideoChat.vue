@@ -15,10 +15,9 @@
       <canvas ref="localCanvas" class="output_canvas"></canvas>
     </div>
 
-    <!-- Remote video and pose overlay -->
+    <!-- Remote video (No pose detection) -->
     <div style="position: relative;">
       <video ref="remoteVideo" autoplay playsinline></video>
-      <canvas ref="remoteCanvas" class="output_canvas"></canvas>
     </div>
 
     <div class="controls">
@@ -83,9 +82,6 @@ export default {
         incomingCall.on("stream", (remoteStream) => {
           this.$refs.remoteVideo.srcObject = remoteStream;
           this.remoteStream = remoteStream;
-          if (this.poseEnabled) {
-            this.startPoseDetection(remoteStream, this.$refs.remoteCanvas);
-          }
         });
         this.call = incomingCall;
       });
@@ -117,9 +113,6 @@ export default {
       this.call.on("stream", (remoteStream) => {
         this.$refs.remoteVideo.srcObject = remoteStream;
         this.remoteStream = remoteStream;
-        if (this.poseEnabled) {
-          this.startPoseDetection(remoteStream, this.$refs.remoteCanvas);
-        }
       });
     },
 
@@ -151,19 +144,14 @@ export default {
       this.poseEnabled = !this.poseEnabled;
 
       if (this.poseEnabled) {
-        // Restart pose detection for local and remote streams if available
+        // Restart pose detection for the local stream
         if (this.localStream) {
           this.startPoseDetection(this.localStream, this.$refs.localCanvas);
-        }
-        if (this.remoteStream) {
-          this.startPoseDetection(this.remoteStream, this.$refs.remoteCanvas);
         }
       } else {
         // Clear the canvas if pose detection is disabled
         const localCtx = this.$refs.localCanvas.getContext("2d");
-        const remoteCtx = this.$refs.remoteCanvas.getContext("2d");
         localCtx.clearRect(0, 0, this.$refs.localCanvas.width, this.$refs.localCanvas.height);
-        remoteCtx.clearRect(0, 0, this.$refs.remoteCanvas.width, this.$refs.remoteCanvas.height);
       }
     },
 
