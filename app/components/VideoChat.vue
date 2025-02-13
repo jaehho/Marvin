@@ -37,7 +37,6 @@
 import { defineComponent } from "vue";
 import Peer from "peerjs";
 import { usePoseDetection } from "~/composables/usePoseDetection";
-import { drawOrthographicProjections } from "~/composables/useOrthoProj";
 
 export default defineComponent({
   name: "VideoChat",
