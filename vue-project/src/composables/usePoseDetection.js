@@ -14,24 +14,28 @@ export async function usePoseDetection(runningMode = "VIDEO", numPoses = 1) {
     runningMode,
     numPoses
   });
-  
-  const detectPose = async (videoElement, canvasElement) => {
+
+  // detectPose now accepts an optional timestamp (so every frame uses a fresh time)
+  async function detectPose(videoElement, canvasElement, timestamp) {
     const canvasCtx = canvasElement.getContext("2d");
     const drawingUtils = new DrawingUtils(canvasCtx);
-    
-    // Set the canvas size to match the video
+
+    // Match canvas size to video dimensions.
     canvasElement.width = videoElement.videoWidth;
     canvasElement.height = videoElement.videoHeight;
     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-    
-    const result = await poseLandmarker.detectForVideo(videoElement, performance.now());
+
+    const ts = timestamp || performance.now();
+    const result = await poseLandmarker.detectForVideo(videoElement, ts);
+    // Draw the landmarks directly on the provided canvas.
     for (const landmark of result.landmarks) {
       drawingUtils.drawLandmarks(landmark, {
         radius: (data) => DrawingUtils.lerp(data.from?.z ?? 0, -0.15, 0.1, 5, 1)
       });
       drawingUtils.drawConnectors(landmark, PoseLandmarker.POSE_CONNECTIONS);
     }
-  };
+    return result;
+  }
 
   return { poseLandmarker, detectPose };
 }
