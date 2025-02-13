@@ -10,8 +10,10 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@mediapipe/tasks-vision": "^0.10.21",
     "animate.css": "^4.1.1",
     "nuxt": "^3.15.4",
+    "peerjs": "^1.5.4",
     "vue": "latest",
     "vue-router": "latest"
   }
