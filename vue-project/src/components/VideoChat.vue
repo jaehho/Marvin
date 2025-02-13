@@ -7,6 +7,7 @@
         <h3>Local Video</h3>
         <div class="video-wrapper">
           <video ref="localVideo" autoplay playsinline></video>
+          <!-- Overlay canvas drawn by MediaPipe's drawing utilities -->
           <canvas ref="localOverlay" class="overlay-canvas"></canvas>
         </div>
       </div>
@@ -35,7 +36,7 @@
 <script>
 import Peer from "peerjs";
 import { usePoseDetection } from "../composables/usePoseDetection.js";
-import { drawNormalizedLandmarks } from "../utils/drawingHelpers.js";
+import { drawOrthographicProjections } from "../composables/useOrthoProj.js";
 
 export default {
   name: "VideoChat",
@@ -69,7 +70,7 @@ export default {
           { urls: "stun:stun.l.google.com:19302" },
           { urls: "stun:stun1.l.google.com:19302" },
           { urls: "stun:stun2.l.google.com:19302" },
-          ...turnServers
+          ...turnServers,
         ];
       } catch (error) {
         console.error("Failed to fetch TURN servers:", error);
@@ -161,7 +162,7 @@ export default {
           return;
         }
 
-        // Update canvas sizes to match video dimensions.
+        // Update canvas sizes to match the video.
         overlayCanvas.width = video.videoWidth;
         overlayCanvas.height = video.videoHeight;
         normCanvas.width = video.videoWidth;
@@ -170,10 +171,10 @@ export default {
         if (video.readyState >= video.HAVE_ENOUGH_DATA) {
           try {
             const now = performance.now();
-            // Run pose detection (which draws the overlay on overlayCanvas).
+            // Run pose detection, drawing the overlay on overlayCanvas.
             const result = await this.poseDetection.detectPose(video, overlayCanvas, now);
-            // Use our drawing helper to draw normalized landmarks (with connections) on the separate canvas.
-            drawNormalizedLandmarks(result.landmarks, normCanvas);
+            // Use our helper to draw normalized landmarks (with connections) on the separate canvas.
+            drawOrthographicProjections(result.landmarks, normCanvas);
           } catch (error) {
             console.error("Error during pose detection:", error);
           }

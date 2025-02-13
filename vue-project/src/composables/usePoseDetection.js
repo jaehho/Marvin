@@ -7,7 +7,7 @@ export async function usePoseDetection(runningMode = "VIDEO", numPoses = 1) {
   const poseLandmarker = await PoseLandmarker.createFromOptions(vision, {
     baseOptions: {
       modelAssetPath:
-        "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task",
+        "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_heavy/float16/latest/pose_landmarker_heavy.task",
       delegate: "GPU"
     },
     runningMode,
@@ -15,11 +15,12 @@ export async function usePoseDetection(runningMode = "VIDEO", numPoses = 1) {
   });
 
   // detectPose accepts a video element, a canvas element, and an optional timestamp.
+  // It draws the overlay (using MediaPipe's drawing utilities) on the provided canvas.
   async function detectPose(videoElement, canvasElement, timestamp) {
     const canvasCtx = canvasElement.getContext("2d");
     const drawingUtils = new DrawingUtils(canvasCtx);
 
-    // Ensure the canvas matches the video dimensions.
+    // Match canvas size to video dimensions.
     canvasElement.width = videoElement.videoWidth;
     canvasElement.height = videoElement.videoHeight;
     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
@@ -27,7 +28,7 @@ export async function usePoseDetection(runningMode = "VIDEO", numPoses = 1) {
     const ts = timestamp || performance.now();
     const result = await poseLandmarker.detectForVideo(videoElement, ts);
 
-    // Draw overlay using MediaPipe's drawing utilities.
+    // Draw landmarks and connectors on the overlay canvas.
     for (const landmark of result.landmarks) {
       drawingUtils.drawLandmarks(landmark, {
         radius: (data) => DrawingUtils.lerp(data.from?.z ?? 0, -0.15, 0.1, 5, 1)
