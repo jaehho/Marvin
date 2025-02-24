@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(hello_moveit)
+project(marvin_control)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
@@ -8,20 +8,40 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(moveit_ros_planning_interface REQUIRED)
-find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(visualization_msgs REQUIRED)
+find_package(moveit_servo REQUIRED)
+find_package(moveit_msgs REQUIRED)
+find_package(tf2_eigen REQUIRED)
 
-add_executable(hello_moveit src/hello_moveit.cpp)
-target_include_directories(hello_moveit PUBLIC
+#SERVO POSE TRACKING
+add_executable(pose_tracking src/pose_tracking.cpp)
+# might be able to delete the thing below
+target_include_directories(pose_tracking PUBLIC include)
+ament_target_dependencies(
+  pose_tracking_tutorial
+  "rclcpp"
+  "sensor_msgs"
+  "moveit_servo"
+  "moveit_msgs"
+  "deque"
+)
+
+#HELLO MOVEIT
+add_executable(marvin_control src/hello_moveit.cpp)
+target_include_directories(marvin_control PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include/${PROJECT_NAME}>)
-target_compile_features(hello_moveit PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
+target_compile_features(marvin_control PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
 ament_target_dependencies(
-  hello_moveit
+  marvin_control
   "moveit_ros_planning_interface"
   "rclcpp"
 )
 
+#ORIGINAL PUBLISHER
 add_executable(publisher src/publisher.cpp)
 ament_target_dependencies(
   publisher
@@ -29,6 +49,7 @@ ament_target_dependencies(
   "std_msgs"
 )
 
+#ORIGINAL SUBSCRIBER
 add_executable(subscriber src/subscriber.cpp)
 target_include_directories(subscriber PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -41,8 +62,20 @@ ament_target_dependencies(
   "std_msgs"
 )
 
-install(TARGETS hello_moveit publisher subscriber
-  DESTINATION lib/${PROJECT_NAME})
+install(
+  TARGETS
+    pose_tracking_tutorial hello_moveit publisher subscriber
+  DESTINATION
+    lib/${PROJECT_NAME}
+)
+
+install(DIRECTORY launch
+  DESTINATION share/${PROJECT_NAME}
+)
+
+install(DIRECTORY config
+  DESTINATION share/${PROJECT_NAME}
+)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
