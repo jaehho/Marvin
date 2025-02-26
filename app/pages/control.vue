@@ -78,11 +78,51 @@ const worldCoordinates2 = ref<HTMLCanvasElement | null>(null);
 const worldCoordinates3 = ref<HTMLCanvasElement | null>(null);
 
 // -------------
-// Utility Functions
+// Helper Functions
 // -------------
 const clearCanvas = (canvas: HTMLCanvasElement | null) => {
   canvas?.getContext("2d")?.clearRect(0, 0, canvas.width, canvas.height);
 };
+
+const setCanvasSize = (canvas: HTMLCanvasElement, video: HTMLVideoElement) => {
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+};
+
+const clearCanvases = (...canvases: (HTMLCanvasElement | null)[]) => {
+  canvases.forEach(clearCanvas);
+};
+
+/**
+ * Returns the projected coordinates for a given landmark on the specified plane.
+ */
+const projectLandmark = (
+  landmark: Landmark,
+  plane: "xy" | "xz" | "yz",
+  width: number,
+  height: number
+) => {
+  const centerX = width / 2;
+  const centerY = height / 2;
+  let posX = 0, posY = 0;
+  switch (plane) {
+    case "xy":
+      posX = landmark.x;
+      posY = landmark.y;
+      break;
+    case "xz":
+      posX = landmark.x;
+      posY = landmark.z;
+      break;
+    case "yz":
+      posX = landmark.z;
+      posY = landmark.y;
+      break;
+  }
+  return { x: posX * width + centerX, y: posY * height + centerY };
+};
+
+const validLandmarkIndices = new Set([11, 12, 13, 14, 15, 16, 23, 24]);
 
 /**
  * Draws world landmarks on a canvas using the specified coordinate plane.
@@ -102,94 +142,34 @@ function orthoLandmarks(
   }
   const { width, height } = canvas;
   ctx.clearRect(0, 0, width, height);
-
-  if (!worldLandmarks.length) {
-    return;
-  }
-
-  // Translate origin to canvas center
-  const centerX = width / 2;
-  const centerY = height / 2;
-
-  // Only draw selected landmarks
-  const validLandmarks = new Set([11, 12, 13, 14, 15, 16, 23, 24]);
+  if (!worldLandmarks.length) return;
 
   worldLandmarks.forEach((landmarks) => {
+    // Draw individual landmarks
     ctx.fillStyle = "red";
-    validLandmarks.forEach((index) => {
+    validLandmarkIndices.forEach((index) => {
       if (index < landmarks.length) {
-        const { x, y, z } = landmarks[index];
-        let posX = 0;
-        let posY = 0;
-        switch (plane) {
-          case "xy":
-            posX = x;
-            posY = y;
-            break;
-          case "xz":
-            posX = x;
-            posY = z;
-            break;
-          case "yz":
-            posX = z;
-            posY = y;
-            break;
-        }
-        const canvasX = posX * width + centerX;
-        const canvasY = posY * height + centerY;
+        const { x, y } = projectLandmark(landmarks[index], plane, width, height);
         ctx.beginPath();
-        ctx.arc(canvasX, canvasY, 5, 0, 2 * Math.PI);
+        ctx.arc(x, y, 5, 0, 2 * Math.PI);
         ctx.fill();
       }
     });
-
     // Draw landmark connections
     ctx.strokeStyle = "blue";
     ctx.lineWidth = 2;
     PoseLandmarker.POSE_CONNECTIONS.forEach(({ start, end }) => {
       if (
-        validLandmarks.has(start) &&
-        validLandmarks.has(end) &&
+        validLandmarkIndices.has(start) &&
+        validLandmarkIndices.has(end) &&
         landmarks[start] &&
         landmarks[end]
       ) {
-        let startX = 0,
-          startY = 0,
-          endX = 0,
-          endY = 0;
-        // Get start point based on the selected plane
-        switch (plane) {
-          case "xy":
-            startX = landmarks[start].x;
-            startY = landmarks[start].y;
-            break;
-          case "xz":
-            startX = landmarks[start].x;
-            startY = landmarks[start].z;
-            break;
-          case "yz":
-            startX = landmarks[start].z;
-            startY = landmarks[start].y;
-            break;
-        }
-        // Get end point based on the selected plane
-        switch (plane) {
-          case "xy":
-            endX = landmarks[end].x;
-            endY = landmarks[end].y;
-            break;
-          case "xz":
-            endX = landmarks[end].x;
-            endY = landmarks[end].z;
-            break;
-          case "yz":
-            endX = landmarks[end].z;
-            endY = landmarks[end].y;
-            break;
-        }
+        const startPt = projectLandmark(landmarks[start], plane, width, height);
+        const endPt = projectLandmark(landmarks[end], plane, width, height);
         ctx.beginPath();
-        ctx.moveTo(startX * width + centerX, startY * height + centerY);
-        ctx.lineTo(endX * width + centerX, endY * height + centerY);
+        ctx.moveTo(startPt.x, startPt.y);
+        ctx.lineTo(endPt.x, endPt.y);
         ctx.stroke();
       }
     });
@@ -222,8 +202,7 @@ async function setupPoseDetection(
     timestamp?: number
   ) {
     const ctx = canvas.getContext("2d")!;
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
+    setCanvasSize(canvas, video);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     const ts = timestamp || performance.now();
@@ -323,10 +302,12 @@ function togglePoseDetection() {
   if (poseEnabled.value && localStream.value) {
     runPoseDetectionLoop();
   } else {
-    clearCanvas(localOverlay.value);
-    clearCanvas(worldCoordinates1.value);
-    clearCanvas(worldCoordinates2.value);
-    clearCanvas(worldCoordinates3.value);
+    clearCanvases(
+      localOverlay.value,
+      worldCoordinates1.value,
+      worldCoordinates2.value,
+      worldCoordinates3.value
+    );
   }
 }
 
@@ -344,7 +325,6 @@ async function runPoseDetectionLoop() {
 
   const video = localVideo.value;
   const overlay = localOverlay.value;
-  // Array of world landmark canvases
   const orthoCanvases = [
     worldCoordinates1.value,
     worldCoordinates2.value,
@@ -353,20 +333,13 @@ async function runPoseDetectionLoop() {
 
   async function loop() {
     if (!poseEnabled.value) {
-      clearCanvas(overlay);
-      orthoCanvases.forEach(clearCanvas);
+      clearCanvases(overlay, ...orthoCanvases);
       detectionLoopRunning.value = false;
       return;
     }
 
-    overlay.width = video.videoWidth;
-    overlay.height = video.videoHeight;
-    orthoCanvases.forEach((canvas) => {
-      if (canvas) {
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-      }
-    });
+    setCanvasSize(overlay, video);
+    orthoCanvases.forEach((canvas) => setCanvasSize(canvas, video));
 
     if (video.readyState >= video.HAVE_ENOUGH_DATA) {
       try {
@@ -375,12 +348,9 @@ async function runPoseDetectionLoop() {
           overlay,
           performance.now()
         );
-        if (orthoCanvases[0])
-          orthoLandmarks(result.worldLandmarks, orthoCanvases[0], "xz");
-        if (orthoCanvases[1])
-          orthoLandmarks(result.worldLandmarks, orthoCanvases[1], "yz");
-        if (orthoCanvases[2])
-          orthoLandmarks(result.worldLandmarks, orthoCanvases[2], "xy");
+        orthoLandmarks(result.worldLandmarks, orthoCanvases[0], "xz");
+        orthoLandmarks(result.worldLandmarks, orthoCanvases[1], "yz");
+        orthoLandmarks(result.worldLandmarks, orthoCanvases[2], "xy");
       } catch (error) {
         console.error("Pose detection error:", error);
       }
@@ -421,8 +391,8 @@ onMounted(async () => {
 }
 
 .remote-video video {
-  width: 800px;  /* Same as the overall grid width */
-  height: 600px; /* Same as the overall grid height */
+  width: 800px;
+  height: 600px;
   background: black;
   border: 1px solid #ccc;
 }
@@ -452,7 +422,7 @@ video {
   height: 300px;
   background: black;
   border: 1px solid #ccc;
-  transform: scaleX(-1); /* Mirror */
+  transform: scaleX(-1);
 }
 
 .overlay-canvas {
@@ -462,14 +432,14 @@ video {
   width: 400px;
   height: 300px;
   pointer-events: none;
-  transform: scaleX(-1); /* Mirror */
+  transform: scaleX(-1);
 }
 
 .world-canvas {
   border: 1px solid #aaa;
   width: 400px;
   height: 300px;
-  transform: scaleX(-1); /* Mirror */
+  transform: scaleX(-1);
 }
 
 .controls {
