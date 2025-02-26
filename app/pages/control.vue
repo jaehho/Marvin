@@ -7,7 +7,6 @@
         <h3>Local Video</h3>
         <div class="video-wrapper">
           <video ref="localVideo" autoplay playsinline></video>
-          <!-- Overlay canvas drawn by MediaPipe's drawing utilities -->
           <canvas ref="localOverlay" class="overlay-canvas"></canvas>
         </div>
       </div>
@@ -16,7 +15,7 @@
         <h3>Remote Video</h3>
         <video ref="remoteVideo" autoplay playsinline></video>
       </div>
-      <!-- Normalized Pose Landmarks Canvas -->
+      <!-- Pose Landmarks Canvas -->
       <div class="pose-landmarks">
         <h3>Normalized Pose Landmarks</h3>
         <canvas ref="normalizedCanvas" class="normalized-canvas"></canvas>
@@ -33,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from "vue";
+import { ref, onMounted } from "vue";
 import Peer from "peerjs";
 import { PoseLandmarker, FilesetResolver, DrawingUtils } from "@mediapipe/tasks-vision";
 
@@ -42,136 +41,9 @@ interface Landmark {
   y: number;
 }
 
-/**
- * Draws normalized landmarks and their connections onto a given canvas.
- */
-function drawOrthographicProjections(
-  landmarksArray: Landmark[][] | Landmark[],
-  canvas: HTMLCanvasElement
-): void {
-  const ctx = canvas.getContext("2d")!;
-  const canvasWidth = canvas.width;
-  const canvasHeight = canvas.height;
-  ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-  if (!landmarksArray || landmarksArray.length === 0) return;
-
-  // Ensure we work with an array of landmark arrays.
-  const landmarksGroups: Landmark[][] = Array.isArray(landmarksArray[0])
-    ? (landmarksArray as Landmark[][])
-    : [landmarksArray as Landmark[]];
-
-  landmarksGroups.forEach((landmarks) => {
-    let minX = Infinity,
-      maxX = -Infinity,
-      minY = Infinity,
-      maxY = -Infinity;
-    landmarks.forEach((point) => {
-      minX = Math.min(minX, point.x);
-      maxX = Math.max(maxX, point.x);
-      minY = Math.min(minY, point.y);
-      maxY = Math.max(maxY, point.y);
-    });
-
-    // Add a 5% margin to the bounding box.
-    const marginX = 0.05 * (maxX - minX);
-    const marginY = 0.05 * (maxY - minY);
-    minX = Math.max(0, minX - marginX);
-    maxX = Math.min(1, maxX + marginX);
-    minY = Math.max(0, minY - marginY);
-    maxY = Math.min(1, maxY + marginY);
-
-    // Draw each landmark.
-    ctx.fillStyle = "red";
-    landmarks.forEach((point) => {
-      const normX = ((point.x - minX) / (maxX - minX)) * canvasWidth;
-      const normY = ((point.y - minY) / (maxY - minY)) * canvasHeight;
-      ctx.beginPath();
-      ctx.arc(normX, normY, 5, 0, 2 * Math.PI);
-      ctx.fill();
-    });
-
-    // Draw connectors between landmarks.
-    const connections = PoseLandmarker.POSE_CONNECTIONS;
-    if (connections) {
-      ctx.strokeStyle = "blue";
-      ctx.lineWidth = 2;
-      connections.forEach(({ start, end }) => {
-        if (landmarks[start] && landmarks[end]) {
-          const startX = ((landmarks[start].x - minX) / (maxX - minX)) * canvasWidth;
-          const startY = ((landmarks[start].y - minY) / (maxY - minY)) * canvasHeight;
-          const endX = ((landmarks[end].x - minX) / (maxX - minX)) * canvasWidth;
-          const endY = ((landmarks[end].y - minY) / (maxY - minY)) * canvasHeight;
-          ctx.beginPath();
-          ctx.moveTo(startX, startY);
-          ctx.lineTo(endX, endY);
-          ctx.stroke();
-        }
-      });
-    }
-  });
-}
-
-type RunningMode = "IMAGE" | "VIDEO";
-
-/**
- * Sets up the MediaPipe PoseLandmarker.
- */
-async function usePoseDetection(
-  runningMode: RunningMode = "VIDEO",
-  numPoses: number = 1
-): Promise<{
-  poseLandmarker: any;
-  detectPose: (
-    videoElement: HTMLVideoElement,
-    canvasElement: HTMLCanvasElement,
-    timestamp?: number
-  ) => Promise<any>;
-}> {
-  const vision = await FilesetResolver.forVisionTasks(
-    "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0/wasm"
-  );
-  const poseLandmarker = await PoseLandmarker.createFromOptions(vision, {
-    baseOptions: {
-      modelAssetPath:
-        "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_heavy/float16/latest/pose_landmarker_heavy.task",
-      delegate: "GPU"
-    },
-    runningMode,
-    numPoses
-  });
-
-  async function detectPose(
-    videoElement: HTMLVideoElement,
-    canvasElement: HTMLCanvasElement,
-    timestamp?: number
-  ): Promise<any> {
-    const canvasCtx = canvasElement.getContext("2d") as CanvasRenderingContext2D;
-    const drawingUtils = new DrawingUtils(canvasCtx);
-
-    // Match canvas size to video dimensions.
-    canvasElement.width = videoElement.videoWidth;
-    canvasElement.height = videoElement.videoHeight;
-    canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-
-    const ts = timestamp || performance.now();
-    const result = await poseLandmarker.detectForVideo(videoElement, ts);
-
-    result.landmarks.forEach((landmark: any) => {
-      drawingUtils.drawLandmarks(landmark, {
-        radius: (data: { from?: { z?: number } }) =>
-          DrawingUtils.lerp(data.from?.z ?? 0, -0.15, 0.1, 5, 1)
-      });
-      drawingUtils.drawConnectors(landmark, PoseLandmarker.POSE_CONNECTIONS);
-    });
-    return result;
-  }
-
-  return { poseLandmarker, detectPose };
-}
-
-// ----------------------
-// Reactive & Template Refs
-// ----------------------
+// -------------
+// Reactive State & Refs
+// -------------
 const peer = ref<Peer | null>(null);
 const peerId = ref("");
 const remotePeerId = ref("");
@@ -189,34 +61,135 @@ const remoteVideo = ref<HTMLVideoElement | null>(null);
 const localOverlay = ref<HTMLCanvasElement | null>(null);
 const normalizedCanvas = ref<HTMLCanvasElement | null>(null);
 
-// ----------------------
-// Helper Functions
-// ----------------------
-/** Clears the provided canvas. */
+// -------------
+// Utility Functions
+// -------------
 const clearCanvas = (canvas: HTMLCanvasElement | null) => {
   canvas?.getContext("2d")?.clearRect(0, 0, canvas.width, canvas.height);
 };
 
-/** Fetch TURN server credentials and configure ICE servers. */
-const fetchTurnServers = async () => {
+function drawLandmarks(landmarksData: Landmark[][] | Landmark[], canvas: HTMLCanvasElement) {
+  const ctx = canvas.getContext("2d")!;
+  const width = canvas.width, height = canvas.height;
+  ctx.clearRect(0, 0, width, height);
+  if (!landmarksData || landmarksData.length === 0) return;
+
+  // Ensure landmarksData is an array of landmark arrays
+  const groups = Array.isArray(landmarksData[0])
+    ? (landmarksData as Landmark[][])
+    : [landmarksData as Landmark[]];
+
+  groups.forEach((landmarks) => {
+    let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+    landmarks.forEach(pt => {
+      minX = Math.min(minX, pt.x);
+      maxX = Math.max(maxX, pt.x);
+      minY = Math.min(minY, pt.y);
+      maxY = Math.max(maxY, pt.y);
+    });
+    const marginX = 0.05 * (maxX - minX);
+    const marginY = 0.05 * (maxY - minY);
+    minX = Math.max(0, minX - marginX);
+    maxX = Math.min(1, maxX + marginX);
+    minY = Math.max(0, minY - marginY);
+    maxY = Math.min(1, maxY + marginY);
+
+    // Draw landmarks
+    ctx.fillStyle = "red";
+    landmarks.forEach(pt => {
+      const x = ((pt.x - minX) / (maxX - minX)) * width;
+      const y = ((pt.y - minY) / (maxY - minY)) * height;
+      ctx.beginPath();
+      ctx.arc(x, y, 5, 0, 2 * Math.PI);
+      ctx.fill();
+    });
+
+    // Draw connectors using MediaPipe's connections
+    const connections = PoseLandmarker.POSE_CONNECTIONS;
+    if (connections) {
+      ctx.strokeStyle = "blue";
+      ctx.lineWidth = 2;
+      connections.forEach(({ start, end }) => {
+        if (landmarks[start] && landmarks[end]) {
+          const startX = ((landmarks[start].x - minX) / (maxX - minX)) * width;
+          const startY = ((landmarks[start].y - minY) / (maxY - minY)) * height;
+          const endX = ((landmarks[end].x - minX) / (maxX - minX)) * width;
+          const endY = ((landmarks[end].y - minY) / (maxY - minY)) * height;
+          ctx.beginPath();
+          ctx.moveTo(startX, startY);
+          ctx.lineTo(endX, endY);
+          ctx.stroke();
+        }
+      });
+    }
+  });
+}
+
+// -------------
+// Pose Detection Setup
+// -------------
+async function setupPoseDetection(runningMode: "IMAGE" | "VIDEO" = "VIDEO", numPoses: number = 1) {
+  const vision = await FilesetResolver.forVisionTasks(
+    "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0/wasm"
+  );
+  const poseLandmarker = await PoseLandmarker.createFromOptions(vision, {
+    baseOptions: {
+      modelAssetPath:
+        "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_heavy/float16/latest/pose_landmarker_heavy.task",
+      delegate: "GPU"
+    },
+    runningMode,
+    numPoses
+  });
+
+  async function detectPose(
+    video: HTMLVideoElement,
+    canvas: HTMLCanvasElement,
+    timestamp?: number
+  ) {
+    const ctx = canvas.getContext("2d")!;
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    const ts = timestamp || performance.now();
+    const result = await poseLandmarker.detectForVideo(video, ts);
+    const drawingUtils = new DrawingUtils(ctx);
+    
+    result.landmarks.forEach((landmarks: any) => {
+      drawingUtils.drawLandmarks(landmarks, {
+        radius: (data: { from?: { z?: number } }) =>
+          DrawingUtils.lerp(data.from?.z ?? 0, -0.15, 0.1, 5, 1)
+      });
+      drawingUtils.drawConnectors(landmarks, PoseLandmarker.POSE_CONNECTIONS);
+    });
+    return result;
+  }
+
+  return { poseLandmarker, detectPose };
+}
+
+// -------------
+// TURN Server & Media Setup
+// -------------
+async function loadTurnServers() {
   try {
-    const response = await fetch(
+    const res = await fetch(
       "https://marvin.metered.live/api/v1/turn/credentials?apiKey=bca769dfeca57f21e5ceb9eada5afbbf71cd"
     );
-    const turnServers = await response.json();
+    const turnData = await res.json();
     iceServers.value = [
       { urls: "stun:stun.l.google.com:19302" },
       { urls: "stun:stun1.l.google.com:19302" },
       { urls: "stun:stun2.l.google.com:19302" },
-      ...turnServers
+      ...turnData
     ];
   } catch (error) {
-    console.error("Failed to fetch TURN servers:", error);
+    console.error("TURN server fetch error:", error);
   }
-};
+}
 
-/** Gets the local media stream and sets it to the local video element. */
-const getLocalStream = async () => {
+async function setupLocalStream() {
   try {
     localStream.value = await navigator.mediaDevices.getUserMedia({
       video: true,
@@ -225,119 +198,107 @@ const getLocalStream = async () => {
     if (localVideo.value) {
       localVideo.value.srcObject = localStream.value;
     }
-    if (poseEnabled.value) {
-      startPoseDetectionLoop();
-    }
+    if (poseEnabled.value) runPoseDetectionLoop();
   } catch (error) {
-    console.error("Error accessing media devices:", error);
+    console.error("Media device error:", error);
   }
-};
+}
 
-/** Initializes the Peer connection and its event listeners. */
-const initializePeer = () => {
+// -------------
+// Peer Connection
+// -------------
+function initPeer() {
   peer.value = new Peer({ config: { iceServers: iceServers.value } });
-  peer.value.on("open", (id) => {
-    peerId.value = id;
-  });
+  peer.value.on("open", (id) => (peerId.value = id));
+
+  // Handle incoming call
   peer.value.on("call", async (incomingCall) => {
-    await getLocalStream();
+    await setupLocalStream();
     if (localStream.value) {
       incomingCall.answer(localStream.value);
-    } else {
-      console.error("Local stream is not available.");
-      return;
     }
-    incomingCall.on("stream", (remoteStreamVal: MediaStream) => {
-      if (remoteVideo.value) {
-        remoteVideo.value.srcObject = remoteStreamVal;
-      }
-      remoteStream.value = remoteStreamVal;
+    incomingCall.on("stream", (remoteStreamData: MediaStream) => {
+      if (remoteVideo.value) remoteVideo.value.srcObject = remoteStreamData;
+      remoteStream.value = remoteStreamData;
     });
     call.value = incomingCall;
   });
-  getLocalStream();
-};
 
-/** Initiates a call to the specified remote peer. */
-const callPeer = () => {
+  setupLocalStream();
+}
+
+function callPeer() {
   if (!remotePeerId.value) {
     alert("Enter a Peer ID to call!");
     return;
   }
   if (peer.value && localStream.value) {
     call.value = peer.value.call(remotePeerId.value, localStream.value);
-    call.value.on("stream", (remoteStreamVal: MediaStream) => {
-      if (remoteVideo.value) {
-        remoteVideo.value.srcObject = remoteStreamVal;
-      }
-      remoteStream.value = remoteStreamVal;
+    call.value.on("stream", (remoteStreamData: MediaStream) => {
+      if (remoteVideo.value) remoteVideo.value.srcObject = remoteStreamData;
+      remoteStream.value = remoteStreamData;
     });
   } else {
-    console.error("Peer or Local stream not available.");
+    console.error("Peer or local stream missing.");
   }
-};
+}
 
-/** Toggles pose detection on/off. */
-const togglePoseDetection = () => {
+// -------------
+// Pose Detection Loop
+// -------------
+function togglePoseDetection() {
   poseEnabled.value = !poseEnabled.value;
   if (poseEnabled.value && localStream.value) {
-    startPoseDetectionLoop();
+    runPoseDetectionLoop();
   } else {
     clearCanvas(localOverlay.value);
     clearCanvas(normalizedCanvas.value);
   }
-};
+}
 
-/**
- * Runs the pose detection loop using requestAnimationFrame.
- * It updates the overlay and normalized canvases with the latest detections.
- */
-const startPoseDetectionLoop = async () => {
+async function runPoseDetectionLoop() {
   if (!poseEnabled.value || detectionLoopRunning.value) return;
   detectionLoopRunning.value = true;
   if (!localVideo.value || !localOverlay.value || !normalizedCanvas.value) return;
 
   const video = localVideo.value;
-  const overlayCanvas = localOverlay.value;
+  const overlay = localOverlay.value;
   const normCanvas = normalizedCanvas.value;
 
-  const loop = async () => {
+  async function loop() {
     if (!poseEnabled.value) {
-      clearCanvas(overlayCanvas);
+      clearCanvas(overlay);
       clearCanvas(normCanvas);
       detectionLoopRunning.value = false;
       return;
     }
 
-    // Match canvases to video dimensions.
-    overlayCanvas.width = video.videoWidth;
-    overlayCanvas.height = video.videoHeight;
+    overlay.width = video.videoWidth;
+    overlay.height = video.videoHeight;
     normCanvas.width = video.videoWidth;
     normCanvas.height = video.videoHeight;
 
     if (video.readyState >= video.HAVE_ENOUGH_DATA) {
       try {
-        const now = performance.now();
-        const result = await poseDetection.value.detectPose(video, overlayCanvas, now);
-        drawOrthographicProjections(result.landmarks, normCanvas);
+        const result = await poseDetection.value.detectPose(video, overlay, performance.now());
+        drawLandmarks(result.landmarks, normCanvas);
       } catch (error) {
-        console.error("Error during pose detection:", error);
+        console.error("Pose detection error:", error);
       }
     }
     requestAnimationFrame(loop);
-  };
+  }
   loop();
-};
+}
 
-// ----------------------
-// Lifecycle Hooks
-// ----------------------
+// -------------
+// Lifecycle Hook
+// -------------
 onMounted(async () => {
-  await fetchTurnServers();
-  poseDetection.value = await usePoseDetection("VIDEO", 1);
-  initializePeer();
+  await loadTurnServers();
+  poseDetection.value = await setupPoseDetection("VIDEO", 1);
+  initPeer();
 });
-
 </script>
 
 <style scoped>
