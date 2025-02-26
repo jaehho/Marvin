@@ -69,6 +69,9 @@ const poseDetector = ref<any>(null);
 const isPoseDetectionEnabled = ref(true);
 const isDetectionLoopRunning = ref(false);
 
+// New reactive ref for data connection
+const dataConnection = ref<any>(null);
+
 // Template element refs
 const localVideo = ref<HTMLVideoElement | null>(null);
 const remoteVideo = ref<HTMLVideoElement | null>(null);
@@ -105,7 +108,7 @@ const orthogonalProjection = (
   const centerX = width / 2;
   const centerY = height / 2;
   let posX = 0,
-    posY = 0;
+      posY = 0;
   switch (plane) {
     case "xy":
       posX = landmark.x;
@@ -265,6 +268,14 @@ function initializePeerConnection() {
   peerInstance.value = new Peer({ config: { iceServers: turnServers.value } });
   peerInstance.value.on("open", (id) => (localPeerId.value = id));
 
+  // Handle incoming data connection: simply log received key landmarks
+  peerInstance.value.on("connection", (conn) => {
+    dataConnection.value = conn;
+    conn.on("data", (data: any) => {
+      console.log("Received key landmarks:", data);
+    });
+  });
+
   // Handle incoming call
   peerInstance.value.on("call", async (incomingCall) => {
     await initializeLocalStream();
@@ -286,6 +297,9 @@ function initiateCall() {
     return;
   }
   if (peerInstance.value && localMediaStream.value) {
+    // Open a data connection to the target peer
+    dataConnection.value = peerInstance.value.connect(targetPeerId.value);
+    
     activeCall.value = peerInstance.value.call(targetPeerId.value, localMediaStream.value);
     activeCall.value.on("stream", (remoteStreamData: MediaStream) => {
       if (remoteVideo.value) remoteVideo.value.srcObject = remoteStreamData;
@@ -349,9 +363,21 @@ async function startPoseDetectionLoop() {
           overlay,
           performance.now()
         );
+
+        // Draw landmarks locally
         drawOrthogonalLandmarks(result.worldLandmarks, orthoCanvases[0], "xz");
         drawOrthogonalLandmarks(result.worldLandmarks, orthoCanvases[1], "yz");
         drawOrthogonalLandmarks(result.worldLandmarks, orthoCanvases[2], "xy");
+
+        // Extract key landmarks from each pose
+        const keyWorldLandmarks = result.worldLandmarks.map((landmarks: Landmark[]) =>
+          landmarks.filter((_, idx) => keyLandmarkIndices.has(idx))
+        );
+
+        // Send key landmarks via data connection if available
+        if (dataConnection.value && dataConnection.value.open) {
+          dataConnection.value.send(keyWorldLandmarks);
+        }
       } catch (error) {
         console.error("Pose detection error:", error);
       }
