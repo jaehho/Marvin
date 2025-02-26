@@ -1,8 +1,9 @@
 <template>
   <div class="video-chat-container">
     <h2>Your Peer ID: {{ peerId }}</h2>
-    <div class="video-area">
-      <!-- Local Video with Overlay -->
+    <!-- 2x2 Grid Container -->
+    <div class="grid-container">
+      <!-- Top Left: Local Video with Overlay -->
       <div class="local-video">
         <h3>Local Video</h3>
         <div class="video-wrapper">
@@ -10,15 +11,20 @@
           <canvas ref="localOverlay" class="overlay-canvas"></canvas>
         </div>
       </div>
-      <!-- Remote Video -->
-      <div class="remote-video">
-        <h3>Remote Video</h3>
-        <video ref="remoteVideo" autoplay playsinline></video>
+      <!-- Top Right: World Landmark 1 -->
+      <div class="world-landmark">
+        <h3>World Landmark 1</h3>
+        <canvas ref="worldCoordinates1" class="world-canvas"></canvas>
       </div>
-      <!-- Pose Landmarks Canvas -->
-      <div class="pose-landmarks">
-        <h3>Normalized Pose Landmarks</h3>
-        <canvas ref="normalizedCanvas" class="normalized-canvas"></canvas>
+      <!-- Bottom Left: World Landmark 2 -->
+      <div class="world-landmark">
+        <h3>World Landmark 2</h3>
+        <canvas ref="worldCoordinates2" class="world-canvas"></canvas>
+      </div>
+      <!-- Bottom Right: World Landmark 3 -->
+      <div class="world-landmark">
+        <h3>World Landmark 3</h3>
+        <canvas ref="worldCoordinates3" class="world-canvas"></canvas>
       </div>
     </div>
     <div class="controls">
@@ -48,7 +54,6 @@ const peer = ref<Peer | null>(null);
 const peerId = ref("");
 const remotePeerId = ref("");
 const localStream = ref<MediaStream | null>(null);
-const remoteStream = ref<MediaStream | null>(null);
 const call = ref<any>(null);
 const iceServers = ref<any[]>([]);
 const poseDetection = ref<any>(null);
@@ -57,9 +62,10 @@ const detectionLoopRunning = ref(false);
 
 // Template element refs
 const localVideo = ref<HTMLVideoElement | null>(null);
-const remoteVideo = ref<HTMLVideoElement | null>(null);
 const localOverlay = ref<HTMLCanvasElement | null>(null);
-const normalizedCanvas = ref<HTMLCanvasElement | null>(null);
+const worldCoordinates1 = ref<HTMLCanvasElement | null>(null);
+const worldCoordinates2 = ref<HTMLCanvasElement | null>(null);
+const worldCoordinates3 = ref<HTMLCanvasElement | null>(null);
 
 // -------------
 // Utility Functions
@@ -69,17 +75,15 @@ const clearCanvas = (canvas: HTMLCanvasElement | null) => {
 };
 
 function orthoLandmarks(worldLandmarks: Landmark[][], canvas: HTMLCanvasElement) {
-  console.log("drawLandmarks called", { landmarksData: worldLandmarks, canvas });
-
-  const ctx = canvas.getContext("2d")!;
-  const width = canvas.width, height = canvas.height;
-  console.log("Canvas dimensions", { width, height });
-
+  const ctx = canvas.getContext("2d");
+  if (!ctx) {
+    console.error("Failed to get canvas context");
+    return;
+  }
+  const { width, height } = canvas;
   ctx.clearRect(0, 0, width, height);
-  console.log("landmarks", worldLandmarks);
 
   if (!worldLandmarks.length) {
-    console.log("No landmarks received, exiting function.");
     return;
   }
 
@@ -87,33 +91,31 @@ function orthoLandmarks(worldLandmarks: Landmark[][], canvas: HTMLCanvasElement)
   const centerX = width / 2;
   const centerY = height / 2;
 
-  worldLandmarks.forEach((landmarks, groupIndex) => {
-    // Draw landmarks
+  // List of landmarks to be drawn
+  const validLandmarks = new Set([11, 12, 13, 14, 15, 16, 23, 24]);
+
+  worldLandmarks.forEach((landmarks) => {
     ctx.fillStyle = "red";
-    landmarks.forEach(({ x, y }, index) => {
-      // Convert from normalized coordinates to centered canvas coordinates
-      const canvasX = x * width + centerX;
-      const canvasY = y * height + centerY;
-
-      console.log(`Drawing landmark ${index} at (${canvasX.toFixed(2)}, ${canvasY.toFixed(2)}) on canvas`);
-
-      ctx.beginPath();
-      ctx.arc(canvasX, canvasY, 5, 0, 2 * Math.PI);
-      ctx.fill();
+    validLandmarks.forEach((index) => {
+      if (index < landmarks.length) {
+        const { x, y } = landmarks[index];
+        const canvasX = x * width + centerX;
+        const canvasY = y * height + height;
+        ctx.beginPath();
+        ctx.arc(canvasX, canvasY, 5, 0, 2 * Math.PI);
+        ctx.fill();
+      }
     });
 
-    // Draw connections using MediaPipe's POSE_CONNECTIONS
+    // Draw valid landmark connections
     ctx.strokeStyle = "blue";
     ctx.lineWidth = 2;
     PoseLandmarker.POSE_CONNECTIONS.forEach(({ start, end }) => {
-      if (landmarks[start] && landmarks[end]) {
+      if (validLandmarks.has(start) && validLandmarks.has(end) && landmarks[start] && landmarks[end]) {
         const startX = landmarks[start].x * width + centerX;
-        const startY = landmarks[start].y * height + centerY;
+        const startY = landmarks[start].y * height + height;
         const endX = landmarks[end].x * width + centerX;
-        const endY = landmarks[end].y * height + centerY;
-
-        console.log(`Drawing connection from (${startX.toFixed(2)}, ${startY.toFixed(2)}) to (${endX.toFixed(2)}, ${endY.toFixed(2)})`);
-
+        const endY = landmarks[end].y * height + height;
         ctx.beginPath();
         ctx.moveTo(startX, startY);
         ctx.lineTo(endX, endY);
@@ -216,8 +218,7 @@ function initPeer() {
       incomingCall.answer(localStream.value);
     }
     incomingCall.on("stream", (remoteStreamData: MediaStream) => {
-      if (remoteVideo.value) remoteVideo.value.srcObject = remoteStreamData;
-      remoteStream.value = remoteStreamData;
+      // You can handle remote streams if needed
     });
     call.value = incomingCall;
   });
@@ -233,8 +234,7 @@ function callPeer() {
   if (peer.value && localStream.value) {
     call.value = peer.value.call(remotePeerId.value, localStream.value);
     call.value.on("stream", (remoteStreamData: MediaStream) => {
-      if (remoteVideo.value) remoteVideo.value.srcObject = remoteStreamData;
-      remoteStream.value = remoteStreamData;
+      // Handle remote stream if needed
     });
   } else {
     console.error("Peer or local stream missing.");
@@ -250,37 +250,54 @@ function togglePoseDetection() {
     runPoseDetectionLoop();
   } else {
     clearCanvas(localOverlay.value);
-    clearCanvas(normalizedCanvas.value);
+    clearCanvas(worldCoordinates1.value);
+    clearCanvas(worldCoordinates2.value);
+    clearCanvas(worldCoordinates3.value);
   }
 }
 
 async function runPoseDetectionLoop() {
   if (!poseEnabled.value || detectionLoopRunning.value) return;
   detectionLoopRunning.value = true;
-  if (!localVideo.value || !localOverlay.value || !normalizedCanvas.value) return;
+  if (!localVideo.value || !localOverlay.value || 
+      !worldCoordinates1.value || !worldCoordinates2.value || !worldCoordinates3.value) return;
 
   const video = localVideo.value;
   const overlay = localOverlay.value;
-  const normCanvas = normalizedCanvas.value;
+  // Array of world landmark canvases
+  const normCanvases = [
+    worldCoordinates1.value,
+    worldCoordinates2.value,
+    worldCoordinates3.value
+  ];
 
   async function loop() {
     if (!poseEnabled.value) {
       clearCanvas(overlay);
-      clearCanvas(normCanvas);
+      normCanvases.forEach(clearCanvas);
       detectionLoopRunning.value = false;
       return;
     }
 
     overlay.width = video.videoWidth;
     overlay.height = video.videoHeight;
-    normCanvas.width = video.videoWidth;
-    normCanvas.height = video.videoHeight;
+    normCanvases.forEach((canvas) => {
+      if (canvas) {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+      }
+    });
 
     if (video.readyState >= video.HAVE_ENOUGH_DATA) {
       try {
         const result = await poseDetection.value.detectPose(video, overlay, performance.now());
-        console.log("Pose detection result:", result);
-        orthoLandmarks(result.worldLandmarks, normCanvas);
+        // Draw pose on overlay (for local video)
+        // Now update each world-landmark canvas
+        normCanvases.forEach((canvas) => {
+          if (canvas) {
+            orthoLandmarks(result.worldLandmarks, canvas);
+          }
+        });
       } catch (error) {
         console.error("Pose detection error:", error);
       }
@@ -308,16 +325,17 @@ onMounted(async () => {
   gap: 20px;
 }
 
-.video-area {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-  justify-content: center;
+/* Create a 2x2 grid for the video elements */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 20px;
+  justify-items: center;
+  align-items: center;
 }
 
 .local-video,
-.remote-video,
-.pose-landmarks {
+.world-landmark {
   text-align: center;
 }
 
@@ -343,7 +361,7 @@ video {
   pointer-events: none;
 }
 
-.normalized-canvas {
+.world-canvas {
   border: 1px solid #aaa;
   width: 400px;
   height: 300px;
