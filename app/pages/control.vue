@@ -1,6 +1,6 @@
 <template>
   <div class="video-chat-container">
-    <h2>Your Peer ID: {{ peerId }}</h2>
+    <h2>Your Peer ID: {{ localPeerId }}</h2>
     <!-- Flex container for remote video and 2x2 grid -->
     <div class="video-layout">
       <!-- Remote Video (Left Column) -->
@@ -15,31 +15,31 @@
           <h3>Local Video</h3>
           <div class="video-wrapper">
             <video ref="localVideo" autoplay playsinline></video>
-            <canvas ref="localOverlay" class="overlay-canvas"></canvas>
+            <canvas ref="localOverlayCanvas" class="overlay-canvas"></canvas>
           </div>
         </div>
         <!-- Top Right: World Landmark 1 (XZ) -->
         <div class="world-landmark">
           <h3>World Landmark 1 (XZ)</h3>
-          <canvas ref="worldCoordinates1" class="world-canvas"></canvas>
+          <canvas ref="worldCanvasXZ" class="world-canvas"></canvas>
         </div>
         <!-- Bottom Left: World Landmark 2 (YZ) -->
         <div class="world-landmark">
           <h3>World Landmark 2 (YZ)</h3>
-          <canvas ref="worldCoordinates2" class="world-canvas"></canvas>
+          <canvas ref="worldCanvasYZ" class="world-canvas"></canvas>
         </div>
         <!-- Bottom Right: World Landmark 3 (XY) -->
         <div class="world-landmark">
           <h3>World Landmark 3 (XY)</h3>
-          <canvas ref="worldCoordinates3" class="world-canvas"></canvas>
+          <canvas ref="worldCanvasXY" class="world-canvas"></canvas>
         </div>
       </div>
     </div>
     <div class="controls">
-      <input v-model="remotePeerId" placeholder="Enter Peer ID to Call" />
-      <button @click="callPeer">Call</button>
+      <input v-model="targetPeerId" placeholder="Enter Peer ID to Call" />
+      <button @click="initiateCall">Call</button>
       <button @click="togglePoseDetection">
-        {{ poseEnabled ? "Disable" : "Enable" }} Pose Detection
+        {{ isPoseDetectionEnabled ? "Disable" : "Enable" }} Pose Detection
       </button>
     </div>
   </div>
@@ -59,23 +59,23 @@ interface Landmark {
 // -------------
 // Reactive State & Refs
 // -------------
-const peer = ref<Peer | null>(null);
-const peerId = ref("");
-const remotePeerId = ref("");
-const localStream = ref<MediaStream | null>(null);
-const call = ref<any>(null);
-const iceServers = ref<any[]>([]);
-const poseDetection = ref<any>(null);
-const poseEnabled = ref(true);
-const detectionLoopRunning = ref(false);
+const peerInstance = ref<Peer | null>(null);
+const localPeerId = ref("");
+const targetPeerId = ref("");
+const localMediaStream = ref<MediaStream | null>(null);
+const activeCall = ref<any>(null);
+const turnServers = ref<any[]>([]);
+const poseDetector = ref<any>(null);
+const isPoseDetectionEnabled = ref(true);
+const isDetectionLoopRunning = ref(false);
 
 // Template element refs
 const localVideo = ref<HTMLVideoElement | null>(null);
 const remoteVideo = ref<HTMLVideoElement | null>(null);
-const localOverlay = ref<HTMLCanvasElement | null>(null);
-const worldCoordinates1 = ref<HTMLCanvasElement | null>(null);
-const worldCoordinates2 = ref<HTMLCanvasElement | null>(null);
-const worldCoordinates3 = ref<HTMLCanvasElement | null>(null);
+const localOverlayCanvas = ref<HTMLCanvasElement | null>(null);
+const worldCanvasXZ = ref<HTMLCanvasElement | null>(null);
+const worldCanvasYZ = ref<HTMLCanvasElement | null>(null);
+const worldCanvasXY = ref<HTMLCanvasElement | null>(null);
 
 // -------------
 // Helper Functions
@@ -96,7 +96,7 @@ const clearCanvases = (...canvases: (HTMLCanvasElement | null)[]) => {
 /**
  * Returns the projected coordinates for a given landmark on the specified plane.
  */
-const projectLandmark = (
+const orthogonalProjection = (
   landmark: Landmark,
   plane: "xy" | "xz" | "yz",
   width: number,
@@ -104,7 +104,8 @@ const projectLandmark = (
 ) => {
   const centerX = width / 2;
   const centerY = height / 2;
-  let posX = 0, posY = 0;
+  let posX = 0,
+    posY = 0;
   switch (plane) {
     case "xy":
       posX = landmark.x;
@@ -122,7 +123,7 @@ const projectLandmark = (
   return { x: posX * width + centerX, y: posY * height + centerY };
 };
 
-const validLandmarkIndices = new Set([11, 12, 13, 14, 15, 16, 23, 24]);
+const keyLandmarkIndices = new Set([11, 12, 13, 14, 15, 16, 23, 24]);
 
 /**
  * Draws world landmarks on a canvas using the specified coordinate plane.
@@ -130,7 +131,7 @@ const validLandmarkIndices = new Set([11, 12, 13, 14, 15, 16, 23, 24]);
  * @param canvas The target canvas element.
  * @param plane The coordinate plane to use: "xy", "xz", or "yz".
  */
-function orthoLandmarks(
+function drawOrthogonalLandmarks(
   worldLandmarks: Landmark[][],
   canvas: HTMLCanvasElement,
   plane: "xy" | "xz" | "yz"
@@ -147,9 +148,9 @@ function orthoLandmarks(
   worldLandmarks.forEach((landmarks) => {
     // Draw individual landmarks
     ctx.fillStyle = "red";
-    validLandmarkIndices.forEach((index) => {
+    keyLandmarkIndices.forEach((index) => {
       if (index < landmarks.length) {
-        const { x, y } = projectLandmark(landmarks[index], plane, width, height);
+        const { x, y } = orthogonalProjection(landmarks[index], plane, width, height);
         ctx.beginPath();
         ctx.arc(x, y, 5, 0, 2 * Math.PI);
         ctx.fill();
@@ -160,13 +161,13 @@ function orthoLandmarks(
     ctx.lineWidth = 2;
     PoseLandmarker.POSE_CONNECTIONS.forEach(({ start, end }) => {
       if (
-        validLandmarkIndices.has(start) &&
-        validLandmarkIndices.has(end) &&
+        keyLandmarkIndices.has(start) &&
+        keyLandmarkIndices.has(end) &&
         landmarks[start] &&
         landmarks[end]
       ) {
-        const startPt = projectLandmark(landmarks[start], plane, width, height);
-        const endPt = projectLandmark(landmarks[end], plane, width, height);
+        const startPt = orthogonalProjection(landmarks[start], plane, width, height);
+        const endPt = orthogonalProjection(landmarks[end], plane, width, height);
         ctx.beginPath();
         ctx.moveTo(startPt.x, startPt.y);
         ctx.lineTo(endPt.x, endPt.y);
@@ -179,7 +180,7 @@ function orthoLandmarks(
 // -------------
 // Pose Detection Setup
 // -------------
-async function setupPoseDetection(
+async function initializePoseDetection(
   runningMode: "IMAGE" | "VIDEO" = "VIDEO",
   numPoses: number = 1
 ) {
@@ -196,7 +197,7 @@ async function setupPoseDetection(
     numPoses
   });
 
-  async function detectPose(
+  async function detectPoseOnVideo(
     video: HTMLVideoElement,
     canvas: HTMLCanvasElement,
     timestamp?: number
@@ -219,19 +220,19 @@ async function setupPoseDetection(
     return result;
   }
 
-  return { poseLandmarker, detectPose };
+  return { poseLandmarker, detectPoseOnVideo };
 }
 
 // -------------
 // TURN Server & Media Setup
 // -------------
-async function loadTurnServers() {
+async function fetchTurnServerCredentials() {
   try {
     const res = await fetch(
       "https://marvin.metered.live/api/v1/turn/credentials?apiKey=bca769dfeca57f21e5ceb9eada5afbbf71cd"
     );
     const turnData = await res.json();
-    iceServers.value = [
+    turnServers.value = [
       { urls: "stun:stun.l.google.com:19302" },
       { urls: "stun:stun1.l.google.com:19302" },
       { urls: "stun:stun2.l.google.com:19302" },
@@ -242,16 +243,16 @@ async function loadTurnServers() {
   }
 }
 
-async function setupLocalStream() {
+async function initializeLocalStream() {
   try {
-    localStream.value = await navigator.mediaDevices.getUserMedia({
+    localMediaStream.value = await navigator.mediaDevices.getUserMedia({
       video: true,
       audio: true
     });
     if (localVideo.value) {
-      localVideo.value.srcObject = localStream.value;
+      localVideo.value.srcObject = localMediaStream.value;
     }
-    if (poseEnabled.value) runPoseDetectionLoop();
+    if (isPoseDetectionEnabled.value) startPoseDetectionLoop();
   } catch (error) {
     console.error("Media device error:", error);
   }
@@ -260,33 +261,33 @@ async function setupLocalStream() {
 // -------------
 // Peer Connection
 // -------------
-function initPeer() {
-  peer.value = new Peer({ config: { iceServers: iceServers.value } });
-  peer.value.on("open", (id) => (peerId.value = id));
+function initializePeerConnection() {
+  peerInstance.value = new Peer({ config: { iceServers: turnServers.value } });
+  peerInstance.value.on("open", (id) => (localPeerId.value = id));
 
   // Handle incoming call
-  peer.value.on("call", async (incomingCall) => {
-    await setupLocalStream();
-    if (localStream.value) {
-      incomingCall.answer(localStream.value);
+  peerInstance.value.on("call", async (incomingCall) => {
+    await initializeLocalStream();
+    if (localMediaStream.value) {
+      incomingCall.answer(localMediaStream.value);
     }
     incomingCall.on("stream", (remoteStreamData: MediaStream) => {
       if (remoteVideo.value) remoteVideo.value.srcObject = remoteStreamData;
     });
-    call.value = incomingCall;
+    activeCall.value = incomingCall;
   });
 
-  setupLocalStream();
+  initializeLocalStream();
 }
 
-function callPeer() {
-  if (!remotePeerId.value) {
+function initiateCall() {
+  if (!targetPeerId.value) {
     alert("Enter a Peer ID to call!");
     return;
   }
-  if (peer.value && localStream.value) {
-    call.value = peer.value.call(remotePeerId.value, localStream.value);
-    call.value.on("stream", (remoteStreamData: MediaStream) => {
+  if (peerInstance.value && localMediaStream.value) {
+    activeCall.value = peerInstance.value.call(targetPeerId.value, localMediaStream.value);
+    activeCall.value.on("stream", (remoteStreamData: MediaStream) => {
       if (remoteVideo.value) remoteVideo.value.srcObject = remoteStreamData;
     });
   } else {
@@ -298,43 +299,43 @@ function callPeer() {
 // Pose Detection Loop
 // -------------
 function togglePoseDetection() {
-  poseEnabled.value = !poseEnabled.value;
-  if (poseEnabled.value && localStream.value) {
-    runPoseDetectionLoop();
+  isPoseDetectionEnabled.value = !isPoseDetectionEnabled.value;
+  if (isPoseDetectionEnabled.value && localMediaStream.value) {
+    startPoseDetectionLoop();
   } else {
     clearCanvases(
-      localOverlay.value,
-      worldCoordinates1.value,
-      worldCoordinates2.value,
-      worldCoordinates3.value
+      localOverlayCanvas.value,
+      worldCanvasXZ.value,
+      worldCanvasYZ.value,
+      worldCanvasXY.value
     );
   }
 }
 
-async function runPoseDetectionLoop() {
-  if (!poseEnabled.value || detectionLoopRunning.value) return;
-  detectionLoopRunning.value = true;
+async function startPoseDetectionLoop() {
+  if (!isPoseDetectionEnabled.value || isDetectionLoopRunning.value) return;
+  isDetectionLoopRunning.value = true;
   if (
     !localVideo.value ||
-    !localOverlay.value ||
-    !worldCoordinates1.value ||
-    !worldCoordinates2.value ||
-    !worldCoordinates3.value
+    !localOverlayCanvas.value ||
+    !worldCanvasXZ.value ||
+    !worldCanvasYZ.value ||
+    !worldCanvasXY.value
   )
     return;
 
   const video = localVideo.value;
-  const overlay = localOverlay.value;
+  const overlay = localOverlayCanvas.value;
   const orthoCanvases = [
-    worldCoordinates1.value,
-    worldCoordinates2.value,
-    worldCoordinates3.value
+    worldCanvasXZ.value,
+    worldCanvasYZ.value,
+    worldCanvasXY.value
   ];
 
   async function loop() {
-    if (!poseEnabled.value) {
+    if (!isPoseDetectionEnabled.value) {
       clearCanvases(overlay, ...orthoCanvases);
-      detectionLoopRunning.value = false;
+      isDetectionLoopRunning.value = false;
       return;
     }
 
@@ -343,14 +344,14 @@ async function runPoseDetectionLoop() {
 
     if (video.readyState >= video.HAVE_ENOUGH_DATA) {
       try {
-        const result = await poseDetection.value.detectPose(
+        const result = await poseDetector.value.detectPoseOnVideo(
           video,
           overlay,
           performance.now()
         );
-        orthoLandmarks(result.worldLandmarks, orthoCanvases[0], "xz");
-        orthoLandmarks(result.worldLandmarks, orthoCanvases[1], "yz");
-        orthoLandmarks(result.worldLandmarks, orthoCanvases[2], "xy");
+        drawOrthogonalLandmarks(result.worldLandmarks, orthoCanvases[0], "xz");
+        drawOrthogonalLandmarks(result.worldLandmarks, orthoCanvases[1], "yz");
+        drawOrthogonalLandmarks(result.worldLandmarks, orthoCanvases[2], "xy");
       } catch (error) {
         console.error("Pose detection error:", error);
       }
@@ -364,9 +365,9 @@ async function runPoseDetectionLoop() {
 // Lifecycle Hook
 // -------------
 onMounted(async () => {
-  await loadTurnServers();
-  poseDetection.value = await setupPoseDetection("VIDEO", 1);
-  initPeer();
+  await fetchTurnServerCredentials();
+  poseDetector.value = await initializePoseDetection("VIDEO", 1);
+  initializePeerConnection();
 });
 </script>
 
