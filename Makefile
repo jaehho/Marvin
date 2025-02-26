@@ -29,6 +29,9 @@ help: ## Show this help message
 chownme: ## Change ownership of all files in the workspace to the current user
 	sudo chown -R $(shell whoami) ./
 
+update_bashrc: ## Update ~/.bashrc with ros2_ws/.bashrc
+	./ros2_ws/update_bashrc.sh
+
 # Section: Docker
 
 docker_build: ## Build Docker container(s)
