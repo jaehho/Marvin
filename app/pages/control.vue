@@ -68,60 +68,58 @@ const clearCanvas = (canvas: HTMLCanvasElement | null) => {
   canvas?.getContext("2d")?.clearRect(0, 0, canvas.width, canvas.height);
 };
 
-function drawLandmarks(landmarksData: Landmark[][] | Landmark[], canvas: HTMLCanvasElement) {
+function orthoLandmarks(worldLandmarks: Landmark[][], canvas: HTMLCanvasElement) {
+  console.log("drawLandmarks called", { landmarksData: worldLandmarks, canvas });
+
   const ctx = canvas.getContext("2d")!;
   const width = canvas.width, height = canvas.height;
+  console.log("Canvas dimensions", { width, height });
+
   ctx.clearRect(0, 0, width, height);
-  if (!landmarksData || landmarksData.length === 0) return;
+  console.log("landmarks", worldLandmarks);
 
-  // Ensure landmarksData is an array of landmark arrays
-  const groups = Array.isArray(landmarksData[0])
-    ? (landmarksData as Landmark[][])
-    : [landmarksData as Landmark[]];
+  if (!worldLandmarks.length) {
+    console.log("No landmarks received, exiting function.");
+    return;
+  }
 
-  groups.forEach((landmarks) => {
-    let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
-    landmarks.forEach(pt => {
-      minX = Math.min(minX, pt.x);
-      maxX = Math.max(maxX, pt.x);
-      minY = Math.min(minY, pt.y);
-      maxY = Math.max(maxY, pt.y);
-    });
-    const marginX = 0.05 * (maxX - minX);
-    const marginY = 0.05 * (maxY - minY);
-    minX = Math.max(0, minX - marginX);
-    maxX = Math.min(1, maxX + marginX);
-    minY = Math.max(0, minY - marginY);
-    maxY = Math.min(1, maxY + marginY);
+  // Translate origin to center
+  const centerX = width / 2;
+  const centerY = height / 2;
 
+  worldLandmarks.forEach((landmarks, groupIndex) => {
     // Draw landmarks
     ctx.fillStyle = "red";
-    landmarks.forEach(pt => {
-      const x = ((pt.x - minX) / (maxX - minX)) * width;
-      const y = ((pt.y - minY) / (maxY - minY)) * height;
+    landmarks.forEach(({ x, y }, index) => {
+      // Convert from normalized coordinates to centered canvas coordinates
+      const canvasX = x * width + centerX;
+      const canvasY = y * height + centerY;
+
+      console.log(`Drawing landmark ${index} at (${canvasX.toFixed(2)}, ${canvasY.toFixed(2)}) on canvas`);
+
       ctx.beginPath();
-      ctx.arc(x, y, 5, 0, 2 * Math.PI);
+      ctx.arc(canvasX, canvasY, 5, 0, 2 * Math.PI);
       ctx.fill();
     });
 
-    // Draw connectors using MediaPipe's connections
-    const connections = PoseLandmarker.POSE_CONNECTIONS;
-    if (connections) {
-      ctx.strokeStyle = "blue";
-      ctx.lineWidth = 2;
-      connections.forEach(({ start, end }) => {
-        if (landmarks[start] && landmarks[end]) {
-          const startX = ((landmarks[start].x - minX) / (maxX - minX)) * width;
-          const startY = ((landmarks[start].y - minY) / (maxY - minY)) * height;
-          const endX = ((landmarks[end].x - minX) / (maxX - minX)) * width;
-          const endY = ((landmarks[end].y - minY) / (maxY - minY)) * height;
-          ctx.beginPath();
-          ctx.moveTo(startX, startY);
-          ctx.lineTo(endX, endY);
-          ctx.stroke();
-        }
-      });
-    }
+    // Draw connections using MediaPipe's POSE_CONNECTIONS
+    ctx.strokeStyle = "blue";
+    ctx.lineWidth = 2;
+    PoseLandmarker.POSE_CONNECTIONS.forEach(({ start, end }) => {
+      if (landmarks[start] && landmarks[end]) {
+        const startX = landmarks[start].x * width + centerX;
+        const startY = landmarks[start].y * height + centerY;
+        const endX = landmarks[end].x * width + centerX;
+        const endY = landmarks[end].y * height + centerY;
+
+        console.log(`Drawing connection from (${startX.toFixed(2)}, ${startY.toFixed(2)}) to (${endX.toFixed(2)}, ${endY.toFixed(2)})`);
+
+        ctx.beginPath();
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(endX, endY);
+        ctx.stroke();
+      }
+    });
   });
 }
 
@@ -155,7 +153,7 @@ async function setupPoseDetection(runningMode: "IMAGE" | "VIDEO" = "VIDEO", numP
     const ts = timestamp || performance.now();
     const result = await poseLandmarker.detectForVideo(video, ts);
     const drawingUtils = new DrawingUtils(ctx);
-    
+
     result.landmarks.forEach((landmarks: any) => {
       drawingUtils.drawLandmarks(landmarks, {
         radius: (data: { from?: { z?: number } }) =>
@@ -281,7 +279,8 @@ async function runPoseDetectionLoop() {
     if (video.readyState >= video.HAVE_ENOUGH_DATA) {
       try {
         const result = await poseDetection.value.detectPose(video, overlay, performance.now());
-        drawLandmarks(result.landmarks, normCanvas);
+        console.log("Pose detection result:", result);
+        orthoLandmarks(result.worldLandmarks, normCanvas);
       } catch (error) {
         console.error("Pose detection error:", error);
       }
