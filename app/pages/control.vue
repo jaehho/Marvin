@@ -1,30 +1,38 @@
 <template>
   <div class="video-chat-container">
     <h2>Your Peer ID: {{ peerId }}</h2>
-    <!-- 2x2 Grid Container -->
-    <div class="grid-container">
-      <!-- Top Left: Local Video with Overlay -->
-      <div class="local-video">
-        <h3>Local Video</h3>
-        <div class="video-wrapper">
-          <video ref="localVideo" autoplay playsinline></video>
-          <canvas ref="localOverlay" class="overlay-canvas"></canvas>
+    <!-- Flex container for remote video and 2x2 grid -->
+    <div class="video-layout">
+      <!-- Remote Video (Left Column) -->
+      <div class="remote-video">
+        <h3>Remote Video</h3>
+        <video ref="remoteVideo" autoplay playsinline></video>
+      </div>
+      <!-- 2x2 Grid Container (Right Column) -->
+      <div class="grid-container">
+        <!-- Top Left: Local Video with Overlay -->
+        <div class="local-video">
+          <h3>Local Video</h3>
+          <div class="video-wrapper">
+            <video ref="localVideo" autoplay playsinline></video>
+            <canvas ref="localOverlay" class="overlay-canvas"></canvas>
+          </div>
         </div>
-      </div>
-      <!-- Top Right: World Landmark 1 (XZ) -->
-      <div class="world-landmark">
-        <h3>World Landmark 1 (XZ)</h3>
-        <canvas ref="worldCoordinates1" class="world-canvas"></canvas>
-      </div>
-      <!-- Bottom Left: World Landmark 2 (YZ) -->
-      <div class="world-landmark">
-        <h3>World Landmark 2 (YZ)</h3>
-        <canvas ref="worldCoordinates2" class="world-canvas"></canvas>
-      </div>
-      <!-- Bottom Right: World Landmark 3 (XY) -->
-      <div class="world-landmark">
-        <h3>World Landmark 3 (XY)</h3>
-        <canvas ref="worldCoordinates3" class="world-canvas"></canvas>
+        <!-- Top Right: World Landmark 1 (XZ) -->
+        <div class="world-landmark">
+          <h3>World Landmark 1 (XZ)</h3>
+          <canvas ref="worldCoordinates1" class="world-canvas"></canvas>
+        </div>
+        <!-- Bottom Left: World Landmark 2 (YZ) -->
+        <div class="world-landmark">
+          <h3>World Landmark 2 (YZ)</h3>
+          <canvas ref="worldCoordinates2" class="world-canvas"></canvas>
+        </div>
+        <!-- Bottom Right: World Landmark 3 (XY) -->
+        <div class="world-landmark">
+          <h3>World Landmark 3 (XY)</h3>
+          <canvas ref="worldCoordinates3" class="world-canvas"></canvas>
+        </div>
       </div>
     </div>
     <div class="controls">
@@ -63,6 +71,7 @@ const detectionLoopRunning = ref(false);
 
 // Template element refs
 const localVideo = ref<HTMLVideoElement | null>(null);
+const remoteVideo = ref<HTMLVideoElement | null>(null);
 const localOverlay = ref<HTMLCanvasElement | null>(null);
 const worldCoordinates1 = ref<HTMLCanvasElement | null>(null);
 const worldCoordinates2 = ref<HTMLCanvasElement | null>(null);
@@ -283,7 +292,7 @@ function initPeer() {
       incomingCall.answer(localStream.value);
     }
     incomingCall.on("stream", (remoteStreamData: MediaStream) => {
-      // You can handle remote streams if needed
+      if (remoteVideo.value) remoteVideo.value.srcObject = remoteStreamData;
     });
     call.value = incomingCall;
   });
@@ -299,7 +308,7 @@ function callPeer() {
   if (peer.value && localStream.value) {
     call.value = peer.value.call(remotePeerId.value, localStream.value);
     call.value.on("stream", (remoteStreamData: MediaStream) => {
-      // Handle remote stream if needed
+      if (remoteVideo.value) remoteVideo.value.srcObject = remoteStreamData;
     });
   } else {
     console.error("Peer or local stream missing.");
@@ -399,7 +408,26 @@ onMounted(async () => {
   gap: 20px;
 }
 
-/* Create a 2x2 grid for the video elements */
+/* Flex container to hold remote video and grid */
+.video-layout {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+/* Styles for the remote video */
+.remote-video {
+  text-align: center;
+}
+
+.remote-video video {
+  width: 800px;  /* Same as the overall grid width */
+  height: 600px; /* Same as the overall grid height */
+  background: black;
+  border: 1px solid #ccc;
+}
+
+/* 2x2 Grid for the local video & world landmarks */
 .grid-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
