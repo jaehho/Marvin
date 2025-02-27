@@ -224,14 +224,14 @@ function publishLandmarksToROS(data: any) {
   // Create the PoseLandmark message using the custom interface.
   const poseMsg = new ROSLIB.Message({
     label: [
-      "11_left_shoulder",
-      "12_right_shoulder",
-      "13_left_elbow",
-      "14_right_elbow",
-      "15_left_wrist",
-      "16_right_wrist",
-      "23_left_hip",
-      "24_right_hip"
+      "left_shoulder", // 11
+      "right_shoulder", // 12
+      "left_elbow", // 13
+      "right_elbow", // 14
+      "left_wrist", // 15
+      "right_wrist", // 16
+      "left_hip", // 23
+      "right_hip" // 24
     ],
     point: landmarks.map((lm: { x: number; y: number; z: number }) => ({
       x: lm.x,
