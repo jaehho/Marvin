@@ -48,7 +48,11 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import Peer from "peerjs";
-import { PoseLandmarker, FilesetResolver, DrawingUtils } from "@mediapipe/tasks-vision";
+import {
+  PoseLandmarker,
+  FilesetResolver,
+  DrawingUtils,
+} from "@mediapipe/tasks-vision";
 import ROSLIB from "roslib";
 
 interface Landmark {
@@ -113,7 +117,7 @@ const orthogonalProjection = (
   const centerX = width / 2;
   const centerY = height / 2;
   let posX = 0,
-      posY = 0;
+    posY = 0;
   switch (plane) {
     case "xy":
       posX = landmark.x;
@@ -158,7 +162,12 @@ function drawOrthogonalLandmarks(
     ctx.fillStyle = "red";
     keyLandmarkIndices.forEach((index) => {
       if (index < landmarks.length) {
-        const { x, y } = orthogonalProjection(landmarks[index], plane, width, height);
+        const { x, y } = orthogonalProjection(
+          landmarks[index],
+          plane,
+          width,
+          height
+        );
         ctx.beginPath();
         ctx.arc(x, y, 5, 0, 2 * Math.PI);
         ctx.fill();
@@ -174,8 +183,18 @@ function drawOrthogonalLandmarks(
         landmarks[start] &&
         landmarks[end]
       ) {
-        const startPt = orthogonalProjection(landmarks[start], plane, width, height);
-        const endPt = orthogonalProjection(landmarks[end], plane, width, height);
+        const startPt = orthogonalProjection(
+          landmarks[start],
+          plane,
+          width,
+          height
+        );
+        const endPt = orthogonalProjection(
+          landmarks[end],
+          plane,
+          width,
+          height
+        );
         ctx.beginPath();
         ctx.moveTo(startPt.x, startPt.y);
         ctx.lineTo(endPt.x, endPt.y);
@@ -193,11 +212,35 @@ function publishLandmarksToROS(data: any) {
     console.error("ROS publisher not initialized");
     return;
   }
-  // Publish the landmarks as a JSON string using a std_msgs/String message
-  const message = new ROSLIB.Message({
-    data: JSON.stringify(data)
+
+  // Assuming data is an array of poses, each with an array of key landmarks
+  // Here we take the first pose’s landmarks.
+  const landmarks = data[0];
+  if (!landmarks || landmarks.length !== 8) {
+    console.error("Unexpected number of landmarks");
+    return;
+  }
+
+  // Create the PoseLandmark message using the custom interface.
+  const poseMsg = new ROSLIB.Message({
+    label: [
+      "11_left_shoulder",
+      "12_right_shoulder",
+      "13_left_elbow",
+      "14_right_elbow",
+      "15_left_wrist",
+      "16_right_wrist",
+      "23_left_hip",
+      "24_right_hip"
+    ],
+    point: landmarks.map((lm: { x: number; y: number; z: number }) => ({
+      x: lm.x,
+      y: lm.y,
+      z: lm.z
+    }))
   });
-  landmarkPublisher.value.publish(message);
+
+  landmarkPublisher.value.publish(poseMsg);
 }
 
 // -------------
@@ -214,10 +257,10 @@ async function initializePoseDetection(
     baseOptions: {
       modelAssetPath:
         "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_heavy/float16/latest/pose_landmarker_heavy.task",
-      delegate: "GPU"
+      delegate: "GPU",
     },
     runningMode,
-    numPoses
+    numPoses,
   });
 
   async function detectPoseOnVideo(
@@ -236,7 +279,7 @@ async function initializePoseDetection(
     result.landmarks.forEach((landmarks: any) => {
       drawingUtils.drawLandmarks(landmarks, {
         radius: (data: { from?: { z?: number } }) =>
-          DrawingUtils.lerp(data.from?.z ?? 0, -0.15, 0.1, 5, 1)
+          DrawingUtils.lerp(data.from?.z ?? 0, -0.15, 0.1, 5, 1),
       });
       drawingUtils.drawConnectors(landmarks, PoseLandmarker.POSE_CONNECTIONS);
     });
@@ -259,7 +302,7 @@ async function fetchTurnServerCredentials() {
       { urls: "stun:stun.l.google.com:19302" },
       { urls: "stun:stun1.l.google.com:19302" },
       { urls: "stun:stun2.l.google.com:19302" },
-      ...turnData
+      ...turnData,
     ];
   } catch (error) {
     console.error("TURN server fetch error:", error);
@@ -270,7 +313,7 @@ async function initializeLocalStream() {
   try {
     localMediaStream.value = await navigator.mediaDevices.getUserMedia({
       video: true,
-      audio: true
+      audio: true,
     });
     if (localVideo.value) {
       localVideo.value.srcObject = localMediaStream.value;
@@ -320,8 +363,11 @@ function initiateCall() {
   if (peerInstance.value && localMediaStream.value) {
     // Open a data connection to the target peer
     dataConnection.value = peerInstance.value.connect(targetPeerId.value);
-    
-    activeCall.value = peerInstance.value.call(targetPeerId.value, localMediaStream.value);
+
+    activeCall.value = peerInstance.value.call(
+      targetPeerId.value,
+      localMediaStream.value
+    );
     activeCall.value.on("stream", (remoteStreamData: MediaStream) => {
       if (remoteVideo.value) remoteVideo.value.srcObject = remoteStreamData;
     });
@@ -364,7 +410,7 @@ async function startPoseDetectionLoop() {
   const orthoCanvases = [
     worldCanvasXZ.value,
     worldCanvasYZ.value,
-    worldCanvasXY.value
+    worldCanvasXY.value,
   ];
 
   async function loop() {
@@ -391,8 +437,9 @@ async function startPoseDetectionLoop() {
         drawOrthogonalLandmarks(result.worldLandmarks, orthoCanvases[2], "xy");
 
         // Extract key landmarks from each pose
-        const keyWorldLandmarks = result.worldLandmarks.map((landmarks: Landmark[]) =>
-          landmarks.filter((_, idx) => keyLandmarkIndices.has(idx))
+        const keyWorldLandmarks = result.worldLandmarks.map(
+          (landmarks: Landmark[]) =>
+            landmarks.filter((_, idx) => keyLandmarkIndices.has(idx))
         );
 
         // Send key landmarks via data connection if available
@@ -417,12 +464,12 @@ onMounted(async () => {
 
   // Initialize ROS connection via rosbridge
   ros.value = new ROSLIB.Ros({
-    url: "ws://localhost:9090" // Ensure rosbridge is running at this URL
+    url: "ws://localhost:9090", // Ensure rosbridge is running at this URL
   });
   landmarkPublisher.value = new ROSLIB.Topic({
     ros: ros.value,
     name: "/landmarks",
-    messageType: "std_msgs/String"
+    messageType: "custom_interfaces/PoseLandmark", // use your actual package name if different
   });
 
   initializePeerConnection();
