@@ -49,6 +49,7 @@
 import { ref, onMounted } from "vue";
 import Peer from "peerjs";
 import { PoseLandmarker, FilesetResolver, DrawingUtils } from "@mediapipe/tasks-vision";
+import ROSLIB from "roslib";
 
 interface Landmark {
   x: number;
@@ -71,6 +72,10 @@ const isDetectionLoopRunning = ref(false);
 
 // New reactive ref for data connection
 const dataConnection = ref<any>(null);
+
+// New reactive refs for ROS connection and publisher
+const ros = ref<any>(null);
+const landmarkPublisher = ref<any>(null);
 
 // Template element refs
 const localVideo = ref<HTMLVideoElement | null>(null);
@@ -181,6 +186,21 @@ function drawOrthogonalLandmarks(
 }
 
 // -------------
+// ROS Publishing Function
+// -------------
+function publishLandmarksToROS(data: any) {
+  if (!landmarkPublisher.value) {
+    console.error("ROS publisher not initialized");
+    return;
+  }
+  // Publish the landmarks as a JSON string using a std_msgs/String message
+  const message = new ROSLIB.Message({
+    data: JSON.stringify(data)
+  });
+  landmarkPublisher.value.publish(message);
+}
+
+// -------------
 // Pose Detection Setup
 // -------------
 async function initializePoseDetection(
@@ -268,11 +288,12 @@ function initializePeerConnection() {
   peerInstance.value = new Peer({ config: { iceServers: turnServers.value } });
   peerInstance.value.on("open", (id) => (localPeerId.value = id));
 
-  // Handle incoming data connection: simply log received key landmarks
+  // Handle incoming data connection: log and publish key landmarks
   peerInstance.value.on("connection", (conn) => {
     dataConnection.value = conn;
     conn.on("data", (data: any) => {
       console.log("Received key landmarks:", data);
+      publishLandmarksToROS(data);
     });
   });
 
@@ -393,6 +414,17 @@ async function startPoseDetectionLoop() {
 onMounted(async () => {
   await fetchTurnServerCredentials();
   poseDetector.value = await initializePoseDetection("VIDEO", 1);
+
+  // Initialize ROS connection via rosbridge
+  ros.value = new ROSLIB.Ros({
+    url: "ws://localhost:9090" // Ensure rosbridge is running at this URL
+  });
+  landmarkPublisher.value = new ROSLIB.Topic({
+    ros: ros.value,
+    name: "/landmarks",
+    messageType: "std_msgs/String"
+  });
+
   initializePeerConnection();
 });
 </script>

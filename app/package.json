@@ -18,5 +18,8 @@
     "roslib": "^1.4.1",
     "vue": "latest",
     "vue-router": "latest"
+  },
+  "devDependencies": {
+    "@types/roslib": "^1.3.5"
   }
 }
