@@ -15,6 +15,7 @@
     "animate.css": "^4.1.1",
     "nuxt": "^3.15.4",
     "peerjs": "^1.5.4",
+    "roslib": "^1.4.1",
     "vue": "latest",
     "vue-router": "latest"
   }
