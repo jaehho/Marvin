@@ -21,22 +21,21 @@ add_executable(pose_tracking src/pose_tracking.cpp)
 # might be able to delete the thing below
 target_include_directories(pose_tracking PUBLIC include)
 ament_target_dependencies(
-  pose_tracking_tutorial
+  pose_tracking
   "rclcpp"
   "sensor_msgs"
   "moveit_servo"
-  "moveit_msgs"
-  "deque"
+  "control_msgs"
 )
-
+  
 #HELLO MOVEIT
-add_executable(marvin_control src/hello_moveit.cpp)
-target_include_directories(marvin_control PUBLIC
+add_executable(hello_moveit src/hello_moveit.cpp)
+target_include_directories(hello_moveit PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include/${PROJECT_NAME}>)
-target_compile_features(marvin_control PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
+target_compile_features(hello_moveit PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
 ament_target_dependencies(
-  marvin_control
+  hello_moveit
   "moveit_ros_planning_interface"
   "rclcpp"
 )
@@ -64,7 +63,7 @@ ament_target_dependencies(
 
 install(
   TARGETS
-    pose_tracking_tutorial hello_moveit publisher subscriber
+    pose_tracking hello_moveit publisher subscriber
   DESTINATION
     lib/${PROJECT_NAME}
 )

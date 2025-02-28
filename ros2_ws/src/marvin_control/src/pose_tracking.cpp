@@ -1,5 +1,5 @@
 #include <rclcpp/rclcpp.hpp>
-#include <moveit_msgs/msg/joint_jog.hpp>
+#include <control_msgs/msg/joint_jog.hpp>
 #include <sensor_msgs/msg/joint_state.hpp>
 #include <deque>
 
@@ -9,7 +9,7 @@ public:
     RealTimeMarvinMimic() : Node("real_time_marvin_mimic")
     {
         // Publisher for MoveIt Servo JointJog commands
-        joint_jog_publisher_ = this->create_publisher<moveit_msgs::msg::JointJog>(
+        joint_jog_publisher_ = this->create_publisher<control_msgs::msg::JointJog>(
             "/servo_node/delta_joint_cmds", rclcpp::SystemDefaultsQoS());
 
         // Subscriber to receive real-time joint state updates
@@ -24,7 +24,7 @@ public:
     }
 
 private:
-    rclcpp::Publisher<moveit_msgs::msg::JointJog>::SharedPtr joint_jog_publisher_;
+    rclcpp::Publisher<control_msgs::msg::JointJog>::SharedPtr joint_jog_publisher_;
     rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr joint_state_subscriber_;
     rclcpp::TimerBase::SharedPtr update_timer_;
 
@@ -79,7 +79,7 @@ private:
         if (joint_buffer_.empty()) return;
 
         std::vector<double> smoothed_joints = computeSmoothedJoints();
-        moveit_msgs::msg::JointJog joint_jog_msg;
+        control_msgs::msg::JointJog joint_jog_msg;
 
         joint_jog_msg.header.stamp = this->now();
         joint_jog_msg.header.frame_id = "world";  // Adjust to Marvin’s base frame

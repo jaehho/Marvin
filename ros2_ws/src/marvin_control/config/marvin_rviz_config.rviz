@@ -1,0 +1,183 @@
+Panels:
+  - Class: rviz_common/Displays
+    Help Height: 78
+    Name: Displays
+    Property Tree Widget:
+      Expanded:
+        - /Global Options1
+        - /Status1
+        - /TF1/Frames1
+        - /MarkerArray1
+      Splitter Ratio: 0.5
+    Tree Height: 549
+  - Class: rviz_common/Selection
+    Name: Selection
+  - Class: rviz_common/Tool Properties
+    Name: Tool Properties
+    Splitter Ratio: 0.5886790156364441
+  - Class: rviz_common/Views
+    Name: Views
+    Splitter Ratio: 0.5
+  - Class: rviz_common/Time
+    Experimental: false
+    Name: Time
+    SyncMode: 0
+    SyncSource: ""
+Visualization Manager:
+  Displays:
+    - Class: rviz_default_plugins/Grid
+      Name: Grid
+      Value: true
+    - Class: moveit_rviz_plugin/PlanningScene
+      Enabled: true
+      Name: PlanningScene
+      Planning Scene Topic: /move_group/monitored_planning_scene
+      Robot Description: robot_description
+      Scene Geometry:
+        Scene Alpha: 0.9
+        Scene Color: 50; 230; 50
+        Show Scene Geometry: true
+      Scene Robot:
+        Attached Body Color: 150; 50; 150
+        Links:
+          All Links Enabled: true
+          torso:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          link1_left:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          link2_left:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          link3_left:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          link4_left:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          link5_left:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          gripper_link_left:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          gripper_link_sub_left:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          link1_right:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          link2_right:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          link3_right:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          link4_right:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          link5_right:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          gripper_link_right:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          gripper_link_sub_right:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+        Robot Alpha: 1
+        Show Robot Collision: false
+        Show Robot Visual: true
+    - Class: rviz_default_plugins/TF
+      Enabled: true
+      Frames:
+        All Enabled: false
+        torso:
+          Value: true
+        link1_left:
+          Value: true
+        link2_left:
+          Value: false
+        link3_left:
+          Value: false
+        link4_left:
+          Value: false
+        link5_left:
+          Value: false
+        gripper_link_left:
+          Value: true
+        link1_right:
+          Value: true
+        link2_right:
+          Value: false
+        link3_right:
+          Value: false
+        link4_right:
+          Value: false
+        link5_right:
+          Value: false
+        gripper_link_right:
+          Value: true
+      Show Arrows: true
+      Show Axes: true
+      Show Names: false
+    - Class: rviz_default_plugins/MarkerArray
+      Enabled: true
+      Name: MarkerArray
+      Topic:
+        Value: /path_markers
+  Global Options:
+    Background Color: 48; 48; 48
+    Fixed Frame: world
+    Frame Rate: 30
+  Tools:
+    - Class: rviz_default_plugins/Interact
+    - Class: rviz_default_plugins/MoveCamera
+    - Class: rviz_default_plugins/Select
+    - Class: rviz_default_plugins/SetGoal
+      Topic:
+        Value: /goal_pose
+    - Class: rviz_default_plugins/PublishPoint
+      Topic:
+        Value: /clicked_point
+  Views:
+    Current:
+      Class: rviz_default_plugins/Orbit
+      Distance: 3.5
+      Focal Point:
+        X: 0
+        Y: 0
+        Z: 0
+      Name: Current View
+      Target Frame: world

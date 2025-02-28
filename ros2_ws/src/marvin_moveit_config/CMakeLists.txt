@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.22)
-project(marvin_moveit)
+project(marvin_moveit_config)
 
 find_package(ament_cmake REQUIRED)
 
