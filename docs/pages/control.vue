@@ -53,7 +53,12 @@ import {
   FilesetResolver,
   DrawingUtils,
 } from "@mediapipe/tasks-vision";
-import ROSLIB from "roslib";
+
+// Remove the static import of ROSLIB
+// import ROSLIB from "roslib";
+
+// Declare a module-level variable to hold the dynamically imported module
+let ROSLIBRef: any = null;
 
 interface Landmark {
   x: number;
@@ -74,10 +79,10 @@ const poseDetector = ref<any>(null);
 const isPoseDetectionEnabled = ref(true);
 const isDetectionLoopRunning = ref(false);
 
-// New reactive ref for data connection
+// Data connection
 const dataConnection = ref<any>(null);
 
-// New reactive refs for ROS connection and publisher
+// ROS connection and publisher refs
 const ros = ref<any>(null);
 const landmarkPublisher = ref<any>(null);
 
@@ -139,9 +144,6 @@ const keyLandmarkIndices = new Set([11, 12, 13, 14, 15, 16, 23, 24]);
 
 /**
  * Draws world landmarks on a canvas using the specified coordinate plane.
- * @param worldLandmarks Array of landmark arrays.
- * @param canvas The target canvas element.
- * @param plane The coordinate plane to use: "xy", "xz", or "yz".
  */
 function drawOrthogonalLandmarks(
   worldLandmarks: Landmark[][],
@@ -205,24 +207,19 @@ function drawOrthogonalLandmarks(
 }
 
 // -------------
-// ROS Publishing Function
+// ROS Publishing Function (using dynamically imported ROSLIB)
 // -------------
 function publishLandmarksToROS(data: any) {
   if (!landmarkPublisher.value) {
     console.error("ROS publisher not initialized");
     return;
   }
-
-  // Assuming data is an array of poses, each with an array of key landmarks
-  // Here we take the first pose’s landmarks.
   const landmarks = data[0];
   if (!landmarks || landmarks.length !== 8) {
     console.error("Unexpected number of landmarks");
     return;
   }
-
-  // Create the PoseLandmark message using the custom interface.
-  const poseMsg = new ROSLIB.Message({
+  const poseMsg = new ROSLIBRef.Message({
     label: [
       "left_shoulder", // 11
       "right_shoulder", // 12
@@ -239,12 +236,11 @@ function publishLandmarksToROS(data: any) {
       z: lm.z
     }))
   });
-
   landmarkPublisher.value.publish(poseMsg);
 }
 
 // -------------
-// Pose Detection Setup
+// Pose Detection Setup & Other Functions
 // -------------
 async function initializePoseDetection(
   runningMode: "IMAGE" | "VIDEO" = "VIDEO",
@@ -431,18 +427,17 @@ async function startPoseDetectionLoop() {
           performance.now()
         );
 
-        // Draw landmarks locally
+        // Draw landmarks on the orthogonal canvases
         drawOrthogonalLandmarks(result.worldLandmarks, orthoCanvases[0], "xz");
         drawOrthogonalLandmarks(result.worldLandmarks, orthoCanvases[1], "yz");
         drawOrthogonalLandmarks(result.worldLandmarks, orthoCanvases[2], "xy");
 
-        // Extract key landmarks from each pose
+        // Extract key landmarks and send via data connection if available
         const keyWorldLandmarks = result.worldLandmarks.map(
           (landmarks: Landmark[]) =>
             landmarks.filter((_, idx) => keyLandmarkIndices.has(idx))
         );
 
-        // Send key landmarks via data connection if available
         if (dataConnection.value && dataConnection.value.open) {
           dataConnection.value.send(keyWorldLandmarks);
         }
@@ -459,17 +454,21 @@ async function startPoseDetectionLoop() {
 // Lifecycle Hook
 // -------------
 onMounted(async () => {
+  // Dynamically import ROSLIB to avoid SSR issues
+  const roslibModule = await import("roslib");
+  ROSLIBRef = roslibModule.default;
+
   await fetchTurnServerCredentials();
   poseDetector.value = await initializePoseDetection("VIDEO", 1);
 
-  // Initialize ROS connection via rosbridge
-  ros.value = new ROSLIB.Ros({
-    url: "ws://localhost:9090", // Ensure rosbridge is running at this URL
+  // Initialize ROS connection via rosbridge using the dynamically imported ROSLIB
+  ros.value = new ROSLIBRef.Ros({
+    url: "ws://localhost:9090",
   });
-  landmarkPublisher.value = new ROSLIB.Topic({
+  landmarkPublisher.value = new ROSLIBRef.Topic({
     ros: ros.value,
     name: "/landmarks",
-    messageType: "custom_interfaces/PoseLandmark", // use your actual package name if different
+    messageType: "custom_interfaces/PoseLandmark",
   });
 
   initializePeerConnection();
