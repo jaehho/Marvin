@@ -53,12 +53,7 @@ import {
   FilesetResolver,
   DrawingUtils,
 } from "@mediapipe/tasks-vision";
-
-// Remove the static import of ROSLIB
-// import ROSLIB from "roslib";
-
-// Declare a module-level variable to hold the dynamically imported module
-let ROSLIBRef: any = null;
+// Removed: import ROSLIB from "roslib";
 
 interface Landmark {
   x: number;
@@ -79,10 +74,10 @@ const poseDetector = ref<any>(null);
 const isPoseDetectionEnabled = ref(true);
 const isDetectionLoopRunning = ref(false);
 
-// Data connection
+// Data connection for peer-to-peer landmark sharing
 const dataConnection = ref<any>(null);
 
-// ROS connection and publisher refs
+// Reactive refs for ROS connection and publisher
 const ros = ref<any>(null);
 const landmarkPublisher = ref<any>(null);
 
@@ -144,6 +139,9 @@ const keyLandmarkIndices = new Set([11, 12, 13, 14, 15, 16, 23, 24]);
 
 /**
  * Draws world landmarks on a canvas using the specified coordinate plane.
+ * @param worldLandmarks Array of landmark arrays.
+ * @param canvas The target canvas element.
+ * @param plane The coordinate plane to use: "xy", "xz", or "yz".
  */
 function drawOrthogonalLandmarks(
   worldLandmarks: Landmark[][],
@@ -207,19 +205,24 @@ function drawOrthogonalLandmarks(
 }
 
 // -------------
-// ROS Publishing Function (using dynamically imported ROSLIB)
+// ROS Publishing Function
 // -------------
 function publishLandmarksToROS(data: any) {
   if (!landmarkPublisher.value) {
     console.error("ROS publisher not initialized");
     return;
   }
+
+  // Assuming data is an array of poses, each with an array of key landmarks.
+  // Here we take the first pose’s landmarks.
   const landmarks = data[0];
   if (!landmarks || landmarks.length !== 8) {
     console.error("Unexpected number of landmarks");
     return;
   }
-  const poseMsg = new ROSLIBRef.Message({
+
+  // Create the PoseLandmark message using the custom interface.
+  const poseMsg = new ROSLIB.Message({
     label: [
       "left_shoulder", // 11
       "right_shoulder", // 12
@@ -236,11 +239,12 @@ function publishLandmarksToROS(data: any) {
       z: lm.z
     }))
   });
+
   landmarkPublisher.value.publish(poseMsg);
 }
 
 // -------------
-// Pose Detection Setup & Other Functions
+// Pose Detection Setup
 // -------------
 async function initializePoseDetection(
   runningMode: "IMAGE" | "VIDEO" = "VIDEO",
@@ -427,17 +431,18 @@ async function startPoseDetectionLoop() {
           performance.now()
         );
 
-        // Draw landmarks on the orthogonal canvases
+        // Draw landmarks on orthogonal canvases
         drawOrthogonalLandmarks(result.worldLandmarks, orthoCanvases[0], "xz");
         drawOrthogonalLandmarks(result.worldLandmarks, orthoCanvases[1], "yz");
         drawOrthogonalLandmarks(result.worldLandmarks, orthoCanvases[2], "xy");
 
-        // Extract key landmarks and send via data connection if available
+        // Extract key landmarks from each pose
         const keyWorldLandmarks = result.worldLandmarks.map(
           (landmarks: Landmark[]) =>
             landmarks.filter((_, idx) => keyLandmarkIndices.has(idx))
         );
 
+        // Send key landmarks via data connection if available
         if (dataConnection.value && dataConnection.value.open) {
           dataConnection.value.send(keyWorldLandmarks);
         }
@@ -454,22 +459,42 @@ async function startPoseDetectionLoop() {
 // Lifecycle Hook
 // -------------
 onMounted(async () => {
-  // Dynamically import ROSLIB to avoid SSR issues
-  const roslibModule = await import("roslib");
-  ROSLIBRef = roslibModule.default;
-
   await fetchTurnServerCredentials();
   poseDetector.value = await initializePoseDetection("VIDEO", 1);
 
-  // Initialize ROS connection via rosbridge using the dynamically imported ROSLIB
-  ros.value = new ROSLIBRef.Ros({
-    url: "ws://localhost:9090",
-  });
-  landmarkPublisher.value = new ROSLIBRef.Topic({
-    ros: ros.value,
-    name: "/landmarks",
-    messageType: "custom_interfaces/PoseLandmark",
-  });
+  // Dynamically load ROSLIB to prevent SSR issues.
+  const script = document.createElement("script");
+  script.src = "https://cdn.jsdelivr.net/npm/roslib@1/build/roslib.min.js";
+  script.onload = () => {
+    if (typeof ROSLIB === "undefined") {
+      console.error("ROSLIB not loaded");
+      return;
+    }
+    // Establish a connection to the ROS bridge.
+    ros.value = new ROSLIB.Ros({
+      url: "ws://localhost:9090", // Ensure rosbridge is running at this URL.
+    });
+
+    ros.value.on("connection", () => {
+      console.log("Connected to rosbridge server.");
+    });
+
+    ros.value.on("error", (error: any) => {
+      console.error("Error connecting to rosbridge server:", error);
+    });
+
+    ros.value.on("close", () => {
+      console.log("Connection to rosbridge server closed.");
+    });
+
+    // Create the publisher for landmarks.
+    landmarkPublisher.value = new ROSLIB.Topic({
+      ros: ros.value,
+      name: "/landmarks",
+      messageType: "custom_interfaces/PoseLandmark", // Use your actual package name if different.
+    });
+  };
+  document.head.appendChild(script);
 
   initializePeerConnection();
 });
