@@ -18,9 +18,9 @@ export default {
     }
   },
   async mounted() {
-    // Dynamically import ROSLIB to ensure it loads only on the client
+    // Dynamically import ROSLIB and use the default export if available
     const roslibModule = await import('roslib');
-    ROSLIBRef = roslibModule.default;
+    ROSLIBRef = roslibModule.default || roslibModule;
 
     // Establish a connection to the rosbridge server
     this.ros = new ROSLIBRef.Ros({
@@ -44,6 +44,10 @@ export default {
   },
   methods: {
     publishMessage() {
+      if (!ROSLIBRef) {
+        console.error('ROSLIB is not loaded yet.');
+        return;
+      }
       // Create a topic instance for publishing using the dynamically imported ROSLIB
       const topic = new ROSLIBRef.Topic({
         ros: this.ros,
