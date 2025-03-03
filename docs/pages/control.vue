@@ -490,7 +490,7 @@ onMounted(async () => {
     // Create the publisher for landmarks.
     landmarkPublisher.value = new ROSLIB.Topic({
       ros: ros.value,
-      name: "/landmarks",
+      name: "/pose_landmarks",
       messageType: "custom_interfaces/PoseLandmark", // Use your actual package name if different.
     });
   };
