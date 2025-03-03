@@ -295,7 +295,7 @@ async function initializePoseDetection(
 async function fetchTurnServerCredentials() {
   try {
     const res = await fetch(
-      "https://marvin.metered.live/api/v1/turn/credentials?apiKey=bca769dfeca57f21e5ceb9eada5afbbf71cd"
+      "https://marvin.metered.live/api/v1/turn/credentials?apiKey=51d9202103a96da7915d85383f8a4b416900"
     );
     const turnData = await res.json();
     turnServers.value = [
