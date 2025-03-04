@@ -7,7 +7,6 @@ from launch.substitutions import LaunchConfiguration
 from launch_param_builder import ParameterBuilder
 from moveit_configs_utils import MoveItConfigsBuilder
 
-
 def generate_launch_description():
     moveit_config = (
         MoveItConfigsBuilder("marvin")
@@ -23,11 +22,11 @@ def generate_launch_description():
     # Get parameters for the Servo node
     servo_params = {
         "moveit_servo": ParameterBuilder("marvin_control")
-        .yaml("marvin_simulated_config/servo.yaml")
+        .yaml("/home/jaeho/marvin/ros2_ws/src/marvin_control/config/marvin_simulated_config.yaml")
         .to_dict()
     }
-
-    # This sets the update rate and planning group name for acceleration limiting
+    
+    # This sets the update rate and planning group name for the acceleration limiting filter.
     acceleration_filter_update_period = {"update_period": 0.01}
     planning_group_name = {"planning_group_name": "marvin"}
 
@@ -45,9 +44,9 @@ def generate_launch_description():
         ],
     )
 
-    # ROS 2 control node
+    # ROS 2 control node, using FakeSystem as hardware
     ros2_controllers_path = os.path.join(
-        get_package_share_directory("moveit_resources_marvin_moveit_config"),
+        get_package_share_directory("marvin_moveit_config"),
         "config",
         "ros2_controllers.yaml"
     )
@@ -59,6 +58,23 @@ def generate_launch_description():
         output="screen",
     )
 
+    # Joint Trajectory Publisher (New)
+    joint_trajectory_publisher_node = launch_ros.actions.Node(
+        package="marvin_control",
+        executable="joint_trajectory_publisher",
+        name="joint_trajectory_publisher",
+        output="screen",
+    )
+
+    # Pose Tracking Node
+    pose_tracking_node = launch_ros.actions.Node(
+        package="marvin_control",
+        executable="pose_tracking",
+        name="pose_tracking",
+        output="screen",
+    )
+
+    # Controller spawners
     joint_state_broadcaster_spawner = launch_ros.actions.Node(
         package="controller_manager",
         executable="spawner",
@@ -77,7 +93,7 @@ def generate_launch_description():
         arguments=["marvin_controller", "-c", "/controller_manager"],
     )
 
-    # Launch as much as possible in components
+    # MoveIt Servo in a Composable Node Container
     container = launch_ros.actions.ComposableNodeContainer(
         name="marvin_servo_container",
         namespace="/",
@@ -115,7 +131,7 @@ def generate_launch_description():
         output="screen",
     )
 
-    # Launch a standalone Servo node (if not using container)
+    # Standalone MoveIt Servo Node (if not using a container)
     servo_node = launch_ros.actions.Node(
         package="moveit_servo",
         executable="servo_node",
@@ -133,22 +149,14 @@ def generate_launch_description():
         condition=IfCondition(launch_as_standalone_node),
     )
 
-    # Launch the pose tracking demo (if needed)
-    pose_tracking_node = launch_ros.actions.Node(
-        package="marvin_control",
-        executable="pose_tracking",
-        name="pose_tracking",
-        output="screen",
-    )
-
-    return launch.LaunchDescription(
-        [
-            rviz_node,
-            ros2_control_node,
-            joint_state_broadcaster_spawner,
-            marvin_controller_spawner,
-            servo_node,
-            container,
-            launch.actions.TimerAction(period=5.0, actions=[pose_tracking_node]),
-        ]
-    )
+    
+    return launch.LaunchDescription([
+        rviz_node,
+        ros2_control_node,
+        joint_state_broadcaster_spawner,
+        #joint_trajectory_publisher_node,  # ✅ Joint trajectory publisher (NEW)
+        servo_node,  # ✅ MoveIt Servo Node (if standalone)
+        container,  # ✅ MoveIt Servo in container mode
+        launch.actions.TimerAction(period=5.0, actions=[marvin_controller_spawner]),  # ✅ Delay controller spawner (NEW)
+        launch.actions.TimerAction(period=5.0, actions=[pose_tracking_node]),  # ✅ Delay pose tracking (NEW)
+    ])

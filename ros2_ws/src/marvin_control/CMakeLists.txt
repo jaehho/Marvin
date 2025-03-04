@@ -15,6 +15,8 @@ find_package(visualization_msgs REQUIRED)
 find_package(moveit_servo REQUIRED)
 find_package(moveit_msgs REQUIRED)
 find_package(tf2_eigen REQUIRED)
+find_package(sensor_msgs REQUIRED)
+find_package(trajectory_msgs REQUIRED)  
 
 #SERVO POSE TRACKING
 add_executable(pose_tracking src/pose_tracking.cpp)
@@ -23,9 +25,18 @@ target_include_directories(pose_tracking PUBLIC include)
 ament_target_dependencies(
   pose_tracking
   "rclcpp"
-  "sensor_msgs"
+  "trajectory_msgs"  
   "moveit_servo"
   "control_msgs"
+)
+
+#TARGET JOINT TRAJECTORY PUBLISHER
+add_executable(joint_trajectory_publisher src/joint_trajectory_publisher.cpp)
+ament_target_dependencies(
+  joint_trajectory_publisher  # Updated the target name
+  "rclcpp"
+  "std_msgs"
+  "trajectory_msgs"  # Updated to include trajectory_msgs
 )
   
 #HELLO MOVEIT
@@ -63,7 +74,7 @@ ament_target_dependencies(
 
 install(
   TARGETS
-    pose_tracking hello_moveit publisher subscriber
+    pose_tracking joint_trajectory_publisher hello_moveit publisher subscriber
   DESTINATION
     lib/${PROJECT_NAME}
 )
