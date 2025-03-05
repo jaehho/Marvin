@@ -34,3 +34,4 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages  # Deployment branch
+          folder: dist  # Nuxt generates static files inside this directory
