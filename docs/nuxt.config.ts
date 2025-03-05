@@ -4,9 +4,9 @@ export default defineNuxtConfig({
   compatibilityDate: "2024-11-01",
   devtools: { enabled: true },
   target: 'static', // Enables static site generation
-  app: {
-    baseURL: '/marvin/', // Replace <REPO_NAME> with your repository name
-  },
+  // app: {
+  //   baseURL: '/marvin/', // Replace <REPO_NAME> with your repository name
+  // },
   generate: {
     dir: 'dist' // Default output folder for generated files
   },
