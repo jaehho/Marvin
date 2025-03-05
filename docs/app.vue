@@ -14,7 +14,7 @@
           <NuxtLink to="/control">Control</NuxtLink>
         </li>
         <li>
-          <NuxtLink to="/ros-publisher">ROS Publisher</NuxtLink>
+          <NuxtLink to="/test">Test</NuxtLink>
         </li>
       </ul>
     </nav>
