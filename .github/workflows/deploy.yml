@@ -1,0 +1,36 @@
+name: Deploy Nuxt to GitHub Pages
+
+on:
+  push:
+    branches:
+      - web
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18  # Use a compatible Node.js version
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          cd app
+          npm ci  # Installs dependencies using package-lock.json
+
+      - name: Build Nuxt app
+        run: |
+          cd app
+          npm run generate
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages  # Deployment branch
+          folder: app/dist  # Nuxt generates static files inside this directory
