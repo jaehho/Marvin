@@ -21,16 +21,16 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd app
+          cd docs
           npm ci  # Installs dependencies using package-lock.json
 
       - name: Build Nuxt app
         run: |
-          cd app
+          cd docs
           npm run generate
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages  # Deployment branch
-          folder: app/dist  # Nuxt generates static files inside this directory
+          folder: docs/dist  # Nuxt generates static files inside this directory

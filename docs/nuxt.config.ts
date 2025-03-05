@@ -7,4 +7,7 @@ export default defineNuxtConfig({
   app: {
     baseURL: '/marvin/', // Replace <REPO_NAME> with your repository name
   },
+  generate: {
+    dir: 'dist' // Default output folder for generated files
+  },
 });
