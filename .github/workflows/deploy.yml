@@ -18,6 +18,7 @@ jobs:
         with:
           node-version: 18  # Use a compatible Node.js version
           cache: 'npm'
+          cache-dependency-path: docs/package-lock.json  # Specify lock file location
 
       - name: Install dependencies
         run: |
