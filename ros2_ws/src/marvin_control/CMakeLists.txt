@@ -28,6 +28,7 @@ ament_target_dependencies(
   "trajectory_msgs"  
   "moveit_servo"
   "control_msgs"
+  "moveit_msgs"
 )
 
 #TARGET JOINT TRAJECTORY PUBLISHER

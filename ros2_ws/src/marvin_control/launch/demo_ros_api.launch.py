@@ -122,8 +122,8 @@ def generate_launch_description():
         ],
         output="screen",
     )
-
-    # Standalone MoveIt Servo Node (if not using a container)
+    # Launch a standalone Servo node.
+    # As opposed to a node component, this may be necessary (for example) if Servo is running on a different PC
     servo_node = launch_ros.actions.Node(
         package="moveit_servo",
         executable="servo_node",
@@ -141,23 +141,13 @@ def generate_launch_description():
         condition=IfCondition(launch_as_standalone_node),
     )
 
-    # Pose Tracking Node
-    pose_tracking_node = launch_ros.actions.Node(
-        package="marvin_control",
-        executable="pose_tracking",
-        name="pose_tracking",
-        output="screen",
+    return launch.LaunchDescription(
+        [
+            rviz_node,
+            ros2_control_node,
+            joint_state_broadcaster_spawner,
+            marvin_controller_spawner,
+            #servo_node,
+            container,
+        ]
     )
-    
-    
-    return launch.LaunchDescription([
-        rviz_node,
-        ros2_control_node,
-        joint_state_broadcaster_spawner,
-        marvin_controller_spawner,
-        #joint_trajectory_publisher_node,  # ✅ Joint trajectory publisher (NEW)
-        #servo_node,  # ✅ MoveIt Servo Node (if standalone)
-        container,  # ✅ MoveIt Servo in container mode
-        #launch.actions.TimerAction(period=5.0, actions=[marvin_controller_spawner]),  # ✅ Delay controller spawner (NEW)
-        launch.actions.TimerAction(period=8.0, actions=[pose_tracking_node]),  # ✅ Delay pose tracking (NEW)
-    ])
